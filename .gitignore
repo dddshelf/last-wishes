@@ -1,3 +1,5 @@
-vendor/
-bin/
-.idea/
+vendor
+bin
+.idea
+app/silex/components
+db.sqlite

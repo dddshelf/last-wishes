@@ -46,7 +46,7 @@ $app->post('/login', function (Request $request) use ($app) {
     $service = new \Lw\Application\Service\User\LogInUserService($authentifier);
     $result = $service->execute($request->get('email'), $request->get('password'));
 
-    return $result ? $app->redirect('/') : $app->redirect('/login');
+    return $result ? $app->redirect('/dashboard') : $app->redirect('/login');
 });
 
 // Logout
@@ -59,20 +59,49 @@ $app->get('/logout', function () use ($app) {
     return $app->redirect('/login');
 })->bind('logout');
 
-// View stories
+// Dashboard
 $app->get('/dashboard', function () use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
 
-
+    $userId = $userSecurityToken->id();
     $usecase = new \Lw\Application\Service\User\ViewWishesService($app['wish_repository']);
-    $response = $usecase->execute();
+    $response = $usecase->execute($userId);
 
-    return $app['twig']->render('view-stories.html.twig', ['stories' => $response->stories]);
-})->bind('read');
+    return $app['twig']->render('dashboard.html.twig', ['wishes' => $response]);
+})->bind('dashboard');
 
-// Add story
-$app->get('/story/add', function () use ($app) {
-    return $app['twig']->render('add-story.html.twig');
-})->bind('add-story');
+// Add wish
+$app->post('/wish/add', function (Request $request) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id();
+    $usecase = new \Lw\Application\Service\Wish\AddWishService($app['wish_repository']);
+    $response = $usecase->execute($userId, $request->get('email'), $request->get('content'));
+
+    return $app->redirect('/dashboard');
+})->bind('add-wish');
+
+// Add wish
+$app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id();
+    $usecase = new \Lw\Application\Service\Wish\DeleteWishService($app['wish_repository']);
+    $response = $usecase->execute($userId->id(), $wishId);
+
+    // @todo: App session message
+
+    return $app->redirect('/dashboard');
+})->bind('delete-wish');
 
 // View story
 $app->get('/story/{id}', function ($id) use ($app) {
@@ -106,9 +135,5 @@ $app->get('/page/{id}', function ($id) use ($app) {
 
     return $app['twig']->render('view-page.html.twig', ['page' => $response->page]);
 })->bind('page');
-
-$app->get('/dashboard', function () use ($app) {
-    return $app['twig']->render('dashboard.html.twig');
-})->bind('dashboard');
 
 $app->run();
