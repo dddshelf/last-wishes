@@ -38,7 +38,7 @@ class User
      * Surrogate Id
      * @var string
      */
-    private $id;
+    private $surrogateUserId;
 
     /**
      * @param UserId $userId
@@ -48,7 +48,7 @@ class User
     public function __construct(UserId $userId, $email, $password)
     {
         $this->userId = $userId;
-        $this->id = $userId->id();
+        $this->surrogateUserId = $userId->id();
 
         $this->setEmail($email);
         $this->changePassword($password);
@@ -62,7 +62,7 @@ class User
      */
     public function id()
     {
-        return new UserId($this->id);
+        return new UserId($this->surrogateUserId);
     }
 
     /**

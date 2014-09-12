@@ -1,9 +1,10 @@
 Lw\Domain\Model\Wish\WishEmail:
   type: entity
   table: wish
-  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\DoctrineWishRepository
+  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Wish\DoctrineWishEmailRepository
   id:
-    id:
+    surrogateWishId:
+      column: id
       type: string
       generator:
         strategy: NONE
@@ -14,10 +15,6 @@ Lw\Domain\Model\Wish\WishEmail:
       type: string
     content:
       type: text
-  manyToOne:
-    user:
-      targetEntity: Lw\Domain\Model\User\User
-      inversedBy: wishes
-      joinColumn:
-        name: user_id
-        referencedColumnName: id
+    surrogateUserId:
+      type: string
+      column: user_id

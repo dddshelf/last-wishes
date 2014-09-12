@@ -3,43 +3,42 @@
 namespace Lw\Application\Service\Wish;
 
 use Lw\Domain\Model\User\UserDoesNotExistException;
-use Lw\Domain\Model\User\UserId;
-use Lw\Domain\Model\User\UserRepository;
-use Lw\Domain\Model\Wish\WishAbstractFactory;
+use Lw\Domain\Model\Wish\WishEmail;
+use Lw\Domain\Model\Wish\WishId;
+use Lw\Domain\Model\Wish\WishRepository;
 
 class AddWishService
 {
     /**
-     * @var UserRepository
+     * @var WishRepository
      */
-    private $userRepository;
+    private $wishRepository;
 
-    public function __construct(UserRepository $userRepository, WishAbstractFactory $wishFactory)
+    public function __construct(WishRepository $wishRepository)
     {
-        $this->userRepository = $userRepository;
-        $this->wishFactory = $wishFactory;
+        $this->wishRepository = $wishRepository;
     }
 
     /**
      * @param string $userId
      * @param string $email
      * @param string $content
+     * @return mixed
      * @throws UserDoesNotExistException
      */
     public function execute($userId, $email, $content)
     {
-        $user = $this->userRepository->userOfId(
-            new UserId($userId)
-        );
+        $wish = new WishEmail(new WishId(), $userId, $email, $email, $content);
 
-        if (null === $user) {
-            throw new UserDoesNotExistException();
-        }
+        // $wish = $this->wishFactory->makeEmailWish($email, $content);
+        return $this->wishRepository->persist($wish);
 
-        $user->addWish(
+        /*
+        $wish->addWish(
             $this->wishFactory->makeEmailWish($email, $content)
         );
+        */
 
-        $this->userRepository->persist($user);
+        $this->wishRepository->persist($wish);
     }
 }

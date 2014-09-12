@@ -1,19 +1,39 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1 class="cover-heading">Dashboard</h1>
-    <p class="lead">My stories</p>
-    <a href="{{ path('add-story') }}" class="btn btn-lg btn-default">Add story</a>
-    <div class="row">
-        {% for story in user.stories %}
-            <div class="col-xs-3">
-                <div class="tile">
-                    <img src="/components/flat-ui-official/images/icons/svg/compas.svg" alt="Compas" class="tile-image big-illustration">
-                    <h3 class="tile-title">{{ story.title }}</h3>
-                    <p>{{ story.description }}</p>
-                    <a class="btn btn-primary btn-large btn-block" href="/story/{{ story.id }}">View</a>
+    <!--<h1 class="cover-heading">Dashboard</h1>-->
+    <p class="lead">If something would happen to me...</p>
+
+    {% for wish in wishes %}
+        <div class="row">
+            <div class="col-xs-10">
+                <div style="margin-right: 15px; float:left">
+                    <img src="components/flat-ui/images/icons/svg/gift-box.svg" alt="Wish">
                 </div>
+                ...send to <strong>{{ wish.email() }}</strong> an email<br/>that starts with <strong>{{ wish.content() | slice(0, 100) }}...</strong>
             </div>
-        {% endfor %}
+            <div class="col-xs-2 right">
+                <a class="btn btn-primary btn-block" href="/story/{{ wish.id }}"><span class="fui-trash">Edit</span></a>
+                <a class="btn btn-primary btn-block btn-danger" href="{{ path('delete-wish', {wishId: wish.id}) }}"><span class="fui-trash">Delete</span></a>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12">
+                ...do nothing, a bit sad.
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/>
+    <p class="lead">You have N more wishes, so add a new one...</p>
+    <div class="row">
+        <div class="col-xs-12">
+            <form method="post" action="{{ path('add-wish') }}">
+                To: <input class="form-control" placeholder="my-son@gmail.com" name="email" type="text" maxlength="255" /><br/>
+                Message:<br/><textarea class="form-control" placeholder="If you are reading this..." name="content" type="text"></textarea> <br/>
+                <button type="submit" class="btn btn-default">New wish</button>
+            </form>
+        </div>
     </div>
 {% endblock %}

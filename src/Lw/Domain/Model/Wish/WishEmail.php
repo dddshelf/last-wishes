@@ -2,18 +2,21 @@
 
 namespace Lw\Domain\Model\Wish;
 
+use Assert\Assertion;
+use Lw\Domain\Model\User\UserId;
+
 class WishEmail extends Wish
 {
     private $mailer;
     private $email;
     private $content;
 
-    public function __construct(WishId $wishId, $title, $email, $content)
+    public function __construct(WishId $wishId, UserId $userId, $title, $email, $content)
     {
-        parent::__construct($wishId, $title);
+        parent::__construct($wishId, $userId, $title);
 
-        $this->email = $email;
-        $this->content = $content;
+        $this->setEmail($email);
+        $this->setContent($content);
 
         $transport = \Swift_SmtpTransport::newInstance('smtp.mandrillapp.com', 587)
             ->setUsername('carlos.buenosvinos@gmail.com')
@@ -37,5 +40,43 @@ class WishEmail extends Wish
         if (!$result) {
             throw new \Exception('Mail not send');
         }
+    }
+
+    /**
+     * @param $email
+     */
+    private function setEmail($email)
+    {
+        $email = trim($email);
+        if (!$email) {
+            throw new \InvalidArgumentException('Email cannot be empty');
+        }
+
+        Assertion::email($email);
+        $this->email = strtolower($email);
+    }
+
+    /**
+     * @param $content
+     */
+    private function setContent($content)
+    {
+        $content = trim($content);
+        if (!$content) {
+            throw new \InvalidArgumentException('Message cannot be empty');
+        }
+
+        Assertion::notEmpty($content);
+        $this->content = $content;
+    }
+
+    public function content()
+    {
+        return $this->content;
+    }
+
+    public function email()
+    {
+        return $this->email;
     }
 }

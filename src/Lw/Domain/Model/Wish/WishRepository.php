@@ -11,6 +11,12 @@ use Lw\Domain\Model\User\UserId;
 interface WishRepository
 {
     /**
+     * @param WishId $wishId
+     * @return Wish
+     */
+    public function wishOfId(WishId $wishId);
+
+    /**
      * @param UserId $userId
      * @return Wish[]
      */
@@ -21,4 +27,9 @@ interface WishRepository
      * @return mixed
      */
     public function persist(Wish $wish);
+
+    /**
+     * @param Wish $wish
+     */
+    public function remove(Wish $wish);
 }
