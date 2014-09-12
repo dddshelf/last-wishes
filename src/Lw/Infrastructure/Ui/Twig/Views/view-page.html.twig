@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1 class="cover-heading">{{ page.title }}</h1>
+    <p class="lead">{{ page.description }}</p>
+    <p class="lead">
+        {% for action in page.actions %}
+            <a href="/page/{{ action.nextPage.id }}" class="btn btn-lg btn-default">{{ action.name }}</a>
+        {% endfor %}
+    </p>
+{% endblock %}

@@ -1,0 +1,18 @@
+Lw\Domain\Model\User\User:
+  type: entity
+  table: user
+  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\User\DoctrineUserRepository
+  id:
+    id:
+      type: string
+      generator:
+        strategy: NONE
+  fields:
+    email:
+      type: string
+    password:
+      type: string
+  oneToMany:
+    wishes:
+      targetEntity: Lw\Domain\Model\Wish\WishEmail
+      mappedBy: user

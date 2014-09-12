@@ -1,0 +1,23 @@
+Lw\Domain\Model\Wish\WishEmail:
+  type: entity
+  table: wish
+  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\DoctrineWishRepository
+  id:
+    id:
+      type: string
+      generator:
+        strategy: NONE
+  fields:
+    title:
+      type: string
+    email:
+      type: string
+    content:
+      type: text
+  manyToOne:
+    user:
+      targetEntity: Lw\Domain\Model\User\User
+      inversedBy: wishes
+      joinColumn:
+        name: user_id
+        referencedColumnName: id

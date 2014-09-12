@@ -1,0 +1,14 @@
+{
+  "name": "flat-ui-official",
+  "homepage": "https://github.com/designmodo/Flat-UI",
+  "version": "2.1.3",
+  "_release": "2.1.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.1.3",
+    "commit": "46a5b5a49c578a5dcfc395b4c93715ca3908b887"
+  },
+  "_source": "git://github.com/designmodo/Flat-UI.git",
+  "_target": "~2.1.3",
+  "_originalSource": "flat-ui-official"
+}

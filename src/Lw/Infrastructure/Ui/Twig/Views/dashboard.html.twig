@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1 class="cover-heading">Dashboard</h1>
+    <p class="lead">My stories</p>
+    <a href="{{ path('add-story') }}" class="btn btn-lg btn-default">Add story</a>
+    <div class="row">
+        {% for story in user.stories %}
+            <div class="col-xs-3">
+                <div class="tile">
+                    <img src="/components/flat-ui-official/images/icons/svg/compas.svg" alt="Compas" class="tile-image big-illustration">
+                    <h3 class="tile-title">{{ story.title }}</h3>
+                    <p>{{ story.description }}</p>
+                    <a class="btn btn-primary btn-large btn-block" href="/story/{{ story.id }}">View</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

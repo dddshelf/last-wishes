@@ -1,0 +1,34 @@
+{
+    "name": "carlosbuenosvinos/elige-tu-propia-aventura-web",
+    "require": {
+        "silex/silex": "1.2.*",
+        "doctrine/orm": "~2.4",
+        "twig/twig": ">=1.8,<2.0-dev",
+        "symfony/twig-bridge": "~2.3",
+        "rhumsaa/uuid": "~2.7.1",
+        "predis/predis": "~0.8.5",
+        "jms/serializer": "~0.16.0",
+        "swiftmailer/swiftmailer": "5.2.1",
+        "symfony/form": "~2.3",
+        "symfony/security": "~2.3",
+        "beberlei/assert": "@stable"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.2",
+        "mockery/mockery": "dev-master@dev"
+    },
+    "authors": [
+        {
+            "name": "Carlos Buenosvinos",
+            "email": "carlos.buenosvinos@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Lw": "src"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}

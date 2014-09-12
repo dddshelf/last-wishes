@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Write your own adventure</title>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/components/flat-ui-official/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/components/flat-ui-official/css/flat-ui.css">
+
+    <style>
+        body { padding-top: 10px; }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-app="etpa">
+    <div class="container">
+        <nav class="navbar navbar-default navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="">Choosy</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                <p class="navbar-text">Choose your own adventure</p>
+            </div><!-- /.navbar-collapse -->
+        </nav><!-- /navbar -->
+
+        <stories></stories>
+
+        <h1 class="cover-heading">Add story</h1>
+        <div ng-controller="StoryController as storyCtrl">
+            <form name="addStoryForm" ng-submit="addStoryForm.$valid && storyCtrl.addStory()" novalidate>
+                Title: <input ng-model="storyCtrl.story.title" required class="form-control" placeholder="Best story never told" name="title" type="text" maxlength="255" /><br/>
+                Introduction:<br/><textarea ng-model="storyCtrl.story.introduction" required class="form-control" placeholder="Once upon a time..." name="description" type="text" maxlength="255"></textarea> <br/>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/components/flat-ui-official/js/jquery-1.10.2.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/components/flat-ui-official/js/bootstrap.min.js"></script>
+    <script src="/components/angular/angular.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+</body>
+</html>

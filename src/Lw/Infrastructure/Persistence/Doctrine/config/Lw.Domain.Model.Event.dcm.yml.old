@@ -1,0 +1,20 @@
+Lw\Domain\Model\Event:
+  type: entity
+  table: event
+  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Event\DoctrineEventRepository
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    eventBody:
+      type: text
+    eventType:
+      type: string
+      length: 255
+    streamName:
+      type: string
+      length: 255
+    streamVersion:
+      type: integer

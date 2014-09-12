@@ -1,0 +1,14 @@
+language: php
+
+env:
+  - OPCODE_CACHE=apc
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - hhvm
+
+before_script:
+  - composer self-update
+  - composer update

@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1 class="cover-heading">{{ story.title }}</h1>
+    <p class="lead">{{ story.description }}</p>
+    <p class="lead">
+        <a href="/story/{{ story.id }}/publish" class="btn btn-lg btn-info">Publish</a>
+        <a href="/page/{{ story.id }}" class="btn btn-lg btn-default">Preview</a>
+        <button class="btn btn-info btn-lg">{{ story.rating ? 'Rating: ' ~ story.rating : 'No ratings yet' }}</button>
+    </p>
+    <div class="dropdown">
+        <button class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown">Rate it<span class="caret"></span></button>
+        <span class="dropdown-arrow"></span>
+        <ul class="dropdown-menu">
+            <li><a href="{{ path('rate-story', {storyId: story.id, rating:1}) }}">Poor</a></li>
+            <li><a href="{{ path('rate-story', {storyId: story.id, rating:2}) }}">Not bad</a></li>
+            <li><a href="{{ path('rate-story', {storyId: story.id, rating:3}) }}">Cool</a></li>
+            <li><a href="{{ path('rate-story', {storyId: story.id, rating:4}) }}">Great!</a></li>
+            <li><a href="{{ path('rate-story', {storyId: story.id, rating:5}) }}">Excellent!</a></li>
+        </ul>
+    </div>
+
+    <h3 class="cover-heading">Add page</h3>
+    <form method="post">
+        <input type="hidden" name="story" value="{{ story.id }}" />
+        Title: <input class="form-control" placeholder="Best story never told" name="title" type="text" maxlength="255" /><br/>
+        Content:<br/><textarea rows="5" class="form-control" placeholder="Once upon a time..." name="description" type="text" maxlength="255"></textarea> <br/>
+        <button class="btn btn-default" type="submit">Add page</button>
+    </form>
+
+    {% for page in story.pages %}
+        {{ page.id }},
+    {% endfor %}
+{% endblock %}
