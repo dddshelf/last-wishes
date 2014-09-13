@@ -10,10 +10,14 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/components/flat-ui/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/components/flat-ui/css/flat-ui.css">
+    <link rel="stylesheet" href="/components/ngprogress/ngProgress.css">
 
     <style>
-        body { padding-top: 10px; }
+        body { padding-top: 70px; }
         footer { margin-top: 40px; }
+        .wish-image { width: 80px; height: 80px; }
+        .wish-row { margin-bottom: 20px; }
+        .wish-control { display:inline; width: 300px; }
     </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -23,9 +27,9 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body ng-app="etpa">
+<body ng-app="lw">
     <div class="container">
-        <nav class="navbar navbar-default navbar-inverse" role="navigation">
+        <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
                     <span class="sr-only">Toggle navigation</span>
@@ -54,7 +58,11 @@
         {% block content %}
         <div class="row">
             <div class="col-xs-12">
-                Propuesta de valor para
+                1 wish for free, pay for extra tasks
+
+                How it Works
+                We need to check you are OK, so will send you an email every month in order to
+                tell us this. You can also update your status from your mobile phone.
             </div>
         </div>
         {% endblock %}
@@ -98,9 +106,8 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="/components/flat-ui/js/bootstrap.min.js"></script>
 
-    <!--
     <script src="/components/angular/angular.min.js"></script>
+    <script src="/components/ngprogress/build/ngProgress.min.js"></script>
     <script src="/assets/js/app.js"></script>
-     -->
 </body>
 </html>

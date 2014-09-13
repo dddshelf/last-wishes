@@ -60,6 +60,27 @@ $app->get('/logout', function () use ($app) {
 })->bind('logout');
 
 // Dashboard
+$app->get('/wish/list', function () use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id();
+    $usecase = new \Lw\Application\Service\User\ViewWishesService($app['wish_repository']);
+    $response = $usecase->execute($userId);
+
+    $wishes = array_map(function($wish) {
+        return [
+            'id' => $wish->id()->id(),
+            'email' => $wish->email(),
+            'content' => $wish->content()
+        ];
+    }, $response);
+
+    return $app->json($wishes);
+});
+
 $app->get('/dashboard', function () use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
@@ -87,7 +108,7 @@ $app->post('/wish/add', function (Request $request) use ($app) {
     return $app->redirect('/dashboard');
 })->bind('add-wish');
 
-// Add wish
+// Delete wish
 $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
@@ -103,37 +124,20 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
     return $app->redirect('/dashboard');
 })->bind('delete-wish');
 
-// View story
-$app->get('/story/{id}', function ($id) use ($app) {
-    $request = new \Cyoa\UseCases\Story\ViewStoryRequest();
-    $request->storyId = $id;
+$app->delete('/wish/{wishId}', function ($wishId) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->json(['message' => 'Not logged'], 403);
+    }
 
-    $response = (new \Cyoa\UseCases\Story\ViewStoryUseCase($app['story-repository']))->execute($request);
-
-    return $app['twig']->render('view-story.html.twig', ['story' => $response->story]);
-})->bind('story');
-
-$app->post('/wish/add', function (Request $httpRequest) use ($app) {
-    $request = new \Cyoa\UseCases\Story\CreateStoryRequest();
-    $request->title = $httpRequest->get('title');
-    $request->description = $httpRequest->get('description');
-
-    $storyRepository = $app['em']->getRepository('Cyoa\Domain\Story');
-    $usecase = new \Cyoa\UseCases\Story\CreateStoryUseCase($storyRepository);
-    $response = $usecase->execute($request);
-
-    return $app->redirect('/stories');
+    $userId = $userSecurityToken->id();
+    $usecase = new \Lw\Application\Service\Wish\DeleteWishService($app['wish_repository']);
+    try {
+        $usecase->execute($userId->id(), $wishId);
+        return $app->json(['message' => 'ok']);
+    } catch(\Exception $e) {
+        return $app->json(['message' => $e->getMessage()], 500);
+    }
 });
-
-$app->get('/page/{id}', function ($id) use ($app) {
-    $request = new \Cyoa\UseCases\Page\ViewPageRequest();
-    $request->pageId = $id;
-
-    $pageRepository = $app['em']->getRepository('Cyoa\Domain\Page');
-    $usecase = new \Cyoa\UseCases\Page\ViewPageUseCase($pageRepository);
-    $response = $usecase->execute($request);
-
-    return $app['twig']->render('view-page.html.twig', ['page' => $response->page]);
-})->bind('page');
 
 $app->run();

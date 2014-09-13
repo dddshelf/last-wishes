@@ -1,24 +1,32 @@
 (function() {
-    var app = angular.module('etpa', []);
+    var app = angular.module('lw', []).config(function($interpolateProvider){
+            $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+        }
+    );
 
-    app.controller('StoryController', function() {
+    app.controller('StoryController', function($scope, $http) {
         var that = this;
-        this.stories = [
-            {id:1, title:'Aventura #1', description:'My description'},
-            {id:2, title:'Aventura #2', description:'My description'},
-            {id:3, title:'Aventura #3', description:'My description'}
-        ];
+        this.wish = {};
 
-        this.story = {};
-        this.addStory = function() {
-            that.stories.push(that.story);
-        };
-    });
+        $scope.addWish = function() {
 
-    app.directive('stories', function() {
-        return {
-            restrict: 'E',
-            templateUrl: 'view-stories.html',
+            $scope.wishes.push(that.wish);
         };
+
+        $scope.deleteWish = function(wish) {
+            $http.delete('/wish/' + wish.id).success(function() {
+                var index = $scope.wishes.indexOf(wish)
+                $scope.wishes.splice(index, 1);
+            });
+        };
+
+        $http({method: 'GET', url: '/wish/list'}).
+            success(function(data, status, headers, config) {
+                $scope.wishes = data;
+            }).
+            error(function(data, status, headers, config) {
+            });
+
+        return this;
     });
 })();

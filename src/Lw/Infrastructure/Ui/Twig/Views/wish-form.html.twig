@@ -1,0 +1,6 @@
+{[{ email }]}
+<form method="post" action="{{ path('add-wish') }}">
+    To: <input ng-model="email" class="form-control" placeholder="my-son@gmail.com" name="email" type="text" maxlength="255" /><br/>
+    Message:<br/><textarea ng-model="content" class="form-control" placeholder="If you are reading this..." name="content" type="text">{[{ content }]}</textarea> <br/>
+    <button type="submit" class="btn btn-default">New wish</button>
+</form>

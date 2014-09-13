@@ -2,6 +2,7 @@
 
 namespace Lw\Domain\Model\Wish;
 
+use Assert\Assertion;
 use Lw\Domain\Model\User\UserId;
 
 /**
@@ -19,6 +20,11 @@ abstract class Wish
      * @var string
      */
     protected $title;
+
+    /**
+     * @var string
+     */
+    protected $content;
 
     /**
      * @var \DateTime
@@ -46,8 +52,9 @@ abstract class Wish
      * @param WishId $wishId
      * @param UserId $userId
      * @param string $title
+     * @param string $content
      */
-    public function __construct(WishId $wishId, UserId $userId, $title)
+    public function __construct(WishId $wishId, UserId $userId, $title, $content)
     {
         $this->wishId = $wishId;
         $this->surrogateWishId = $wishId->id();
@@ -55,7 +62,9 @@ abstract class Wish
         $this->userId = $userId;
         $this->surrogateUserId = $userId->id();
 
-        $this->title = $title;
+        $this->setTitle($title);
+        $this->setContent($content);
+
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
     }
@@ -82,6 +91,51 @@ abstract class Wish
     public function title()
     {
         return $this->title;
+    }
+
+    public function changeTitle($title)
+    {
+
+    }
+
+    public function changeContent($content)
+    {
+        $this->setContent($content);
+
+        return $this;
+    }
+
+    public function content()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param $content
+     */
+    protected function setContent($content)
+    {
+        $content = trim($content);
+        if (!$content) {
+            throw new \InvalidArgumentException('Message cannot be empty');
+        }
+
+        Assertion::notEmpty($content);
+        $this->content = $content;
+    }
+
+    /**
+     * @param $title
+     */
+    protected function setTitle($title)
+    {
+        $title = trim($title);
+        if (!$title) {
+            throw new \InvalidArgumentException('Title cannot be empty');
+        }
+
+        Assertion::notEmpty($title);
+        $this->title = $title;
     }
 
     abstract public function grant();

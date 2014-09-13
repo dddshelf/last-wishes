@@ -9,11 +9,10 @@ class WishEmail extends Wish
 {
     private $mailer;
     private $email;
-    private $content;
 
     public function __construct(WishId $wishId, UserId $userId, $title, $email, $content)
     {
-        parent::__construct($wishId, $userId, $title);
+        parent::__construct($wishId, $userId, $title, $content);
 
         $this->setEmail($email);
         $this->setContent($content);
@@ -56,27 +55,15 @@ class WishEmail extends Wish
         $this->email = strtolower($email);
     }
 
-    /**
-     * @param $content
-     */
-    private function setContent($content)
-    {
-        $content = trim($content);
-        if (!$content) {
-            throw new \InvalidArgumentException('Message cannot be empty');
-        }
-
-        Assertion::notEmpty($content);
-        $this->content = $content;
-    }
-
-    public function content()
-    {
-        return $this->content;
-    }
-
     public function email()
     {
         return $this->email;
+    }
+
+    public function changeEmail($email)
+    {
+        $this->setEmail($email);
+
+        return $this;
     }
 }
