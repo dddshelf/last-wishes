@@ -4,8 +4,12 @@
         }
     );
 
-    app.factory("User", function($resource) {
-        return $resource("/users/:id");
+    app.factory('User', function($resource) {
+        return $resource('/users/:id');
+    });
+
+    app.factory('Wish', function($resource) {
+        return $resource('/wishes/:id');
     });
 
     app.controller('StoryController', function($scope, $http, ngProgress) {
@@ -53,6 +57,14 @@
         $scope.signIn = function(userForm) {
             ngProgress.start();
             User.save(userForm);
+        };
+    });
+
+    app.controller('MakeWishController', function($scope, $http, ngProgress, Wish) {
+        $scope.makeWish = function(wishForm) {
+            ngProgress.start();
+            Wish.save(wishForm);
+            $scope.wish = {};
         };
     });
 })();
