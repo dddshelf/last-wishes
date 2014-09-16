@@ -22,7 +22,18 @@ class Application
             return $app['em']->getRepository('Lw\Domain\Model\Wish\WishEmail');
         });
 
-        $app['event-repository'] = $app->share(function($app) {
+        $app['add_wish_application_service'] = $app->share(function($app) {
+            return new \Lw\Application\Service\Wish\AddWishService(
+                $app['user_repository'],
+                $app['wish_repository']
+            );
+        });
+
+        $app['sign_in_user_application_service'] = $app->share(function($app) {
+            return new \Lw\Application\Service\User\SignInUserService($app['user_repository']);
+        });
+
+        $app['event_repository'] = $app->share(function($app) {
             return $app['em']->getRepository('Lw\Domain\Model\Event');
         });
 

@@ -9,8 +9,6 @@ Lw\Domain\Model\Wish\WishEmail:
       generator:
         strategy: NONE
   fields:
-    title:
-      type: string
     email:
       type: string
     content:

@@ -24,7 +24,6 @@ interface WishRepository
 
     /**
      * @param Wish $wish
-     * @return mixed
      */
     public function persist(Wish $wish);
 
@@ -32,4 +31,9 @@ interface WishRepository
      * @param Wish $wish
      */
     public function remove(Wish $wish);
+
+    /**
+     * @return WishId
+     */
+    public function nextIdentity();
 }

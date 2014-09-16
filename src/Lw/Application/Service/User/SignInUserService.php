@@ -33,7 +33,7 @@ class SignInUserService
         }
 
         $user = new User(
-            new UserId(),
+            $this->userRepository->nextIdentity(),
             $email,
             $password
         );

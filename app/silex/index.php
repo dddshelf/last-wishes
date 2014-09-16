@@ -1,5 +1,6 @@
 <?php
 
+use Lw\Domain\Model\User\UserAlreadyExistsException;
 use Symfony\Component\HttpFoundation\Request;
 
 $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -23,14 +24,34 @@ $app->get('/signin', function () use ($app) {
 })->bind('signin');
 
 $app->post('/signin', function (Request $request) use ($app) {
-    $userRepository = $app['user_repository'];
-    $service = new \Lw\Application\Service\User\SignInUserService($userRepository);
-    $service->execute(
+    $app['sign_in_user_application_service']->execute(
         $request->get('email'),
         $request->get('password')
     );
 
     return $app->redirect('/login');
+});
+
+$app->post('/users', function (Request $request) use ($app) {
+    $request = json_decode($request->getContent());
+
+    $response = ['result' => false];
+    try {
+        $app['sign_in_user_application_service']->execute(
+            isset($request->email) ? $request->email : null,
+            isset($request->password) ? $request->password : null
+        );
+
+        $response = ['result' => true];
+    } catch(UserAlreadyExistsException $e) {
+        $response['email'] = 'Email already taken';
+    } catch(\InvalidArgumentException $e) {
+        $response[$e->getMessage()] = 'Parameter mandatory';
+    } catch(\Exception $e) {
+        $response['_form'] = 'General error';
+    }
+
+    return $app->json($response, $response['result'] ? 200 : 500);
 });
 
 // Login
@@ -102,8 +123,14 @@ $app->post('/wish/add', function (Request $request) use ($app) {
     }
 
     $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\Wish\AddWishService($app['wish_repository']);
-    $response = $usecase->execute($userId, $request->get('email'), $request->get('content'));
+
+    // \Lw\Application\Service\Wish\AddWishService
+    $response = $app['add_wish_service']
+        ->execute(
+            $userId,
+            $request->get('email'),
+            $request->get('content')
+        );
 
     return $app->redirect('/dashboard');
 })->bind('add-wish');
@@ -134,6 +161,22 @@ $app->delete('/wish/{wishId}', function ($wishId) use ($app) {
     $usecase = new \Lw\Application\Service\Wish\DeleteWishService($app['wish_repository']);
     try {
         $usecase->execute($userId->id(), $wishId);
+        return $app->json(['message' => 'ok']);
+    } catch(\Exception $e) {
+        return $app->json(['message' => $e->getMessage()], 500);
+    }
+});
+
+$app->put('/wish/{wishId}', function (Request $request, $wishId) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->json(['message' => 'Not logged'], 403);
+    }
+
+    $userId = $userSecurityToken->id();
+    $usecase = new \Lw\Application\Service\Wish\UpdateWishService($app['wish_repository']);
+    try {
+        $usecase->execute($userId->id(), $wishId, $request->get('email'), '');
         return $app->json(['message' => 'ok']);
     } catch(\Exception $e) {
         return $app->json(['message' => $e->getMessage()], 500);

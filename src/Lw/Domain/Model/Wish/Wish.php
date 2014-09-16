@@ -19,11 +19,6 @@ abstract class Wish
     /**
      * @var string
      */
-    protected $title;
-
-    /**
-     * @var string
-     */
     protected $content;
 
     /**
@@ -51,10 +46,9 @@ abstract class Wish
     /**
      * @param WishId $wishId
      * @param UserId $userId
-     * @param string $title
      * @param string $content
      */
-    public function __construct(WishId $wishId, UserId $userId, $title, $content)
+    public function __construct(WishId $wishId, UserId $userId, $content)
     {
         $this->wishId = $wishId;
         $this->surrogateWishId = $wishId->id();
@@ -62,7 +56,6 @@ abstract class Wish
         $this->userId = $userId;
         $this->surrogateUserId = $userId->id();
 
-        $this->setTitle($title);
         $this->setContent($content);
 
         $this->createdOn = new \DateTime();
@@ -83,19 +76,6 @@ abstract class Wish
     public function userId()
     {
         return new UserId($this->surrogateUserId);
-    }
-
-    /**
-     * @return string
-     */
-    public function title()
-    {
-        return $this->title;
-    }
-
-    public function changeTitle($title)
-    {
-
     }
 
     public function changeContent($content)
@@ -122,20 +102,6 @@ abstract class Wish
 
         Assertion::notEmpty($content);
         $this->content = $content;
-    }
-
-    /**
-     * @param $title
-     */
-    protected function setTitle($title)
-    {
-        $title = trim($title);
-        if (!$title) {
-            throw new \InvalidArgumentException('Title cannot be empty');
-        }
-
-        Assertion::notEmpty($title);
-        $this->title = $title;
     }
 
     abstract public function grant();

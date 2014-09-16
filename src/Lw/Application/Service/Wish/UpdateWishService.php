@@ -41,7 +41,7 @@ class UpdateWishService
         $wish->changeEmail($email);
 
         $this->wishRepository->persist(
-            new WishEmail(new WishId(), $userId, $email, $email, $content)
+            new WishEmail(new WishId(), new UserId($userId), $email, $email, $content)
         );
     }
 }

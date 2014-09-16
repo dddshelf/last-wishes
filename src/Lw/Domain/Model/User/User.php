@@ -4,6 +4,8 @@ namespace Lw\Domain\Model\User;
 
 use Assert\Assertion;
 use Lw\Domain\Model\Wish\Wish;
+use Lw\Domain\Model\Wish\WishEmail;
+use Lw\Domain\Model\Wish\WishId;
 
 /**
  * Class User
@@ -96,33 +98,23 @@ class User
     {
         $password = trim($password);
         if (!$password) {
-            throw new \InvalidArgumentException('Password cannot be empty');
+            throw new \InvalidArgumentException('password');
         }
 
         $this->password = $password;
     }
 
     /**
-     * Option A: passing the Wish object
-     * @param Wish $wish
-     * @return $this
-     */
-    public function addWish(Wish $wish)
-    {
-        $this->wishes[] = $wish;
-
-        return $this;
-    }
-
-    /**
-     * Option B: Factory for wishes Wish
+     * @param WishId $wishId
      * @param string $email
      * @param string $content
+     * @return \Lw\Domain\Model\User\WishEmail
      */
-    public function makeWish($email, $content)
+    public function makeWish(WishId $wishId, $email, $content)
     {
-        $this->wishes[] = new EmailWish(
-            $this->userId,
+        return new WishEmail(
+            $wishId,
+            $this->id(),
             $email,
             $content
         );
@@ -146,7 +138,7 @@ class User
     {
         $email = trim($email);
         if (!$email) {
-            throw new \InvalidArgumentException('Email cannot be empty');
+            throw new \InvalidArgumentException('email');
         }
 
         Assertion::email($email);

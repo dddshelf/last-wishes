@@ -20,5 +20,13 @@ interface UserRepository
      */
     public function userOfEmail($email);
 
+    /**
+     * @param User $user
+     */
     public function persist(User $user);
+
+    /**
+     * @return UserId
+     */
+    public function nextIdentity();
 }

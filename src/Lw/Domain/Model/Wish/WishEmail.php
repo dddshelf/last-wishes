@@ -10,9 +10,9 @@ class WishEmail extends Wish
     private $mailer;
     private $email;
 
-    public function __construct(WishId $wishId, UserId $userId, $title, $email, $content)
+    public function __construct(WishId $wishId, UserId $userId, $email, $content)
     {
-        parent::__construct($wishId, $userId, $title, $content);
+        parent::__construct($wishId, $userId, $content);
 
         $this->setEmail($email);
         $this->setContent($content);

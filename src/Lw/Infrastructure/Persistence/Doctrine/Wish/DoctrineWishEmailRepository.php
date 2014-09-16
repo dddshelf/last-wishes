@@ -46,4 +46,12 @@ class DoctrineWishEmailRepository extends EntityRepository implements WishReposi
         $this->getEntityManager()->remove($wish);
         $this->getEntityManager()->flush($wish);
     }
+
+    /**
+     * @return WishId
+     */
+    public function nextIdentity()
+    {
+        return new WishId();
+    }
 }

@@ -35,4 +35,12 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush($user);
     }
+
+    /**
+     * @return UserId
+     */
+    public function nextIdentity()
+    {
+        return new UserId();
+    }
 }
