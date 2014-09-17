@@ -7,24 +7,8 @@ use Lw\Domain\Model\User\UserId;
 use Lw\Domain\Model\User\UserRepository;
 use Lw\Domain\Model\Wish\WishRepository;
 
-class AddWishService
+class AddWishService extends WishService
 {
-    /**
-     * @var WishRepository
-     */
-    private $wishRepository;
-
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-
-    public function __construct(UserRepository $userRepository, WishRepository $wishRepository)
-    {
-        $this->userRepository = $userRepository;
-        $this->wishRepository = $wishRepository;
-    }
-
     /**
      * @param string $userId
      * @param string $email
@@ -41,7 +25,6 @@ class AddWishService
         $this->wishRepository->persist(
             $user->makeWish(
                 $this->wishRepository->nextIdentity(),
-                $email,
                 $email,
                 $content
             )

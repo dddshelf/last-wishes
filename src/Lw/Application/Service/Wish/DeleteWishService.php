@@ -5,22 +5,22 @@ namespace Lw\Application\Service\Wish;
 use Lw\Domain\Model\User\UserId;
 use Lw\Domain\Model\Wish\WishDoesNotExistException;
 use Lw\Domain\Model\Wish\WishId;
-use Lw\Domain\Model\Wish\WishRepository;
 
-class DeleteWishService
+class DeleteWishService extends WishService
 {
     /**
-     * @var WishRepository
+     * @param $userId
+     * @param $wishId
+     * @throws UserDoesNotExistException
+     * @throws WishDoesNotExistException
      */
-    private $wishRepository;
-
-    public function __construct(WishRepository $wishRepository)
-    {
-        $this->wishRepository = $wishRepository;
-    }
-
     public function execute($userId, $wishId)
     {
+        $user = $this->userRepository->userOfId(new UserId($userId));
+        if (null === $user) {
+            throw new UserDoesNotExistException();
+        }
+
         $wish = $this->wishRepository->wishOfId(new WishId($wishId));
         if (!$wish) {
             throw new WishDoesNotExistException();

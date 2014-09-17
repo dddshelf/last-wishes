@@ -15,7 +15,7 @@ interface UserRepository
     public function userOfId(UserId $userId);
 
     /**
-     * @param $email
+     * @param string $email
      * @return User
      */
     public function userOfEmail($email);

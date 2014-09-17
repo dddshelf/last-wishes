@@ -4,6 +4,7 @@
     <!--<h1 class="cover-heading">Dashboard</h1>-->
     <p class="lead">If something would happen to me...</p>
 
+    <!--
     <p class="lead">...with AngularJS...</p>
     <div ng-controller="StoryController">
         <div class="row wish-row" ng-repeat="wish in wishes">
@@ -23,20 +24,29 @@
         </div>
         <button ng-click="addWish()" class="btn btn-primary btn-block">New wish</button>
     </div>
+    -->
 
-    <p class="lead">...with PHP...</p>
     {% for wish in wishes %}
         <div class="row wish-row">
-            <div class="col-xs-1">
+            <div class="col-xs-12 col-sm-12 col-md-1">
                 <img class="wish-image" src="components/flat-ui/images/icons/svg/mail.svg" alt="Send email to...">
             </div>
 
-            <div class="col-xs-9">
+            <!--
+            <div class="col-xs-12 col-sm-8 col-md-9">
                 ...send an <strong>email</strong><br/>
                 to <input name="email" class="form-control flat wish-control" type="text" maxlength="255" value="{{ wish.email() }}"/><br/>
-                with message <strong>{{ wish.content() }}</strong>
+                with message <textarea name="content" class="form-control flat wish-control">{{ wish.content() }}</textarea>
             </div>
-            <div class="col-xs-2 right">
+            -->
+
+            <div class="col-xs-12 col-sm-8 col-md-9">
+                ...send an <strong>email</strong><br/>
+                to <strong>{{ wish.email() }}</strong><br/>
+                with a message <strong>{{ wish.content() }}</strong>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-2">
                 <a class="btn btn-primary btn-block" href="/story/{{ wish.id }}"><span class="fui-trash">Edit</span></a>
                 <a class="btn btn-primary btn-block btn-danger" href="{{ path('delete-wish', {wishId: wish.id}) }}"><span class="fui-trash">Delete</span></a>
             </div>
@@ -53,7 +63,7 @@
     <p class="lead">You have N more wishes, so add a new one...</p>
     <div class="row">
         <div class="col-xs-12">
-            {% include "wish-form.html.twig" %}
+            {% include "wish-form.html.twig" with {'route': 'add-wish'} %}
         </div>
     </div>
 {% endblock %}

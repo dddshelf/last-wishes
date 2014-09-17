@@ -3,10 +3,10 @@
 {% block content %}
     <div ng-controller="SignInController">
         <h3 class="cover-heading">Sign in</h3>
-        <form novalidate method="post">
+        <form novalidate method="post" action="#">
             Email: <input autocomplete="off" ng-model="user.email" class="form-control" placeholder="Your email address" name="email" type="email" maxlength="255" required value=""/><br/>
             Password: <input autocomplete="off" ng-model="user.password" class="form-control" placeholder="" name="password" type="password" maxlength="255" required value=""/><br/>
-            <button ng-click="signIn(user)" class="btn btn-default" type="submit">Sign in</button>
+            <button ang-click="signIn(user)" class="btn btn-default" type="submit">Sign in</button>
         </form>
     </div>
 {% endblock %}

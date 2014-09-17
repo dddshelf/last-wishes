@@ -29,6 +29,20 @@ class Application
             );
         });
 
+        $app['update_wish_application_service'] = $app->share(function($app) {
+            return new \Lw\Application\Service\Wish\UpdateWishService(
+                $app['user_repository'],
+                $app['wish_repository']
+            );
+        });
+
+        $app['delete_wish_application_service'] = $app->share(function($app) {
+            return new \Lw\Application\Service\Wish\DeleteWishService(
+                $app['user_repository'],
+                $app['wish_repository']
+            );
+        });
+
         $app['sign_in_user_application_service'] = $app->share(function($app) {
             return new \Lw\Application\Service\User\SignInUserService($app['user_repository']);
         });

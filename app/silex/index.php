@@ -124,10 +124,30 @@ $app->post('/wish/add', function (Request $request) use ($app) {
 
     $userId = $userSecurityToken->id();
 
-    // \Lw\Application\Service\Wish\AddWishService
-    $response = $app['add_wish_service']
+    $app['add_wish_application_service']
         ->execute(
             $userId,
+            $request->get('email'),
+            $request->get('content')
+        );
+
+    return $app->redirect('/dashboard');
+})->bind('add-wish');
+
+// Update wish
+$app->post('/wish/update', function (Request $request) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id()->id();
+    $wishId = $request->get('id');
+
+    $app['update_wish_application_service']
+        ->execute(
+            $userId,
+            $wishId,
             $request->get('email'),
             $request->get('content')
         );
@@ -142,14 +162,33 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
         return $app->redirect('/login');
     }
 
-    $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\Wish\DeleteWishService($app['wish_repository']);
-    $response = $usecase->execute($userId->id(), $wishId);
-
-    // @todo: App session message
+    $userId = $userSecurityToken->id()->id();
+    $usecase = $app['delete_wish_application_service'];
+    $usecase->execute($userId, $wishId);
 
     return $app->redirect('/dashboard');
 })->bind('delete-wish');
+
+// RESTful
+$app->post('/wish/{wishId}', function ($wishId, Request $request) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id();
+
+    // \Lw\Application\Service\Wish\AddWishService
+    $response = $app['update_wish_application_service']
+        ->execute(
+            $userId,
+            $wishId,
+            $request->get('email'),
+            $request->get('content')
+        );
+
+    return $app->redirect('/dashboard');
+})->bind('add-wish');
 
 $app->delete('/wish/{wishId}', function ($wishId) use ($app) {
     $userSecurityToken = $app['session']->get('user');

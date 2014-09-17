@@ -3,45 +3,37 @@
 namespace Lw\Application\Service\Wish;
 
 use Lw\Domain\Model\User\UserId;
-use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Domain\Model\Wish\WishId;
-use Lw\Domain\Model\Wish\WishRepository;
 
-class UpdateWishService
+class UpdateWishService extends WishService
 {
     /**
-     * @var WishRepository
-     */
-    private $wishRepository;
-
-    public function __construct(WishRepository $wishRepository)
-    {
-        $this->wishRepository = $wishRepository;
-    }
-
-    /**
-     * @param string $userId
+     * @param $userId
      * @param $wishId
-     * @param string $email
-     * @param string $content
+     * @param $email
+     * @param $content
+     * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
      */
     public function execute($userId, $wishId, $email, $content)
     {
+        $user = $this->userRepository->userOfId(new UserId($userId));
+        if (null === $user) {
+            throw new UserDoesNotExistException();
+        }
+
         $wish = $this->wishRepository->wishOfId(new WishId($wishId));
         if (!$wish) {
             throw new WishDoesNotExistException();
         }
 
         if (!$wish->userId()->equals(new UserId($userId))) {
-            throw new \InvalidArgumentException('User is not authorized to delete this wish');
+            throw new \InvalidArgumentException('User is not authorized to update this wish');
         }
 
         $wish->changeContent($content);
         $wish->changeEmail($email);
 
-        $this->wishRepository->persist(
-            new WishEmail(new WishId(), new UserId($userId), $email, $email, $content)
-        );
+        $this->wishRepository->persist($wish);
     }
 }
