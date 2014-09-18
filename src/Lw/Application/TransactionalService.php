@@ -8,9 +8,13 @@ class TransactionalService
      * @var TransactionalSession
      */
     private $session;
+
+    /**
+     * @var Service
+     */
     private $service;
 
-    public function __construct($service, TransactionalSession $session)
+    public function __construct(Service $service, TransactionalSession $session)
     {
         $this->session = $session;
         $this->service = $service;

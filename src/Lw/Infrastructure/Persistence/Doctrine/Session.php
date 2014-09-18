@@ -25,9 +25,6 @@ class Session implements TransactionalSession
      */
     public function executeAtomically(callable $operation)
     {
-        $result = $this->entityManager->transactional($operation);
-        $this->entityManager->flush();
-
-        return $result;
+        return $this->entityManager->transactional($operation);
     }
 }

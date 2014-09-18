@@ -4,10 +4,9 @@ namespace Lw\Application\Service\User;
 
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
-use Lw\Domain\Model\User\UserId;
 use Lw\Domain\Model\User\UserRepository;
 
-class SignInUserService
+class SignInUserService implements Service
 {
     /**
      * @var UserRepository
