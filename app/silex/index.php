@@ -1,5 +1,6 @@
 <?php
 
+use Lw\Application\Service\User\SignInUserRequest;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,8 +26,10 @@ $app->get('/signin', function () use ($app) {
 
 $app->post('/signin', function (Request $request) use ($app) {
     $app['sign_in_user_application_service']->execute(
-        $request->get('email'),
-        $request->get('password')
+        new SignInUserRequest(
+            $request->get('email'),
+            $request->get('password')
+        )
     );
 
     return $app->redirect('/login');
@@ -153,7 +156,7 @@ $app->post('/wish/update', function (Request $request) use ($app) {
         );
 
     return $app->redirect('/dashboard');
-})->bind('add-wish');
+})->bind('update-wish');
 
 // Delete wish
 $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
@@ -188,7 +191,7 @@ $app->post('/wish/{wishId}', function ($wishId, Request $request) use ($app) {
         );
 
     return $app->redirect('/dashboard');
-})->bind('add-wish');
+});
 
 $app->delete('/wish/{wishId}', function ($wishId) use ($app) {
     $userSecurityToken = $app['session']->get('user');

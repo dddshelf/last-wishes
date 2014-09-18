@@ -19,14 +19,11 @@ class SignInUserService
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param string $email
-     * @param string $password
-     * @return \Lw\Domain\Model\User\User
-     * @throws UserAlreadyExistsException
-     */
-    public function execute($email, $password)
+    public function execute(SignInUserRequest $request)
     {
+        $email = $request->email();
+        $password = $request->password();
+
         $user = $this->userRepository->userOfEmail($email);
         if (null !== $user) {
             throw new UserAlreadyExistsException();

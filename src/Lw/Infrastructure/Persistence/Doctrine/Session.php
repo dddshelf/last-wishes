@@ -1,9 +1,9 @@
 <?php
 
-namespace Cyoa\Infrastructure\Persistence\Doctrine;
+namespace Lw\Infrastructure\Persistence\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use Cyoa\Application\UseCase\TransactionalSession;
+use Lw\Application\TransactionalSession;
 
 class Session implements TransactionalSession
 {

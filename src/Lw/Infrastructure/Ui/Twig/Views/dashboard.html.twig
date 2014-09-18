@@ -63,7 +63,7 @@
     <p class="lead">You have N more wishes, so add a new one...</p>
     <div class="row">
         <div class="col-xs-12">
-            {% include "wish-form.html.twig" with {'route': 'add-wish'} %}
+            {% include "wish-form.html.twig" with {route: path('add-wish')} %}
         </div>
     </div>
 {% endblock %}

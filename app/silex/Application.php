@@ -14,6 +14,10 @@ class Application
             return (new EntityManagerFactory())->build();
         });
 
+        $app['em_session'] = $app->share(function($app) {
+            return new \Lw\Infrastructure\Persistence\Doctrine\Session($app['em']);
+        });
+
         $app['user_repository'] = $app->share(function($app) {
             return $app['em']->getRepository('Lw\Domain\Model\User\User');
         });
@@ -44,16 +48,19 @@ class Application
         });
 
         $app['sign_in_user_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\User\SignInUserService($app['user_repository']);
+            return new \Lw\Application\TransactionalService(
+                new \Lw\Application\Service\User\SignInUserService($app['user_repository']),
+                $app['em_session']
+            );
         });
 
         $app['event_repository'] = $app->share(function($app) {
             return $app['em']->getRepository('Lw\Domain\Model\Event');
         });
 
-        $app['tx-use-case-factory'] = $app->share(function($app) {
+        $app['tx_application_service'] = $app->share(function($app) {
             return new \Lw\Application\UseCase\TransactionalUseCaseFactory(
-                new \Cyoa\Infrastructure\Persistence\Doctrine\Session($app['em'])
+                new \Lw\Infrastructure\Persistence\Doctrine\Session($app['em'])
             );
         });
 
