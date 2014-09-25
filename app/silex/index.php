@@ -139,6 +139,26 @@ $app->post('/wish/add', function (Request $request) use ($app) {
 })->bind('add-wish');
 
 // Update wish
+$app->get('/wish/{wishId}', function ($wishId) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id()->id();
+
+    // \Lw\Application\Service\Wish\ViewWishService
+    $response = $app['view_wish_application_service']
+        ->execute(
+            new \Lw\Application\Service\Wish\ViewWishRequest(
+                $wishId,
+                $userId
+            )
+        );
+
+    return $app['twig']->render('view-wish.html.twig', ['wish' => $response]);
+})->bind('view-wish');
+
 $app->post('/wish/update', function (Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
@@ -201,7 +221,7 @@ $app->delete('/wish/{wishId}', function ($wishId) use ($app) {
     }
 
     $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\Wish\DeleteWishService($app['wish_repository']);
+    $usecase = new \Lw\Application\Service\Wish\ViewWishService($app['wish_repository']);
     try {
         $usecase->execute($userId->id(), $wishId);
         return $app->json(['message' => 'ok']);

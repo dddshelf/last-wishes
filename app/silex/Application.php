@@ -30,6 +30,12 @@ class Application
             return new \Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory();
         });
 
+        $app['view_wish_application_service'] = $app->share(function($app) {
+            return new \Lw\Application\Service\Wish\ViewWishService(
+                $app['user_repository'],
+                $app['wish_repository']
+            );
+        });
 
         $app['add_wish_application_service'] = $app->share(function($app) {
             return new \Lw\Application\Service\Wish\AddWishService(
@@ -46,7 +52,7 @@ class Application
         });
 
         $app['delete_wish_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\Wish\DeleteWishService(
+            return new \Lw\Application\Service\Wish\ViewWishService(
                 $app['user_repository'],
                 $app['wish_repository']
             );
