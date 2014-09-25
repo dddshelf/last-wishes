@@ -2,8 +2,10 @@
 
 namespace Lw\Application\Service\User;
 
+use Lw\Application\Service;
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
+use Lw\Domain\Model\User\UserFactory;
 use Lw\Domain\Model\User\UserRepository;
 
 /**
@@ -18,11 +20,18 @@ class SignInUserService implements Service
     private $userRepository;
 
     /**
-     * @param UserRepository $userRepository
+     * @var UserFactory
      */
-    public function __construct(UserRepository $userRepository)
+    private $userFactory;
+
+    /**
+     * @param UserRepository $userRepository
+     * @param UserFactory $userFactory
+     */
+    public function __construct(UserRepository $userRepository, UserFactory $userFactory)
     {
         $this->userRepository = $userRepository;
+        $this->userFactory = $userFactory;
     }
 
     /**
@@ -30,7 +39,7 @@ class SignInUserService implements Service
      * @return User
      * @throws UserAlreadyExistsException
      */
-    public function execute(SignInUserRequest $request)
+    public function execute($request)
     {
         $email = $request->email();
         $password = $request->password();
@@ -40,7 +49,7 @@ class SignInUserService implements Service
             throw new UserAlreadyExistsException();
         }
 
-        $user = new User(
+        $user = $this->userFactory->build(
             $this->userRepository->nextIdentity(),
             $email,
             $password

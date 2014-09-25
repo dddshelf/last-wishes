@@ -77,6 +77,7 @@ $app->post('/login', function (Request $request) use ($app) {
 $app->get('/logout', function () use ($app) {
     $userRepository = $app['user_repository'];
     $session = $app['session'];
+
     $authentifier = new \Lw\Infrastructure\Domain\SessionAuthentifier($userRepository, $session);
     $service = new \Lw\Application\Service\User\LogOutUserService($authentifier);
     $result = $service->execute();

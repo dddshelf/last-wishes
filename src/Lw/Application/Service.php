@@ -1,4 +1,5 @@
 <?php
+
 namespace Lw\Application;
 
 interface Service

@@ -19,12 +19,17 @@ class Application
         });
 
         $app['user_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Domain\Model\User\User');
+            return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\User\DoctrineUser');
         });
 
         $app['wish_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Domain\Model\Wish\WishEmail');
+            return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail');
         });
+
+        $app['user_factory'] = $app->share(function() {
+            return new \Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory();
+        });
+
 
         $app['add_wish_application_service'] = $app->share(function($app) {
             return new \Lw\Application\Service\Wish\AddWishService(
@@ -49,7 +54,10 @@ class Application
 
         $app['sign_in_user_application_service'] = $app->share(function($app) {
             return new \Lw\Application\TransactionalService(
-                new \Lw\Application\Service\User\SignInUserService($app['user_repository']),
+                new \Lw\Application\Service\User\SignInUserService(
+                    $app['user_repository'],
+                    $app['user_factory']
+                ),
                 $app['em_session']
             );
         });
