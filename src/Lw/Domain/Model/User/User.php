@@ -16,31 +16,31 @@ class User
     /**
      * @var UserId
      */
-    private $userId;
+    protected $userId;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * @var Wish[]
      */
-    private $wishes;
+    protected $wishes;
 
-    private $createdOn;
-    private $updatedOn;
+    protected $createdOn;
+    protected $updatedOn;
 
     /**
      * Surrogate Id
      * @var string
      */
-    private $surrogateUserId;
+    protected $surrogateUserId;
 
     /**
      * @param UserId $userId
@@ -64,7 +64,7 @@ class User
      */
     public function id()
     {
-        return new UserId($this->surrogateUserId);
+        return $this->userId;
     }
 
     /**
@@ -134,7 +134,7 @@ class User
     /**
      * @param $email
      */
-    private function setEmail($email)
+    protected function setEmail($email)
     {
         $email = trim($email);
         if (!$email) {

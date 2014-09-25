@@ -14,6 +14,8 @@
         "beberlei/assert": "@stable"
     },
     "require-dev": {
+        "behat/behat": "3.0.*",
+        "behat/mink": "1.5.*",
         "phpunit/phpunit": "~4.2",
         "mockery/mockery": "dev-master@dev"
     },

@@ -7,8 +7,8 @@ use Lw\Domain\Model\User\UserId;
 
 class WishEmail extends Wish
 {
-    private $mailer;
-    private $email;
+    protected $mailer;
+    protected $email;
 
     public function __construct(WishId $wishId, UserId $userId, $email, $content)
     {

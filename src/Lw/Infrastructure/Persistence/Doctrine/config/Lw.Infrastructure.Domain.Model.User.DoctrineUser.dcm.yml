@@ -1,4 +1,4 @@
-Lw\Domain\Model\User\User:
+Lw\Infrastructure\Domain\Model\User\DoctrineUser:
   type: entity
   table: user
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\User\DoctrineUserRepository

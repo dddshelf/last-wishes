@@ -6,6 +6,10 @@ use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
 use Lw\Domain\Model\User\UserRepository;
 
+/**
+ * Class SignInUserService
+ * @package Lw\Application\Service\User
+ */
 class SignInUserService implements Service
 {
     /**
@@ -13,11 +17,19 @@ class SignInUserService implements Service
      */
     private $userRepository;
 
+    /**
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param SignInUserRequest $request
+     * @return User
+     * @throws UserAlreadyExistsException
+     */
     public function execute(SignInUserRequest $request)
     {
         $email = $request->email();

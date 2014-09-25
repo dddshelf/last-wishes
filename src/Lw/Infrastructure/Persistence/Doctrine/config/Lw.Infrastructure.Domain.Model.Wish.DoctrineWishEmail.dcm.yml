@@ -1,4 +1,4 @@
-Lw\Domain\Model\Wish\WishEmail:
+Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail:
   type: entity
   table: wish
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Wish\DoctrineWishEmailRepository

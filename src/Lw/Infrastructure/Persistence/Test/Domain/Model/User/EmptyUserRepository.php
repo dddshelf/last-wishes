@@ -32,4 +32,12 @@ class EmptyUserRepository implements UserRepository
     public function persist(User $user)
     {
     }
+
+    /**
+     * @return UserId
+     */
+    public function nextIdentity()
+    {
+        return new UserId();
+    }
 }

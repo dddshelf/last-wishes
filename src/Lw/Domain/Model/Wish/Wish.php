@@ -32,16 +32,9 @@ abstract class Wish
     protected $updatedOn;
 
     /**
-     * Surrogate Id
-     * @var string
-     */
-    protected $surrogateWishId;
-
-    /**
      * @var UserId
      */
     protected $userId;
-    protected $surrogateUserId;
 
     /**
      * @param WishId $wishId
@@ -51,10 +44,7 @@ abstract class Wish
     public function __construct(WishId $wishId, UserId $userId, $content)
     {
         $this->wishId = $wishId;
-        $this->surrogateWishId = $wishId->id();
-
         $this->userId = $userId;
-        $this->surrogateUserId = $userId->id();
 
         $this->setContent($content);
 
@@ -67,7 +57,7 @@ abstract class Wish
      */
     public function id()
     {
-        return new WishId($this->surrogateWishId);
+        return $this->wishId;
     }
 
     /**
@@ -75,7 +65,7 @@ abstract class Wish
      */
     public function userId()
     {
-        return new UserId($this->surrogateUserId);
+        return $this->userId;
     }
 
     public function changeContent($content)
