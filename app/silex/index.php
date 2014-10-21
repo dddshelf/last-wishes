@@ -128,37 +128,21 @@ $app->post('/wish/add', function (Request $request) use ($app) {
 
     $userId = $userSecurityToken->id();
 
-    $app['add_wish_application_service']
-        ->execute(
-            $userId,
-            $request->get('email'),
-            $request->get('content')
-        );
+        try {
+            $app['add_wish_application_service']
+                ->execute(
+                    $userId,
+                    $request->get('email'),
+                    $request->get('content')
+                );
+        } catch(\Exception $e) {
+            $app['session']->getFlashBag()->add('error', $e->getMessage());
+        }
 
     return $app->redirect('/dashboard');
 })->bind('add-wish');
 
 // Update wish
-$app->get('/wish/{wishId}', function ($wishId) use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->redirect('/login');
-    }
-
-    $userId = $userSecurityToken->id()->id();
-
-    // \Lw\Application\Service\Wish\ViewWishService
-    $response = $app['view_wish_application_service']
-        ->execute(
-            new \Lw\Application\Service\Wish\ViewWishRequest(
-                $wishId,
-                $userId
-            )
-        );
-
-    return $app['twig']->render('view-wish.html.twig', ['wish' => $response]);
-})->bind('view-wish');
-
 $app->post('/wish/update', function (Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
@@ -187,13 +171,46 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
     }
 
     $userId = $userSecurityToken->id()->id();
-    $usecase = $app['delete_wish_application_service'];
-    $usecase->execute($userId, $wishId);
+
+    $result = new \stdClass();
+    $result->error = false;
+    $result->message = '';
+
+    try {
+        $usecase = $app['delete_wish_application_service'];
+        $usecase->execute($userId, $wishId);
+    } catch(\Exception $e) {
+        $result->error = true;
+        $result->message = $e->getMessage();
+    }
+
+    $app['session']->getFlashBag()->add('message', $result);
 
     return $app->redirect('/dashboard');
 })->bind('delete-wish');
 
+$app->get('/wish/{wishId}', function ($wishId) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id()->id();
+
+    // \Lw\Application\Service\Wish\ViewWishService
+    $response = $app['view_wish_application_service']
+        ->execute(
+            new \Lw\Application\Service\Wish\ViewWishRequest(
+                $wishId,
+                $userId
+            )
+        );
+
+    return $app['twig']->render('view-wish.html.twig', ['wish' => $response]);
+})->bind('view-wish');
+
 // RESTful
+/*
 $app->post('/wish/{wishId}', function ($wishId, Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
@@ -245,5 +262,5 @@ $app->put('/wish/{wishId}', function (Request $request, $wishId) use ($app) {
         return $app->json(['message' => $e->getMessage()], 500);
     }
 });
-
+*/
 $app->run();

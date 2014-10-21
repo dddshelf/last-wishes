@@ -1,6 +1,10 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+    {% for message in app.session.getFlashBag.get('message') %}
+        {{ message.message }}
+    {% endfor %}
+
     <!--<h1 class="cover-heading">Dashboard</h1>-->
     <p class="lead">If something would happen to me...</p>
 

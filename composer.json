@@ -2,6 +2,7 @@
     "name": "carlosbuenosvinos/elige-tu-propia-aventura-web",
     "require": {
         "silex/silex": "1.2.*",
+        "silex/web-profiler": "1.0.*",
         "doctrine/orm": "~2.4",
         "twig/twig": ">=1.8,<2.0-dev",
         "symfony/twig-bridge": "~2.3",
@@ -11,11 +12,13 @@
         "swiftmailer/swiftmailer": "5.2.1",
         "symfony/form": "~2.3",
         "symfony/security": "~2.3",
-        "beberlei/assert": "@stable"
+        "beberlei/assert": "@stable",
+        "carlosbuenosvinos/ddd": "dev-master"
     },
     "require-dev": {
         "behat/behat": "3.0.*",
         "behat/mink": "1.5.*",
+        "behat/mink-goutte-driver": "*",
         "phpunit/phpunit": "~4.2",
         "mockery/mockery": "dev-master@dev"
     },
@@ -27,7 +30,8 @@
     ],
     "autoload": {
         "psr-0": {
-            "Lw": "src"
+            "Lw": "src",
+            "Badge": "src"
         }
     },
     "config": {

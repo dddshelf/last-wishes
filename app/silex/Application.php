@@ -15,7 +15,7 @@ class Application
         });
 
         $app['em_session'] = $app->share(function($app) {
-            return new \Lw\Infrastructure\Persistence\Doctrine\Session($app['em']);
+            return new \Ddd\Infrastructure\Application\Service\DoctrineSession($app['em']);
         });
 
         $app['user_repository'] = $app->share(function($app) {
@@ -52,14 +52,14 @@ class Application
         });
 
         $app['delete_wish_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\Wish\ViewWishService(
+            return new \Lw\Application\Service\Wish\DeleteWishService(
                 $app['user_repository'],
                 $app['wish_repository']
             );
         });
 
         $app['sign_in_user_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\TransactionalService(
+            return new \Ddd\Application\Service\TransactionalApplicationService(
                 new \Lw\Application\Service\User\SignInUserService(
                     $app['user_repository'],
                     $app['user_factory']
@@ -72,12 +72,6 @@ class Application
             return $app['em']->getRepository('Lw\Domain\Model\Event');
         });
 
-        $app['tx_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\UseCase\TransactionalUseCaseFactory(
-                new \Lw\Infrastructure\Persistence\Doctrine\Session($app['em'])
-            );
-        });
-
         $app->register(new Silex\Provider\SessionServiceProvider());
         $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
         $app->register(new Silex\Provider\FormServiceProvider());
@@ -87,6 +81,13 @@ class Application
                 'twig.path' => __DIR__.'/../../src/Lw/Infrastructure/Ui/Twig/Views',
             )
         );
+
+        $app->register(new Silex\Provider\WebProfilerServiceProvider(), array(
+            'profiler.cache_dir' => __DIR__.'/../../var/cache/profiler',
+            'profiler.mount_prefix' => '/_profiler',
+        ));
+
+        $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
         return $app;
     }

@@ -2,6 +2,7 @@
 
 namespace Lw\Application\Service\User;
 
+use Ddd\Application\Service\ApplicationService;
 use Lw\Application\Service;
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
@@ -12,7 +13,7 @@ use Lw\Domain\Model\User\UserRepository;
  * Class SignInUserService
  * @package Lw\Application\Service\User
  */
-class SignInUserService implements Service
+class SignInUserService implements ApplicationService
 {
     /**
      * @var UserRepository
@@ -39,7 +40,7 @@ class SignInUserService implements Service
      * @return User
      * @throws UserAlreadyExistsException
      */
-    public function execute($request)
+    public function execute($request = null)
     {
         $email = $request->email();
         $password = $request->password();

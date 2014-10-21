@@ -29,18 +29,14 @@ class User
     protected $password;
 
     /**
-     * @var Wish[]
+     * @var \DateTime
      */
-    protected $wishes;
-
     protected $createdOn;
-    protected $updatedOn;
 
     /**
-     * Surrogate Id
-     * @var string
+     * @var \DateTime
      */
-    protected $surrogateUserId;
+    protected $updatedOn;
 
     /**
      * @param UserId $userId
@@ -50,11 +46,8 @@ class User
     public function __construct(UserId $userId, $email, $password)
     {
         $this->userId = $userId;
-        $this->surrogateUserId = $userId->id();
-
         $this->setEmail($email);
         $this->changePassword($password);
-        $this->wishes = [];
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
     }
@@ -65,14 +58,6 @@ class User
     public function id()
     {
         return $this->userId;
-    }
-
-    /**
-     * @return Wish[]
-     */
-    public function wishes()
-    {
-        return $this->wishes;
     }
 
     /**

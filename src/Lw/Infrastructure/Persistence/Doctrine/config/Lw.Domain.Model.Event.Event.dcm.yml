@@ -1,4 +1,4 @@
-Lw\Domain\Model\Event:
+Lw\Domain\Model\Event\Event:
   type: entity
   table: event
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Event\DoctrineEventRepository

@@ -17,6 +17,11 @@ abstract class Wish
     protected $wishId;
 
     /**
+     * @var UserId
+     */
+    protected $userId;
+
+    /**
      * @var string
      */
     protected $content;
@@ -30,11 +35,6 @@ abstract class Wish
      * @var \DateTime
      */
     protected $updatedOn;
-
-    /**
-     * @var UserId
-     */
-    protected $userId;
 
     /**
      * @param WishId $wishId
