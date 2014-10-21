@@ -23,7 +23,7 @@ class PersistDomainEventSubscriber implements DomainEventSubscriber
 
         $databaseEvent = new StoredEvent(
             get_class($anEvent),
-            $anEvent->occuredOn(),
+            $anEvent->occurredOn(),
             $serializedEvent
         );
 
@@ -32,6 +32,6 @@ class PersistDomainEventSubscriber implements DomainEventSubscriber
 
     public function isSubscribedTo($aDomainEvent)
     {
-        // TODO: Implement isSubscribedTo() method.
+        return true;
     }
 }
