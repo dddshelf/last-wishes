@@ -2,21 +2,25 @@
 
 namespace Lw\Application\Service\Wish;
 
+use Lw\Domain\Model\User\UserDoesNotExistException;
 use Lw\Domain\Model\User\UserId;
+use Lw\Domain\Model\Wish\WishDoesNotExistException;
 use Lw\Domain\Model\Wish\WishId;
 
 class UpdateWishService extends WishService
 {
     /**
-     * @param $userId
-     * @param $wishId
-     * @param $email
-     * @param $content
+     * @param $request
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
+     * @return mixed
      */
-    public function execute($userId, $wishId, $email, $content)
+    public function execute($request = null)
     {
+        $userId = $request->userId();
+        $wishId = $request->wishId();
+        $email = $request->email();
+        $content = $request->content();
         $user = $this->userRepository->userOfId(new UserId($userId));
         if (null === $user) {
             throw new UserDoesNotExistException();

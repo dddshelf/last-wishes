@@ -18,11 +18,11 @@ class ViewWishesService
     }
 
     /**
-     * @param int $userId
+     * @param ViewWishesRequest $request
      * @return Wish[]
      */
-    public function execute($userId)
+    public function execute($request = null)
     {
-        return $this->wishRepository->wishesOfUserId(new UserId($userId));
+        return $this->wishRepository->wishesOfUserId(new UserId($request->userId()));
     }
 }

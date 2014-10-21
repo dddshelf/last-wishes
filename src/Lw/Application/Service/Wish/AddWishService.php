@@ -10,13 +10,16 @@ use Lw\Domain\Model\Wish\WishRepository;
 class AddWishService extends WishService
 {
     /**
-     * @param string $userId
-     * @param string $email
-     * @param string $content
+     * @param AddWishRequest $request
+     * @return mixed|void
      * @throws UserDoesNotExistException
      */
-    public function execute($userId, $email, $content)
+    public function execute($request = null)
     {
+        $userId = $request->userId();
+        $email = $request->email();
+        $content = $request->content();
+
         $user = $this->userRepository->userOfId(new UserId($userId));
         if (null === $user) {
             throw new UserDoesNotExistException();

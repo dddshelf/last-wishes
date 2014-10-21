@@ -26,8 +26,18 @@ class Application
             return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail');
         });
 
+        $app['event_repository'] = $app->share(function($app) {
+            return $app['em']->getRepository('Lw\Domain\Model\Event\StoredEvent');
+        });
+
         $app['user_factory'] = $app->share(function() {
             return new \Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory();
+        });
+
+        $app['view_wishes_application_service'] = $app->share(function($app) {
+            return new \Lw\Application\Service\User\ViewWishesService(
+                $app['wish_repository']
+            );
         });
 
         $app['view_wish_application_service'] = $app->share(function($app) {
@@ -38,23 +48,32 @@ class Application
         });
 
         $app['add_wish_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\Wish\AddWishService(
-                $app['user_repository'],
-                $app['wish_repository']
+            return new \Ddd\Application\Service\TransactionalApplicationService(
+                new \Lw\Application\Service\Wish\AddWishService(
+                    $app['user_repository'],
+                    $app['wish_repository']
+                ),
+                $app['em_session']
             );
         });
 
         $app['update_wish_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\Wish\UpdateWishService(
-                $app['user_repository'],
-                $app['wish_repository']
+            return new \Ddd\Application\Service\TransactionalApplicationService(
+                new \Lw\Application\Service\Wish\UpdateWishService(
+                    $app['user_repository'],
+                    $app['wish_repository']
+                ),
+                $app['em_session']
             );
         });
 
         $app['delete_wish_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\Wish\DeleteWishService(
-                $app['user_repository'],
-                $app['wish_repository']
+            return new \Ddd\Application\Service\TransactionalApplicationService(
+                new \Lw\Application\Service\Wish\DeleteWishService(
+                    $app['user_repository'],
+                    $app['wish_repository']
+                ),
+                $app['em_session']
             );
         });
 
@@ -66,10 +85,6 @@ class Application
                 ),
                 $app['em_session']
             );
-        });
-
-        $app['event_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Domain\Model\Event\StoredEvent');
         });
 
         $app->register(new Silex\Provider\SessionServiceProvider());

@@ -2,10 +2,11 @@
 
 namespace Lw\Application\Service\Wish;
 
+use Ddd\Application\Service\ApplicationService;
 use Lw\Domain\Model\User\UserRepository;
 use Lw\Domain\Model\Wish\WishRepository;
 
-abstract class WishService
+abstract class WishService implements ApplicationService
 {
     /**
      * @var WishRepository

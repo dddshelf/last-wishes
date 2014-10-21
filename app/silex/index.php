@@ -1,7 +1,7 @@
 <?php
 
 use Lw\Application\Service\User\SignInUserRequest;
-use Lw\Domain\Model\User\UserAlreadyExistsException;
+use Lw\Application\Service\User\ViewWishesRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -35,28 +35,6 @@ $app->post('/signin', function (Request $request) use ($app) {
     return $app->redirect('/login');
 });
 
-$app->post('/users', function (Request $request) use ($app) {
-    $request = json_decode($request->getContent());
-
-    $response = ['result' => false];
-    try {
-        $app['sign_in_user_application_service']->execute(
-            isset($request->email) ? $request->email : null,
-            isset($request->password) ? $request->password : null
-        );
-
-        $response = ['result' => true];
-    } catch(UserAlreadyExistsException $e) {
-        $response['email'] = 'Email already taken';
-    } catch(\InvalidArgumentException $e) {
-        $response[$e->getMessage()] = 'Parameter mandatory';
-    } catch(\Exception $e) {
-        $response['_form'] = 'General error';
-    }
-
-    return $app->json($response, $response['result'] ? 200 : 500);
-});
-
 // Login
 $app->get('/login', function () use ($app) {
     return $app['twig']->render('login.html.twig');
@@ -84,37 +62,15 @@ $app->get('/logout', function () use ($app) {
     return $app->redirect('/login');
 })->bind('logout');
 
-// Dashboard
-$app->get('/wish/list', function () use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->redirect('/login');
-    }
-
-    $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\User\ViewWishesService($app['wish_repository']);
-    $response = $usecase->execute($userId);
-
-    $wishes = array_map(function($wish) {
-        return [
-            'id' => $wish->id()->id(),
-            'email' => $wish->email(),
-            'content' => $wish->content()
-        ];
-    }, $response);
-
-    return $app->json($wishes);
-});
-
 $app->get('/dashboard', function () use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
         return $app->redirect('/login');
     }
 
-    $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\User\ViewWishesService($app['wish_repository']);
-    $response = $usecase->execute($userId);
+    $response = $app['view_wishes_application_service']->execute(
+        new ViewWishesRequest($userSecurityToken->id())
+    );
 
     return $app['twig']->render('dashboard.html.twig', ['wishes' => $response]);
 })->bind('dashboard');
@@ -131,10 +87,13 @@ $app->post('/wish/add', function (Request $request) use ($app) {
         try {
             $app['add_wish_application_service']
                 ->execute(
-                    $userId,
-                    $request->get('email'),
-                    $request->get('content')
+                    new \Lw\Application\Service\Wish\AddWishRequest(
+                        $userId,
+                        $request->get('email'),
+                        $request->get('content')
+                    )
                 );
+            $app['session']->getFlashBag()->add('info', 'Great!');
         } catch(\Exception $e) {
             $app['session']->getFlashBag()->add('error', $e->getMessage());
         }
@@ -270,5 +229,50 @@ $app->put('/wish/{wishId}', function (Request $request, $wishId) use ($app) {
         return $app->json(['message' => $e->getMessage()], 500);
     }
 });
+
+$app->post('/users', function (Request $request) use ($app) {
+    $request = json_decode($request->getContent());
+
+    $response = ['result' => false];
+    try {
+        $app['sign_in_user_application_service']->execute(
+            isset($request->email) ? $request->email : null,
+            isset($request->password) ? $request->password : null
+        );
+
+        $response = ['result' => true];
+    } catch(UserAlreadyExistsException $e) {
+        $response['email'] = 'Email already taken';
+    } catch(\InvalidArgumentException $e) {
+        $response[$e->getMessage()] = 'Parameter mandatory';
+    } catch(\Exception $e) {
+        $response['_form'] = 'General error';
+    }
+
+    return $app->json($response, $response['result'] ? 200 : 500);
+});
+
+// Dashboard
+$app->get('/wish/list', function () use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/login');
+    }
+
+    $userId = $userSecurityToken->id();
+    $usecase = new \Lw\Application\Service\User\ViewWishesService($app['wish_repository']);
+    $response = $usecase->execute($userId);
+
+    $wishes = array_map(function($wish) {
+        return [
+            'id' => $wish->id()->id(),
+            'email' => $wish->email(),
+            'content' => $wish->content()
+        ];
+    }, $response);
+
+    return $app->json($wishes);
+});
+
 */
 $app->run();

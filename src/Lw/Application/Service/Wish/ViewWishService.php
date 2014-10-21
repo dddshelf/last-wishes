@@ -14,7 +14,7 @@ class ViewWishService extends WishService
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
      */
-    public function execute(ViewWishRequest $request)
+    public function execute($request = null)
     {
         $userId = $request->userId();
         $wishId = $request->wishId();
