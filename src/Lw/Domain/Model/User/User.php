@@ -3,6 +3,7 @@
 namespace Lw\Domain\Model\User;
 
 use Assert\Assertion;
+use Lw\Domain\DomainEventPublisher;
 use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Domain\Model\Wish\WishId;
@@ -50,6 +51,12 @@ class User
         $this->changePassword($password);
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
+
+        DomainEventPublisher::instance()->publish(
+            new UserRegistered(
+                $this->userId
+            )
+        );
     }
 
     /**

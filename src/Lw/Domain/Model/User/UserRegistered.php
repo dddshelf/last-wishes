@@ -2,15 +2,30 @@
 
 namespace Lw\Domain\Model\User;
 
-class UserRegistered
+use Lw\Domain\DomainEvent;
+
+class UserRegistered implements DomainEvent
 {
-    public function __construct()
+    /**
+     * @var UserId
+     */
+    private $userId;
+
+    public function __construct(UserId $userId)
     {
-        \Ddd\DomainPublisher::instance()->publish(
-            new UserRegistered(
+        $this->userId = $userId;
+    }
 
-            )
-        );
+    public function userId()
+    {
+        return $this->userId;
+    }
 
+    /**
+     * @return \DateTime
+     */
+    public function occurredOn()
+    {
+        return new \DateTime();
     }
 }

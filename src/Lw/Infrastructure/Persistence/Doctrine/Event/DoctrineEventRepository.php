@@ -4,10 +4,10 @@ namespace Lw\Infrastructure\Persistence\Doctrine\Event;
 
 use Doctrine\ORM\EntityRepository;
 
-class EventRepository extends EntityRepository // implements \Lw\Domain\EventRepository
+class EventRepository extends EntityRepository implements \Lw\Domain\EventRepository
 {
     /**
-     * @param \Lw\Domain\Model\Event\Event $event
+     * @param \Lw\Domain\Model\Event\StoredEvent $event
      */
     public function persist($event)
     {

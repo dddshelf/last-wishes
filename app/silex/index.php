@@ -209,6 +209,14 @@ $app->get('/wish/{wishId}', function ($wishId) use ($app) {
     return $app['twig']->render('view-wish.html.twig', ['wish' => $response]);
 })->bind('view-wish');
 
+$app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($app) {
+    \Lw\Domain\DomainEventPublisher::instance()->subscribe(
+        new \Lw\Domain\PersistDomainEventSubscriber(
+            $app['event-repository']
+        )
+    );
+});
+
 // RESTful
 /*
 $app->post('/wish/{wishId}', function ($wishId, Request $request) use ($app) {
