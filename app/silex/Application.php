@@ -69,7 +69,7 @@ class Application
         });
 
         $app['event_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Domain\Model\Event\Event');
+            return $app['em']->getRepository('Lw\Domain\Model\Event\StoredEvent');
         });
 
         $app->register(new Silex\Provider\SessionServiceProvider());

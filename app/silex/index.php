@@ -212,7 +212,7 @@ $app->get('/wish/{wishId}', function ($wishId) use ($app) {
 $app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($app) {
     \Lw\Domain\DomainEventPublisher::instance()->subscribe(
         new \Lw\Domain\PersistDomainEventSubscriber(
-            $app['event-repository']
+            $app['event_repository']
         )
     );
 });

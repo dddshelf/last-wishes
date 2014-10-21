@@ -13,13 +13,16 @@ class PersistDomainEventSubscriber implements DomainEventSubscriber
         $this->eventRepository = $eventRepository;
     }
 
+    /**
+     * @param DomainEvent $anEvent
+     */
     public function handle($anEvent)
     {
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
         $serializedEvent = $serializer->serialize($anEvent, 'json');
 
         $databaseEvent = new StoredEvent(
-            $anEvent::class,
+            get_class($anEvent),
             $anEvent->occuredOn(),
             $serializedEvent
         );
