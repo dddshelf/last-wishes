@@ -10,7 +10,6 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 }
 
 require_once __DIR__.'/../../vendor/autoload.php';
-require_once __DIR__.'/Application.php';
 
 $app = \Lw\Infrastructure\Ui\Web\Silex\Application::bootstrap();
 

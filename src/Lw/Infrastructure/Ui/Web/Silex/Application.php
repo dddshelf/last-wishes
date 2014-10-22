@@ -4,6 +4,7 @@ namespace Lw\Infrastructure\Ui\Web\Silex;
 
 use Ddd\Application\Service\TransactionalApplicationService;
 use Ddd\Infrastructure\Application\Service\DoctrineSession;
+use Lw\Application\Service\User\SignInUserService;
 use Lw\Application\Service\User\ViewWishesService;
 use Lw\Application\Service\Wish\AddWishService;
 use Lw\Application\Service\Wish\DeleteWishService;
@@ -89,7 +90,7 @@ class Application
 
         $app['sign_in_user_application_service'] = $app->share(function($app) {
             return new TransactionalApplicationService(
-                new \Lw\Application\Service\User\SignInUserService(
+                new SignInUserService(
                     $app['user_repository'],
                     $app['user_factory']
                 ),
@@ -103,16 +104,18 @@ class Application
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
             array(
-                'twig.path' => __DIR__.'/../../src/Lw/Infrastructure/Ui/Twig/Views',
+                'twig.path' => __DIR__.'/../../Twig/Views',
             )
         );
 
+        /*
         $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
             'profiler.cache_dir' => __DIR__.'/../../var/cache/profiler',
             'profiler.mount_prefix' => '/_profiler',
         ));
 
         $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        */
 
         return $app;
     }
