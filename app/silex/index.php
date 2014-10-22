@@ -12,7 +12,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 require_once __DIR__.'/../../vendor/autoload.php';
 require_once __DIR__.'/Application.php';
 
-$app = \Application::bootstrap();
+$app = \Lw\Infrastructure\Ui\Web\Silex\Application::bootstrap();
 
 // Home
 $app->get('/', function () use ($app) {
@@ -136,8 +136,9 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
     $result->message = '';
 
     try {
-        $usecase = $app['delete_wish_application_service'];
-        $usecase->execute($userId, $wishId);
+        $app['delete_wish_application_service']->execute(
+            new \Lw\Application\Service\Wish\DeleteWishRequest($wishId, $userId)
+        );
     } catch(\Exception $e) {
         $result->error = true;
         $result->message = $e->getMessage();

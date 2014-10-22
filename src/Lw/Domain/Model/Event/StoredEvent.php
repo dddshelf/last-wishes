@@ -35,4 +35,9 @@ class StoredEvent
         $this->typeName = $aTypeName;
         $this->occurredOn = $anOccurredOn;
     }
+
+    public function eventBody()
+    {
+        return $this->eventBody;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Lw\Application\Service\Wish;
 
-class ViewWishRequest
+class DeleteWishRequest
 {
     private $wishId;
     private $userId;

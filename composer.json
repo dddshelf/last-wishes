@@ -13,7 +13,9 @@
         "symfony/form": "~2.3",
         "symfony/security": "~2.3",
         "beberlei/assert": "@stable",
-        "carlosbuenosvinos/ddd": "dev-master"
+        "carlosbuenosvinos/ddd": "dev-master",
+        "symfony/console": "~2.5",
+        "videlalvaro/php-amqplib": "2.4.0"
     },
     "require-dev": {
         "behat/behat": "3.0.*",

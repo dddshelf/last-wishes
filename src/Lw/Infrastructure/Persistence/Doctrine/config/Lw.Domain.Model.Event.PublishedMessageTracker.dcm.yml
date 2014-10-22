@@ -1,0 +1,17 @@
+Lw\Domain\Model\Event\StoredEvent:
+  type: entity
+  table: event
+  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Event\DoctrineEventRepository
+  id:
+    eventId:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    eventBody:
+      type: text
+    typeName:
+      type: string
+      length: 255
+    occurredOn:
+      type: datetime

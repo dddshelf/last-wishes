@@ -1,12 +1,22 @@
 <?php
 
+namespace Lw\Infrastructure\Ui\Web\Silex;
+
+use Ddd\Application\Service\TransactionalApplicationService;
+use Ddd\Infrastructure\Application\Service\DoctrineSession;
+use Lw\Application\Service\User\ViewWishesService;
+use Lw\Application\Service\Wish\AddWishService;
+use Lw\Application\Service\Wish\DeleteWishService;
+use Lw\Application\Service\Wish\UpdateWishService;
+use Lw\Application\Service\Wish\ViewWishService;
+use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
 
 class Application
 {
     public static function bootstrap()
     {
-        $app = new Silex\Application();
+        $app = new \Silex\Application();
 
         $app['debug'] = true;
 
@@ -15,7 +25,7 @@ class Application
         });
 
         $app['em_session'] = $app->share(function($app) {
-            return new \Ddd\Infrastructure\Application\Service\DoctrineSession($app['em']);
+            return new DoctrineSession($app['em']);
         });
 
         $app['user_repository'] = $app->share(function($app) {
@@ -31,25 +41,25 @@ class Application
         });
 
         $app['user_factory'] = $app->share(function() {
-            return new \Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory();
+            return new DoctrineUserFactory();
         });
 
         $app['view_wishes_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\User\ViewWishesService(
+            return new ViewWishesService(
                 $app['wish_repository']
             );
         });
 
         $app['view_wish_application_service'] = $app->share(function($app) {
-            return new \Lw\Application\Service\Wish\ViewWishService(
+            return new ViewWishService(
                 $app['user_repository'],
                 $app['wish_repository']
             );
         });
 
         $app['add_wish_application_service'] = $app->share(function($app) {
-            return new \Ddd\Application\Service\TransactionalApplicationService(
-                new \Lw\Application\Service\Wish\AddWishService(
+            return new TransactionalApplicationService(
+                new AddWishService(
                     $app['user_repository'],
                     $app['wish_repository']
                 ),
@@ -58,8 +68,8 @@ class Application
         });
 
         $app['update_wish_application_service'] = $app->share(function($app) {
-            return new \Ddd\Application\Service\TransactionalApplicationService(
-                new \Lw\Application\Service\Wish\UpdateWishService(
+            return new TransactionalApplicationService(
+                new UpdateWishService(
                     $app['user_repository'],
                     $app['wish_repository']
                 ),
@@ -68,8 +78,8 @@ class Application
         });
 
         $app['delete_wish_application_service'] = $app->share(function($app) {
-            return new \Ddd\Application\Service\TransactionalApplicationService(
-                new \Lw\Application\Service\Wish\DeleteWishService(
+            return new TransactionalApplicationService(
+                new DeleteWishService(
                     $app['user_repository'],
                     $app['wish_repository']
                 ),
@@ -78,7 +88,7 @@ class Application
         });
 
         $app['sign_in_user_application_service'] = $app->share(function($app) {
-            return new \Ddd\Application\Service\TransactionalApplicationService(
+            return new TransactionalApplicationService(
                 new \Lw\Application\Service\User\SignInUserService(
                     $app['user_repository'],
                     $app['user_factory']
@@ -87,22 +97,22 @@ class Application
             );
         });
 
-        $app->register(new Silex\Provider\SessionServiceProvider());
-        $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-        $app->register(new Silex\Provider\FormServiceProvider());
+        $app->register(new \Silex\Provider\SessionServiceProvider());
+        $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(
-            new Silex\Provider\TwigServiceProvider(),
+            new \Silex\Provider\TwigServiceProvider(),
             array(
                 'twig.path' => __DIR__.'/../../src/Lw/Infrastructure/Ui/Twig/Views',
             )
         );
 
-        $app->register(new Silex\Provider\WebProfilerServiceProvider(), array(
+        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
             'profiler.cache_dir' => __DIR__.'/../../var/cache/profiler',
             'profiler.mount_prefix' => '/_profiler',
         ));
 
-        $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+        $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
 
         return $app;
     }
