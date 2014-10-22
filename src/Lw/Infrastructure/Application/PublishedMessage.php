@@ -1,8 +1,8 @@
 <?php
 
-namespace Lw\Domain\Model\Event;
+namespace Lw\Infrastructure\Application;
 
-class PublishedMessageTracker
+class PublishedMessage
 {
     /**
      * @var int

@@ -3,15 +3,23 @@
 namespace Lw\Infrastructure\Persistence\Doctrine\Event;
 
 use Doctrine\ORM\EntityRepository;
+use Lw\Domain\StoredEventRepository;
 
-class DoctrineEventRepository extends EntityRepository implements \Lw\Domain\StoredEventRepository
+class DoctrineEventRepository extends EntityRepository implements StoredEventRepository
 {
-    /**
-     * @param \Lw\Domain\Model\Event\StoredEvent $event
-     */
-    public function append($event)
+    public function append($anEvent)
     {
-        $this->getEntityManager()->persist($event);
-        $this->_em->flush($event);
+        $this->getEntityManager()->persist($anEvent);
+        $this->_em->flush($anEvent);
+    }
+
+    public function allStoredEventsSince($anEventId)
+    {
+        $query = $this->createQueryBuilder('e');
+        if ($anEventId) {
+            $query->where('e.eventId > :eventId', $anEventId);
+        }
+
+        return $query->getQuery()->getResult();
     }
 }

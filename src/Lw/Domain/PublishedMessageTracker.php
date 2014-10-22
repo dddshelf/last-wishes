@@ -5,8 +5,8 @@ namespace Lw\Domain;
 interface PublishedMessageTracker
 {
     /**
-     * @param string $typeName
+     * @param string $aTypeName
      * @return int
      */
-    public function mostRecentPublishedMessageId($typeName);
+    public function mostRecentPublishedMessageId($aTypeName);
 }

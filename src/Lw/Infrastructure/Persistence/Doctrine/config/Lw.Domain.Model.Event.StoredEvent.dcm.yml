@@ -5,13 +5,17 @@ Lw\Domain\Model\Event\StoredEvent:
   id:
     eventId:
       type: integer
+      column: event_id
       generator:
         strategy: AUTO
   fields:
     eventBody:
+      column: event_body
       type: text
     typeName:
+      column: type_name
       type: string
       length: 255
     occurredOn:
+      column: occurred_on
       type: datetime
