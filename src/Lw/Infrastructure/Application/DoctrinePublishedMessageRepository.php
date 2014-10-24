@@ -14,7 +14,7 @@ class DoctrinePublishedMessageRepository extends EntityRepository implements Pub
     public function mostRecentPublishedMessageId($aTypeName)
     {
         $connection = $this->getEntityManager()->getConnection();
-        $mostRecentId = $connection->fetchAll(
+        $mostRecentId = $connection->fetchColumn(
             'SELECT most_recent_published_message_id FROM event_published_message_tracker WHERE type_name = ?',
             [$aTypeName]
         );
@@ -23,6 +23,34 @@ class DoctrinePublishedMessageRepository extends EntityRepository implements Pub
             return null;
         }
 
-        return $mostRecentId[0];
+        return $mostRecentId;
+    }
+
+    /**
+     * @param $aTypeName
+     * @param StoredEvent[] $notifications
+     */
+    public function trackMostRecentPublishedMessage($aTypeName, $notifications)
+    {
+        $maxId = array_reduce(
+            $notifications, function($carry, $item) {
+                return max($carry, $item->eventId());
+            },
+            0
+        );
+
+        $publishedMessage = $this->find($aTypeName);
+        if (!$publishedMessage) {
+            $publishedMessage = new PublishedMessage(
+                $maxId,
+                0,
+                $aTypeName
+            );
+        }
+
+        $publishedMessage->updateMaxId($maxId);
+
+        $this->getEntityManager()->persist($publishedMessage);
+        $this->getEntityManager()->flush($publishedMessage);
     }
 }

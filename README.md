@@ -1,5 +1,14 @@
-Design chooses:
-1.- User and Wish do not conform an Aggregate (There are no business invariant)
-2.- User and Wish identities are Application-generated
-3.- User and Wish
+# Last Wishes - DDD Sample
 
+## Set up the project
+    curl -sS https://getcomposer.org/installer | php
+    php composer.phar install
+
+## Create the database schema
+    php bin/doctrine orm:schema-tool:create
+
+## Run your Last Will bounded context
+    php -S localhost:8080 -t app/lw/silex/
+
+## Notify all domain events via messaging
+    php bin/console notifications:push

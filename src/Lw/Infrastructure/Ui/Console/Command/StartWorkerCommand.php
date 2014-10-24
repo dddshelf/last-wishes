@@ -12,31 +12,15 @@ class StartWorkerCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('demo:greet')
-            ->setDescription('Greet someone')
+            ->setName('notifications:push')
+            ->setDescription('Notify all domain events via messaging')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getApplication()->getContainer();
-
-        $notificationService = new NotificationService($container['em']);
-        $notificationService->publishNotifications();
-
-        /*
-        $connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
-        $channel = $connection->channel();
-        $channel->queue_declare('lastwill.output', false, false, false, false);
-
-        foreach($eventRepository->findAll() as $event) {
-            $msg = new AMQPMessage($event->eventBody());
-            $channel->basic_publish($msg, '', 'lastwill.output');
-            $output->writeln('Event published into RabbitMQ');
-        }
-
-        $channel->close();
-        $connection->close();
-        */
+        (new NotificationService(
+            $this->getApplication()->getContainer()['em']))
+            ->publishNotifications();
     }
 }

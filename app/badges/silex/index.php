@@ -9,7 +9,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-require_once __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__.'/../../../vendor/autoload.php';
 
 $app = \Lw\Infrastructure\Ui\Web\Silex\Application::bootstrap();
 
@@ -273,6 +273,6 @@ $app->get('/wish/list', function () use ($app) {
 
     return $app->json($wishes);
 });
-
 */
+
 $app->run();

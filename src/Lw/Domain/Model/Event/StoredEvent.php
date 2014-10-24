@@ -40,4 +40,9 @@ class StoredEvent
     {
         return $this->eventBody;
     }
+
+    public function eventId()
+    {
+        return $this->eventId;
+    }
 }

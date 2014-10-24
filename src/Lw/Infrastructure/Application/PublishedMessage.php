@@ -30,4 +30,9 @@ class PublishedMessage
     {
         return $this->mostRecentPublishedMessageId;
     }
+
+    public function updateMaxId($maxId)
+    {
+        $this->mostRecentPublishedMessageId = $maxId;
+    }
 }

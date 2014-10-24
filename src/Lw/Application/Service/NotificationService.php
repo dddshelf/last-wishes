@@ -27,19 +27,24 @@ class NotificationService
             $publishedMessageTracker->mostRecentPublishedMessageId(self::EXCHANGE_NAME)
         );
 
-        var_dump($notifications);
-        $this->sendNotifications($notifications);
-
-        // $messageProducer = $this->messageProducer();
-        /*
-        try {
-            foreach($notifications as $notification) {
-                $this->publish($notification, $messageProducer);
-            }
-        } catch(\Exception $e) {
-            $messageProducer->close();
+        if (!$notifications) {
+            return;
         }
-        */
+
+        $connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+        $channel = $connection->channel();
+
+        try {
+            $channel->queue_declare(self::EXCHANGE_NAME, false, false, false, false);
+            $this->publishNotification($notifications, $channel);
+            $publishedMessageTracker->trackMostRecentPublishedMessage(
+                self::EXCHANGE_NAME, $notifications
+            );
+        } catch(\Exception $e) {
+        } finally {
+            $channel->close();
+            $connection->close();
+        }
     }
 
     /**
@@ -63,28 +68,25 @@ class NotificationService
         return $this->entityManager->getRepository('Lw\\Domain\\Model\\Event\\StoredEvent');
     }
 
-    private function messageProducer()
-    {
-    }
-
     /**
      * @param StoredEvent[] $notifications
      */
     private function sendNotifications($notifications)
     {
-        $connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
-        $channel = $connection->channel();
+    }
 
-        try {
-            $channel->queue_declare('lastwill.output', false, false, false, false);
-            foreach($notifications as $notification) {
-                $msg = new AMQPMessage($notification->eventBody());
-                $channel->basic_publish($msg, '', self::EXCHANGE_NAME);
-            }
-        } catch(\Exception $e) {
-        } finally {
-            $channel->close();
-            $connection->close();
+
+
+    /**
+     * @param $notifications
+     * @param $channel
+     */
+    private function publishNotification($notifications, $channel)
+    {
+        foreach ($notifications as $notification) {
+            $msg = new AMQPMessage($notification->eventBody());
+            $channel->basic_publish($msg, '', self::EXCHANGE_NAME);
+
         }
     }
 }

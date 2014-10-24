@@ -17,7 +17,8 @@ class DoctrineEventRepository extends EntityRepository implements StoredEventRep
     {
         $query = $this->createQueryBuilder('e');
         if ($anEventId) {
-            $query->where('e.eventId > :eventId', $anEventId);
+            $query->where('e.eventId > :eventId');
+            $query->setParameters(array('eventId' => $anEventId));
         }
 
         return $query->getQuery()->getResult();
