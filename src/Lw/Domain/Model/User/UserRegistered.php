@@ -14,6 +14,7 @@ class UserRegistered implements DomainEvent
     public function __construct(UserId $userId)
     {
         $this->userId = $userId;
+        $this->occurredOn = new \DateTime();
     }
 
     public function userId()
@@ -26,6 +27,6 @@ class UserRegistered implements DomainEvent
      */
     public function occurredOn()
     {
-        return new \DateTime();
+        return $this->occurredOn;
     }
 }
