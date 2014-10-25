@@ -3,15 +3,15 @@ Lw\Infrastructure\Application\PublishedMessage:
   table: event_published_message_tracker
   repositoryClass: Lw\Infrastructure\Application\DoctrinePublishedMessageRepository
   id:
-    typeName:
-      type: string
-      column: type_name
+    trackerId:
+      column: tracker_id
+      type: integer
       generator:
-        strategy: NONE
+        strategy: AUTO
   fields:
     mostRecentPublishedMessageId:
       column: most_recent_published_message_id
       type: bigint
-    trackerId:
-      column: tracker_id
-      type: bigint
+    typeName:
+      type: string
+      column: type_name

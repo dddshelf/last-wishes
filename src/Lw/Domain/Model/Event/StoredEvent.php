@@ -25,9 +25,9 @@ class StoredEvent
     private $typeName;
 
     /**
-     * @param $aTypeName
+     * @param string $aTypeName
      * @param \DateTime $anOccurredOn
-     * @param $anEventBody
+     * @param string $anEventBody
      */
     public function __construct($aTypeName, \DateTime $anOccurredOn, $anEventBody)
     {

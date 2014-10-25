@@ -19,20 +19,37 @@ class PublishedMessage
      */
     private $typeName;
 
-    public function __construct($aMostRecentPublishedMessageId, $aTrackerId, $aTypeName)
+    /**
+     * @param string $aTypeName
+     * @param int $aMostRecentPublishedMessageId
+     */
+    public function __construct($aTypeName, $aMostRecentPublishedMessageId)
     {
         $this->mostRecentPublishedMessageId = $aMostRecentPublishedMessageId;
-        $this->trackerId = $aTrackerId;
         $this->typeName = $aTypeName;
     }
 
+    /**
+     * @return int
+     */
     public function mostRecentPublishedMessageId()
     {
         return $this->mostRecentPublishedMessageId;
     }
 
+    /**
+     * @param int $maxId
+     */
     public function updateMaxId($maxId)
     {
         $this->mostRecentPublishedMessageId = $maxId;
+    }
+
+    /**
+     * @return int
+     */
+    public function trackerId()
+    {
+        return $this->trackerId;
     }
 }

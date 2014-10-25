@@ -2,9 +2,9 @@
 
 namespace Lw\Application\Service;
 
-use Lw\Domain\Model\Event\StoredEvent;
+use JMS\Serializer\SerializerBuilder;
 use Lw\Domain\PublishedMessageTracker;
-use Lw\Domain\StoredEventRepository;
+use Lw\Domain\EventStore;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -13,6 +13,7 @@ class NotificationService
     const EXCHANGE_NAME = 'lastwill';
 
     private $entityManager;
+    private $serializer;
 
     public function __construct($anEntityManager)
     {
@@ -61,21 +62,12 @@ class NotificationService
     }
 
     /**
-     * @return StoredEventRepository
+     * @return EventStore
      */
     private function eventStore()
     {
         return $this->entityManager->getRepository('Lw\\Domain\\Model\\Event\\StoredEvent');
     }
-
-    /**
-     * @param StoredEvent[] $notifications
-     */
-    private function sendNotifications($notifications)
-    {
-    }
-
-
 
     /**
      * @param $notifications
@@ -84,9 +76,20 @@ class NotificationService
     private function publishNotification($notifications, $channel)
     {
         foreach ($notifications as $notification) {
-            $msg = new AMQPMessage($notification->eventBody());
+            $msg = new AMQPMessage($this->serializer()->serialize($notification, 'json'));
             $channel->basic_publish($msg, '', self::EXCHANGE_NAME);
-
         }
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    private function serializer()
+    {
+        if (null === $this->serializer) {
+            $this->serializer = SerializerBuilder::create()->build();
+        }
+
+        return $this->serializer;
     }
 }

@@ -42,9 +42,8 @@ class DoctrinePublishedMessageRepository extends EntityRepository implements Pub
         $publishedMessage = $this->find($aTypeName);
         if (!$publishedMessage) {
             $publishedMessage = new PublishedMessage(
-                $maxId,
-                0,
-                $aTypeName
+                $aTypeName,
+                $maxId
             );
         }
 
