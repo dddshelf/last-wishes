@@ -1,5 +1,5 @@
 {
-    "name": "carlosbuenosvinos/elige-tu-propia-aventura-web",
+    "name": "carlosbuenosvinos/last-wishes",
     "require": {
         "silex/silex": "1.2.*",
         "silex/web-profiler": "1.0.*",
@@ -33,7 +33,7 @@
     "autoload": {
         "psr-0": {
             "Lw": "src",
-            "Badge": "src"
+            "Ddd": "src"
         }
     },
     "config": {

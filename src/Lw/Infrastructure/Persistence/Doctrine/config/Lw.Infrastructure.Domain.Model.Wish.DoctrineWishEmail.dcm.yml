@@ -1,6 +1,6 @@
 Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail:
   type: entity
-  table: wish
+  table: lw_wish
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Wish\DoctrineWishEmailRepository
   id:
     surrogateWishId:

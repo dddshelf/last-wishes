@@ -11,6 +11,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 class NotificationService
 {
     const EXCHANGE_NAME = 'lastwill';
+    const USE_FANOUT = false;
 
     private $entityManager;
     private $serializer;
@@ -36,7 +37,12 @@ class NotificationService
         $channel = $connection->channel();
 
         try {
-            $channel->queue_declare(self::EXCHANGE_NAME, false, false, false, false);
+            if (self::USE_FANOUT) {
+                $channel->exchange_declare(self::EXCHANGE_NAME, 'fanout', false, false, false);
+            } else {
+                $channel->queue_declare(self::EXCHANGE_NAME, false, false, false, false);
+            }
+
             $this->publishNotification($notifications, $channel);
             $publishedMessageTracker->trackMostRecentPublishedMessage(
                 self::EXCHANGE_NAME, $notifications
@@ -77,7 +83,12 @@ class NotificationService
     {
         foreach ($notifications as $notification) {
             $msg = new AMQPMessage($this->serializer()->serialize($notification, 'json'));
-            $channel->basic_publish($msg, '', self::EXCHANGE_NAME);
+
+            if (self::USE_FANOUT) {
+                $channel->basic_publish($msg, self::EXCHANGE_NAME);
+            } else {
+                $channel->basic_publish($msg, '', self::EXCHANGE_NAME);
+            }
         }
     }
 

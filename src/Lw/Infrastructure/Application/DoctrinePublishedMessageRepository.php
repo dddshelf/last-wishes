@@ -15,7 +15,7 @@ class DoctrinePublishedMessageRepository extends EntityRepository implements Pub
     {
         $connection = $this->getEntityManager()->getConnection();
         $mostRecentId = $connection->fetchColumn(
-            'SELECT most_recent_published_message_id FROM event_published_message_tracker WHERE type_name = ?',
+            'SELECT most_recent_published_message_id FROM lw_event_published_message_tracker WHERE type_name = ?',
             [$aTypeName]
         );
 

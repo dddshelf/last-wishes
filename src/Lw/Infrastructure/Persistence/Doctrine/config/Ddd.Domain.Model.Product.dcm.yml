@@ -1,0 +1,14 @@
+Ddd\Domain\Model\Product:
+  type: entity
+  table: product
+  id:
+    productId:
+      column: id
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+    price:
+      type: money

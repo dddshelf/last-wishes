@@ -1,6 +1,6 @@
 Lw\Domain\Model\Event\StoredEvent:
   type: entity
-  table: event
+  table: lw_event
   repositoryClass: Lw\Infrastructure\Application\DoctrineEventStore
   id:
     eventId:

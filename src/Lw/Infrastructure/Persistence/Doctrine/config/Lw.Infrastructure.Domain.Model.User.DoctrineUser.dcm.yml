@@ -1,9 +1,9 @@
 Lw\Infrastructure\Domain\Model\User\DoctrineUser:
   type: entity
-  table: user
+  table: lw_user
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\User\DoctrineUserRepository
   id:
-    surrogateUserId:
+    userId:
       column: id
       type: string
       generator:
@@ -13,3 +13,5 @@ Lw\Infrastructure\Domain\Model\User\DoctrineUser:
       type: string
     password:
       type: string
+    password:
+      type: object
