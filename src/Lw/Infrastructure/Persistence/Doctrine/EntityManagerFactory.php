@@ -16,6 +16,14 @@ class EntityManagerFactory
         Type::addType('money', 'Lw\\Infrastructure\\Persistence\\Doctrine\\Type\\MoneyType');
         return EntityManager::create(
             array(
+                'driver' => 'pdo_sqlite',
+                'path' => __DIR__.'/../../../../../db.sqlite',
+            ),
+            Setup::createYAMLMetadataConfiguration([__DIR__.'/config'], true)
+        );
+
+        return EntityManager::create(
+            array(
                 'driver'   => 'pdo_mysql',
                 'user'     => 'root',
                 'password' => '',

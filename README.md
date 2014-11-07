@@ -1,4 +1,7 @@
-# Last Wishes - DDD Sample
+# Last Wishes - DDD Sample Application
+
+## Install assets
+    bower install
 
 ## Set up the project
     curl -sS https://getcomposer.org/installer | php
@@ -11,4 +14,4 @@
     php -S localhost:8080 -t app/lw/silex/
 
 ## Notify all domain events via messaging
-    php bin/console notifications:push
+    php bin/console lw:notifications:push
