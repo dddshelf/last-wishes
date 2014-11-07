@@ -1,5 +1,6 @@
 vendor
 bin
 .idea
-app/silex/components
+app/lw/silex/components
 db.sqlite
+composer.lock
