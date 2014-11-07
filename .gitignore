@@ -1,6 +1,6 @@
 vendor
 bin
-!bin/console
+!/bin/console
 .idea
 app/lw/silex/components
 db.sqlite
