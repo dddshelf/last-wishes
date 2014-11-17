@@ -3,8 +3,7 @@
 namespace Lw\Domain\Model\User;
 
 use Assert\Assertion;
-use Lw\Domain\DomainEventPublisher;
-use Lw\Domain\Model\Wish\Wish;
+use Ddd\Domain\DomainEventPublisher;
 use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Domain\Model\Wish\WishId;
 

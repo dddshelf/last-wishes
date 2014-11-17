@@ -2,9 +2,9 @@
 
 namespace Lw\Infrastructure\Application;
 
+use Ddd\Application\EventStore;
 use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\SerializerBuilder;
-use Lw\Application\EventStore;
 use Lw\Domain\Model\Event\StoredEvent;
 
 class DoctrineEventStore extends EntityRepository implements EventStore

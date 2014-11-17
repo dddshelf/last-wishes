@@ -2,7 +2,7 @@
 
 namespace Lw\Domain\Model\User;
 
-use Lw\Domain\DomainEvent;
+use Ddd\Domain\DomainEvent;
 
 class UserRegistered implements DomainEvent
 {

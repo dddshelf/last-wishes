@@ -1,5 +1,7 @@
 <?php
 
+use Ddd\Domain\DomainEventPublisher;
+use Ddd\Domain\PersistDomainEventSubscriber;
 use Lw\Application\Service\User\SignInUserRequest;
 use Lw\Application\Service\User\ViewWishesRequest;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +11,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 
-require_once __DIR__.'/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 $app = \Lw\Infrastructure\Ui\Web\Silex\Application::bootstrap();
 
@@ -169,8 +171,8 @@ $app->get('/wish/{wishId}', function ($wishId) use ($app) {
 })->bind('view-wish');
 
 $app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($app) {
-    \Lw\Domain\DomainEventPublisher::instance()->subscribe(
-        new \Lw\Domain\PersistDomainEventSubscriber(
+    DomainEventPublisher::instance()->subscribe(
+        new PersistDomainEventSubscriber(
             $app['event_repository']
         )
     );

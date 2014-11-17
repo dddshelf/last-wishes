@@ -11,7 +11,7 @@
     php bin/doctrine orm:schema-tool:create
 
 ## Run your Last Will bounded context
-    php -S localhost:8080 -t app/lw/silex/
+    php -S localhost:8080 -t src/Lw/Infrastructure/Ui/Web/Silex/Public
 
 ## Notify all domain events via messaging
     php bin/console lw:notifications:push
