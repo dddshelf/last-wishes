@@ -3,6 +3,8 @@
 use Ddd\Domain\DomainEventPublisher;
 use Ddd\Domain\PersistDomainEventSubscriber;
 use Lw\Application\Service\User\SignInUserRequest;
+use Lw\Application\Service\User\ViewBadgesRequest;
+use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesRequest;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -10,6 +12,8 @@ $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
 if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
+
+error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
@@ -73,7 +77,9 @@ $app->get('/dashboard', function () use ($app) {
         new ViewWishesRequest($userSecurityToken->id())
     );
 
-    return $app['twig']->render('dashboard.html.twig', ['wishes' => $response]);
+    $badges = (new ViewBadgesService())->execute(new ViewBadgesRequest($userSecurityToken->id()->id()));
+
+    return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges]);
 })->bind('dashboard');
 
 // Add wish
