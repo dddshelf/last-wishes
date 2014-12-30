@@ -144,20 +144,15 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
 
     $userId = $userSecurityToken->id()->id();
 
-    $result = new \stdClass();
-    $result->error = false;
-    $result->message = '';
-
     try {
         $app['delete_wish_application_service']->execute(
             new \Lw\Application\Service\Wish\DeleteWishRequest($wishId, $userId)
         );
-    } catch(\Exception $e) {
-        $result->error = true;
-        $result->message = $e->getMessage();
-    }
 
-    $app['session']->getFlashBag()->add('message', ['info' => $result]);
+        $app['session']->getFlashBag()->add('message', ['info' => 'Deleted!']);
+    } catch(\Exception $e) {
+        $app['session']->getFlashBag()->add('message', ['info' => 'Error!']);
+    }
 
     return $app->redirect('/dashboard');
 })->bind('delete-wish');
