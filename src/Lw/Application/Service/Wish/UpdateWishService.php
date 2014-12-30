@@ -13,7 +13,6 @@ class UpdateWishService extends WishService
      * @param $request
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
-     * @return mixed
      */
     public function execute($request = null)
     {
