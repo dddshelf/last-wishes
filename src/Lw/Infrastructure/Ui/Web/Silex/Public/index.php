@@ -6,6 +6,7 @@ use Lw\Application\Service\User\SignInUserRequest;
 use Lw\Application\Service\User\ViewBadgesRequest;
 use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesRequest;
+use Lw\Application\Service\Wish\UpdateWishRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -74,7 +75,6 @@ $app->get('/dashboard', function () use ($app) {
         return $app->redirect('/login');
     }
 
-
     $flasbag = $app['session']->getFlashBag();
     $messages = $flasbag->get('message');
 
@@ -124,10 +124,12 @@ $app->post('/wish/update', function (Request $request) use ($app) {
 
     $app['update_wish_application_service']
         ->execute(
-            $userId,
-            $wishId,
-            $request->get('email'),
-            $request->get('content')
+            new UpdateWishRequest(
+                $userId,
+                $wishId,
+                $request->get('email'),
+                $request->get('content')
+            )
         );
 
     return $app->redirect('/dashboard');
@@ -155,7 +157,7 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
         $result->message = $e->getMessage();
     }
 
-    $app['session']->getFlashBag()->add('message', $result);
+    $app['session']->getFlashBag()->add('message', ['info' => $result]);
 
     return $app->redirect('/dashboard');
 })->bind('delete-wish');
