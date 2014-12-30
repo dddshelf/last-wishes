@@ -99,7 +99,7 @@ class User
      * @param WishId $wishId
      * @param string $email
      * @param string $content
-     * @return \Lw\Domain\Model\User\WishEmail
+     * @return \Lw\Domain\Model\Wish\WishEmail
      */
     public function makeWish(WishId $wishId, $email, $content)
     {

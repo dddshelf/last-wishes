@@ -3,7 +3,7 @@ Lw\Infrastructure\Domain\Model\User\DoctrineUser:
   table: lw_user
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\User\DoctrineUserRepository
   id:
-    userId:
+    surrogateUserId:
       column: id
       type: string
       generator:
@@ -13,5 +13,3 @@ Lw\Infrastructure\Domain\Model\User\DoctrineUser:
       type: string
     password:
       type: string
-    password:
-      type: object

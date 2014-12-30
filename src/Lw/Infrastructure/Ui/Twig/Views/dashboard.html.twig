@@ -1,8 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    {% for message in app.session.getFlashBag.get('message') %}
-        {{ message.message }}
+    {% for message in messages %}
+        {{ message.info }}
     {% endfor %}
 
     <!--<h1 class="cover-heading">Dashboard</h1>-->

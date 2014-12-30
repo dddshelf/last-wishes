@@ -64,6 +64,7 @@ $app->get('/logout', function () use ($app) {
     $authentifier = new \Lw\Infrastructure\Domain\SessionAuthentifier($userRepository, $session);
     $service = new \Lw\Application\Service\User\LogOutUserService($authentifier);
     $result = $service->execute();
+
     return $app->redirect('/login');
 })->bind('logout');
 
@@ -73,13 +74,17 @@ $app->get('/dashboard', function () use ($app) {
         return $app->redirect('/login');
     }
 
+
+    $flasbag = $app['session']->getFlashBag();
+    $messages = $flasbag->get('message');
+
     $response = $app['view_wishes_application_service']->execute(
         new ViewWishesRequest($userSecurityToken->id())
     );
 
     $badges = (new ViewBadgesService())->execute(new ViewBadgesRequest($userSecurityToken->id()->id()));
 
-    return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges]);
+    return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges, 'messages' => $messages]);
 })->bind('dashboard');
 
 // Add wish
@@ -89,21 +94,20 @@ $app->post('/wish/add', function (Request $request) use ($app) {
         return $app->redirect('/login');
     }
 
-    $userId = $userSecurityToken->id();
-
-        try {
-            $app['add_wish_application_service']
-                ->execute(
-                    new \Lw\Application\Service\Wish\AddWishRequest(
-                        $userId,
-                        $request->get('email'),
-                        $request->get('content')
-                    )
-                );
-            $app['session']->getFlashBag()->add('info', 'Great!');
-        } catch(\Exception $e) {
-            $app['session']->getFlashBag()->add('error', $e->getMessage());
-        }
+    $userId = $userSecurityToken->id()->id();
+    try {
+        $app['add_wish_application_service']
+            ->execute(
+                new \Lw\Application\Service\Wish\AddWishRequest(
+                    $userId,
+                    $request->get('email'),
+                    $request->get('content')
+                )
+            );
+        $app['session']->getFlashBag()->add('message', ['info' => 'Great!']);
+    } catch(\Exception $e) {
+        $app['session']->getFlashBag()->add('message', ['info' => $e->getMessage()]);
+    }
 
     return $app->redirect('/dashboard');
 })->bind('add-wish');
