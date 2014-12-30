@@ -37,7 +37,5 @@ class UpdateWishService extends WishService
 
         $wish->changeContent($content);
         $wish->changeEmail($email);
-
-        $this->wishRepository->persist($wish);
     }
 }
