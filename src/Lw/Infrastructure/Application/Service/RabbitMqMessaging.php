@@ -6,13 +6,13 @@ use PhpAmqpLib\Connection\AMQPConnection;
 
 class RabbitMqMessaging
 {
-    const EXCHANGE_NAME = 'lastwill';
-
     protected $connection;
     protected $channel;
+    protected $exchangeName;
 
-    public function __construct()
+    public function __construct($exchangeName)
     {
+        $this->exchangeName = $exchangeName;
         $this->connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
         $this->channel = $this->connection->channel();
         $this->channel->exchange_declare($this->outName(), 'fanout', false, true, false);
@@ -28,11 +28,11 @@ class RabbitMqMessaging
 
     protected function outName()
     {
-        return self::EXCHANGE_NAME.'.out';
+        return $this->exchangeName;
     }
 
     protected function inName()
     {
-        return self::EXCHANGE_NAME.'.in';
+        return $this->exchangeName;
     }
 }

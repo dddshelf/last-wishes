@@ -15,3 +15,6 @@
 
 ## Notify all domain events via messaging
     php bin/console domain:events:spread
+
+## Notify all domain events via messaging to another new BC deployed
+    php bin/console domain:events:spread <exchange-name>

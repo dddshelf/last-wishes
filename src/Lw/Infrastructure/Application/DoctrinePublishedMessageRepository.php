@@ -9,14 +9,15 @@ use Lw\Domain\PublishedMessageTracker;
 class DoctrinePublishedMessageRepository extends EntityRepository implements PublishedMessageTracker
 {
     /**
+     * @param $aTypeName
      * @return int
      */
-    public function mostRecentPublishedMessageId()
+    public function mostRecentPublishedMessageId($aTypeName)
     {
         $connection = $this->getEntityManager()->getConnection();
         $mostRecentId = $connection->fetchColumn(
             'SELECT most_recent_published_message_id FROM lw_event_published_message_tracker WHERE type_name = ?',
-            ['lastwill.out']
+            [$aTypeName]
         );
 
         if (!$mostRecentId) {

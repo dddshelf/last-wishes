@@ -4,12 +4,11 @@ namespace Lw\Domain;
 
 interface PublishedMessageTracker
 {
-    const EXCHANGE_NAME = 'lastwill.out';
-
     /**
+     * @param $aTypeName
      * @return int
      */
-    public function mostRecentPublishedMessageId();
+    public function mostRecentPublishedMessageId($aTypeName);
 
     /**
      * @param $aTypeName

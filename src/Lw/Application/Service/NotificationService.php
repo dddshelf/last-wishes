@@ -6,12 +6,10 @@ use Ddd\Application\EventStore;
 use JMS\Serializer\SerializerBuilder;
 use Lw\Domain\Model\Event\StoredEvent;
 use Lw\Domain\PublishedMessageTracker;
-use PhpAmqpLib\Connection\AMQPConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 
 class NotificationService
 {
-    const EXCHANGE_NAME = 'lastwill.out';
+    const EXCHANGE_NAME = 'lastwill';
 
     private $serializer;
     private $eventStore;
@@ -29,28 +27,34 @@ class NotificationService
         $this->messageProducer = $aMessageProducer;
     }
 
+    /**
+     * @return int
+     */
     public function publishNotifications()
     {
         $publishedMessageTracker = $this->publishedMessageTracker();
         $notifications = $this->listUnpublishedNotifications(
-            $publishedMessageTracker->mostRecentPublishedMessageId()
+            $publishedMessageTracker->mostRecentPublishedMessageId(self::EXCHANGE_NAME)
         );
 
         if (!$notifications) {
-            return;
+            return 0;
         }
 
         $messageProducer = $this->messageProducer();
         try {
+            $publishedMessages = 0;
             $lastPublishedNotification = null;
             foreach ($notifications as $notification) {
                 $lastPublishedNotification = $this->publish($notification, $messageProducer);
+                $publishedMessages++;
             }
-
         } finally {
             $this->trackMostRecentPublishedMessage($publishedMessageTracker, $lastPublishedNotification);
             $messageProducer->close();
         }
+
+        return $publishedMessages;
     }
 
     /**
