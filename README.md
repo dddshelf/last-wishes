@@ -14,4 +14,4 @@
     php -S localhost:8080 -t src/Lw/Infrastructure/Ui/Web/Silex/Public
 
 ## Notify all domain events via messaging
-    php bin/console lw:notifications:push
+    php bin/console domain:events:spread

@@ -2,94 +2,102 @@
 
 namespace Lw\Application\Service;
 
+use Ddd\Application\EventStore;
 use JMS\Serializer\SerializerBuilder;
+use Lw\Domain\Model\Event\StoredEvent;
 use Lw\Domain\PublishedMessageTracker;
-use Lw\Domain\EventStore;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class NotificationService
 {
-    const EXCHANGE_NAME = 'lastwill';
-    const USE_FANOUT = false;
+    const EXCHANGE_NAME = 'lastwill.out';
 
-    private $entityManager;
     private $serializer;
+    private $eventStore;
+    private $publishedMessageTracker;
+    private $messageProducer;
 
-    public function __construct($anEntityManager)
+    public function __construct(
+        EventStore $anEventStore,
+        PublishedMessageTracker $aPublishedMessageTracker,
+        MessageProducer $aMessageProducer
+    )
     {
-        $this->entityManager = $anEntityManager;
+        $this->eventStore = $anEventStore;
+        $this->publishedMessageTracker = $aPublishedMessageTracker;
+        $this->messageProducer = $aMessageProducer;
     }
 
     public function publishNotifications()
     {
         $publishedMessageTracker = $this->publishedMessageTracker();
-
         $notifications = $this->listUnpublishedNotifications(
-            $publishedMessageTracker->mostRecentPublishedMessageId(self::EXCHANGE_NAME)
+            $publishedMessageTracker->mostRecentPublishedMessageId()
         );
 
         if (!$notifications) {
             return;
         }
 
-        $connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
-        $channel = $connection->channel();
-
+        $messageProducer = $this->messageProducer();
         try {
-            if (self::USE_FANOUT) {
-                $channel->exchange_declare(self::EXCHANGE_NAME, 'fanout', false, false, false);
-            } else {
-                $channel->queue_declare(self::EXCHANGE_NAME, false, false, false, false);
+            $lastPublishedNotification = null;
+            foreach ($notifications as $notification) {
+                $lastPublishedNotification = $this->publish($notification, $messageProducer);
             }
 
-            $this->publishNotification($notifications, $channel);
-            $publishedMessageTracker->trackMostRecentPublishedMessage(
-                self::EXCHANGE_NAME, $notifications
-            );
-        } catch(\Exception $e) {
         } finally {
-            $channel->close();
-            $connection->close();
+            $this->trackMostRecentPublishedMessage($publishedMessageTracker, $lastPublishedNotification);
+            $messageProducer->close();
         }
     }
 
     /**
      * @return PublishedMessageTracker
      */
-    private function publishedMessageTracker()
+    protected function publishedMessageTracker()
     {
-        return $this->entityManager->getRepository('Lw\\Infrastructure\\Application\\PublishedMessage');
+        return $this->publishedMessageTracker;
     }
 
+    /**
+     * @param $mostRecentPublishedMessageId
+     * @return StoredEvent[]
+     */
     private function listUnpublishedNotifications($mostRecentPublishedMessageId)
     {
-        return $this->eventStore()->allStoredEventsSince($mostRecentPublishedMessageId);
+        $storeEvents = $this->eventStore()->allStoredEventsSince($mostRecentPublishedMessageId);
+
+        // Vaughn Vernon converts StoredEvents into another objects: Notification
+        // Why?
+
+        return $storeEvents;
     }
 
     /**
      * @return EventStore
      */
-    private function eventStore()
+    protected function eventStore()
     {
-        return $this->entityManager->getRepository('Lw\\Domain\\Model\\Event\\StoredEvent');
+        return $this->eventStore;
     }
 
-    /**
-     * @param $notifications
-     * @param $channel
-     */
-    private function publishNotification($notifications, $channel)
+    private function messageProducer()
     {
-        foreach ($notifications as $notification) {
-            $msg = new AMQPMessage($this->serializer()->serialize($notification, 'json'));
+        return $this->messageProducer;
+    }
 
-            if (self::USE_FANOUT) {
-                $channel->basic_publish($msg, self::EXCHANGE_NAME);
-            } else {
-                $channel->basic_publish($msg, '', self::EXCHANGE_NAME);
-            }
-        }
+    private function publish(StoredEvent $notification, MessageProducer $messageProducer)
+    {
+        $messageProducer->send(
+            $this->serializer()->serialize($notification, 'json'),
+            $notification->typeName(),
+            $notification->eventId(),
+            $notification->occurredOn()
+        );
+
+        return $notification;
     }
 
     /**
@@ -102,5 +110,10 @@ class NotificationService
         }
 
         return $this->serializer;
+    }
+
+    private function trackMostRecentPublishedMessage(PublishedMessageTracker $publishedMessageTracker, $notification)
+    {
+        $publishedMessageTracker->trackMostRecentPublishedMessage(self::EXCHANGE_NAME, $notification);
     }
 }

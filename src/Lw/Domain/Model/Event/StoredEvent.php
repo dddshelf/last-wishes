@@ -2,7 +2,9 @@
 
 namespace Lw\Domain\Model\Event;
 
-class StoredEvent
+use Ddd\Domain\DomainEvent;
+
+class StoredEvent implements DomainEvent
 {
     /**
      * @var int
@@ -44,5 +46,21 @@ class StoredEvent
     public function eventId()
     {
         return $this->eventId;
+    }
+
+    /**
+     * @return string
+     */
+    public function typeName()
+    {
+        return $this->typeName;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function occurredOn()
+    {
+        return $this->occurredOn;
     }
 }

@@ -40,7 +40,7 @@ class PublishedMessage
     /**
      * @param int $maxId
      */
-    public function updateMaxId($maxId)
+    public function updateMostRecentPublishedMessageId($maxId)
     {
         $this->mostRecentPublishedMessageId = $maxId;
     }
