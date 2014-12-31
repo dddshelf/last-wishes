@@ -30,11 +30,11 @@ class NotificationService
     /**
      * @return int
      */
-    public function publishNotifications()
+    public function publishNotifications($exchangeName)
     {
         $publishedMessageTracker = $this->publishedMessageTracker();
         $notifications = $this->listUnpublishedNotifications(
-            $publishedMessageTracker->mostRecentPublishedMessageId(self::EXCHANGE_NAME)
+            $publishedMessageTracker->mostRecentPublishedMessageId($exchangeName)
         );
 
         if (!$notifications) {
@@ -46,12 +46,12 @@ class NotificationService
             $publishedMessages = 0;
             $lastPublishedNotification = null;
             foreach ($notifications as $notification) {
-                $lastPublishedNotification = $this->publish($notification, $messageProducer);
+                $lastPublishedNotification = $this->publish($exchangeName, $notification, $messageProducer);
                 $publishedMessages++;
             }
         } finally {
-            $this->trackMostRecentPublishedMessage($publishedMessageTracker, $lastPublishedNotification);
-            $messageProducer->close();
+            $this->trackMostRecentPublishedMessage($publishedMessageTracker, $exchangeName, $lastPublishedNotification);
+            $messageProducer->close($exchangeName);
         }
 
         return $publishedMessages;
@@ -74,7 +74,7 @@ class NotificationService
         $storeEvents = $this->eventStore()->allStoredEventsSince($mostRecentPublishedMessageId);
 
         // Vaughn Vernon converts StoredEvents into another objects: Notification
-        // Why?
+        // Why? Why? Why? Why?
 
         return $storeEvents;
     }
@@ -92,9 +92,10 @@ class NotificationService
         return $this->messageProducer;
     }
 
-    private function publish(StoredEvent $notification, MessageProducer $messageProducer)
+    private function publish($exchangeName, StoredEvent $notification, MessageProducer $messageProducer)
     {
         $messageProducer->send(
+            $exchangeName,
             $this->serializer()->serialize($notification, 'json'),
             $notification->typeName(),
             $notification->eventId(),
@@ -116,8 +117,8 @@ class NotificationService
         return $this->serializer;
     }
 
-    private function trackMostRecentPublishedMessage(PublishedMessageTracker $publishedMessageTracker, $notification)
+    private function trackMostRecentPublishedMessage(PublishedMessageTracker $publishedMessageTracker, $exchangeName, $notification)
     {
-        $publishedMessageTracker->trackMostRecentPublishedMessage(self::EXCHANGE_NAME, $notification);
+        $publishedMessageTracker->trackMostRecentPublishedMessage($exchangeName, $notification);
     }
 }

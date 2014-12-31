@@ -4,35 +4,44 @@ namespace Lw\Infrastructure\Application\Service;
 
 use PhpAmqpLib\Connection\AMQPConnection;
 
-class RabbitMqMessaging
+abstract class RabbitMqMessaging
 {
-    protected $connection;
-    protected $channel;
-    protected $exchangeName;
+    protected $connections;
+    protected $channels;
 
-    public function __construct($exchangeName)
+    public function __construct()
     {
-        $this->exchangeName = $exchangeName;
-        $this->connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
-        $this->channel = $this->connection->channel();
-        $this->channel->exchange_declare($this->outName(), 'fanout', false, true, false);
-        $this->channel->queue_declare($this->inName(), false, true, false, false);
-        $this->channel->queue_bind($this->inName(), $this->outName());
+        $this->channels = [];
+        $this->connections = [];
     }
 
-    public function close()
+    private function connect($exchangeName)
     {
-        $this->channel->close();
-        $this->connection->close();
+        $connectionKey = $exchangeName;
+        if (isset($this->connections[$connectionKey])) {
+            return;
+        }
+
+        $connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+        $channel = $connection->channel();
+        $channel->exchange_declare($exchangeName, 'fanout', false, true, false);
+        $channel->queue_declare($exchangeName, false, true, false, false);
+        $channel->queue_bind($exchangeName, $exchangeName);
+
+        $this->connections[$connectionKey] = $connection;
+        $this->channels[$connectionKey] = $channel;
     }
 
-    protected function outName()
+    protected function channel($exchangeName)
     {
-        return $this->exchangeName;
+        $this->connect($exchangeName);
+
+        return $this->channels[$exchangeName];
     }
 
-    protected function inName()
+    public function close($exchangeName)
     {
-        return $this->exchangeName;
+        $this->channels[$exchangeName]->close();
+        $this->connections[$exchangeName]->close();
     }
 }

@@ -28,10 +28,10 @@ class PushNotificationsCommand extends Command
         $notificationService = new NotificationService(
             $em->getRepository('Lw\\Domain\\Model\\Event\\StoredEvent'),
             $em->getRepository('Lw\\Infrastructure\\Application\\PublishedMessage'),
-            new RabbitMqMessageProducer($input->getArgument('exchange-name'))
+            new RabbitMqMessageProducer()
         );
 
-        $numberOfNotifications = $notificationService->publishNotifications();
+        $numberOfNotifications = $notificationService->publishNotifications($input->getArgument('exchange-name'));
         $output->writeln(sprintf('<comment>%d</comment> <info>notification(s) sent!</info>', $numberOfNotifications));
     }
 }
