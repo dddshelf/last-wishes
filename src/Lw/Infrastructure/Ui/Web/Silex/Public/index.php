@@ -48,15 +48,15 @@ $app->match('/signin', function (Request $request) use ($app) {
 
             return $app->redirect($app['url_generator']->generate('login'));
         } catch(UserAlreadyExistsException $e) {
-            $form->addError(new FormError('Email is already registered by another user'));
+            $form->get('email')->addError(new FormError('Email is already registered by another user'));
         } catch(\Exception $e) {
             $form->addError(new FormError('There was an error, please get in touch with us'));
         }
     }
 
-    return $app['twig']->render('signin.html.twig', array(
+    return $app['twig']->render('signin.html.twig', [
         'form' => $form->createView()
-    ));
+    ]);
 })->bind('signin');
 
 // Login
@@ -82,7 +82,7 @@ $app->get('/logout', function () use ($app) {
 
     $authentifier = new \Lw\Infrastructure\Domain\SessionAuthentifier($userRepository, $session);
     $service = new \Lw\Application\Service\User\LogOutUserService($authentifier);
-    $result = $service->execute();
+    $service->execute();
 
     return $app->redirect('/login');
 })->bind('logout');

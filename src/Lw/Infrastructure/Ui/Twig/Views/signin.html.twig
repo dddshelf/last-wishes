@@ -3,6 +3,25 @@
 {% block content %}
     <div>
         <h3 class="cover-heading">Sign in</h3>
-        {{ form(form) }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="form-group{{ form.email.vars.valid ? '' : ' has-error' }}">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="form-group{{ form.password.vars.valid ? '' : ' has-error' }}">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+            {{ form_errors(form.password) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(form.submit) }}
+        </div>
+
+        {{ form_end(form) }}
     </div>
 {% endblock %}
