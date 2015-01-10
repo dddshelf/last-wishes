@@ -13,6 +13,9 @@ use Lw\Domain\Model\Wish\WishId;
  */
 class User
 {
+    const MAX_LENGTH_EMAIL = 255;
+    const MAX_LENGTH_PASSWORD = 255;
+
     /**
      * @var UserId
      */

@@ -10,8 +10,10 @@ use Lw\Application\Service\Wish\AddWishService;
 use Lw\Application\Service\Wish\DeleteWishService;
 use Lw\Application\Service\Wish\UpdateWishService;
 use Lw\Application\Service\Wish\ViewWishService;
+use Lw\Domain\Model\User\User;
 use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 
 class Application
 {
@@ -101,6 +103,7 @@ class Application
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Silex\Provider\TranslationServiceProvider());
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
             array(
@@ -108,14 +111,14 @@ class Application
             )
         );
 
-        /*
-        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-            'profiler.cache_dir' => __DIR__.'/../../var/cache/profiler',
-            'profiler.mount_prefix' => '/_profiler',
-        ));
-
-        $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        */
+        $app['sign_in_form'] = $app->share(function($app) {
+            return $app['form.factory']
+                ->createBuilder('form')
+                ->add('email', 'email', ['max_length' => User::MAX_LENGTH_EMAIL, 'attr' => ['class' => 'form-control'], 'label' => 'Email'])
+                ->add('password', 'password', ['max_length' => User::MAX_LENGTH_PASSWORD, 'attr' => ['class' => 'form-control'], 'label' => 'Password'])
+                ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Sign in'])
+                ->getForm();
+        });
 
         return $app;
     }

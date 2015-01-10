@@ -7,6 +7,9 @@ use Lw\Application\Service\User\ViewBadgesRequest;
 use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesRequest;
 use Lw\Application\Service\Wish\UpdateWishRequest;
+use Lw\Domain\Model\User\UserAlreadyExistsException;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
@@ -25,21 +28,36 @@ $app->get('/', function () use ($app) {
     return $app['twig']->render('layout.html.twig');
 })->bind('home');
 
-// SigIn
-$app->get('/signin', function () use ($app) {
-    return $app['twig']->render('signin.html.twig');
+$app->match('/signin', function (Request $request) use ($app) {
+    /**
+     * @var Form $form
+     */
+    $form = $app['sign_in_form'];
+    $form->handleRequest($request);
+
+    if ($form->isValid()) {
+        $data = $form->getData();
+
+        try {
+            $app['sign_in_user_application_service']->execute(
+                new SignInUserRequest(
+                    $data['email'],
+                    $data['password']
+                )
+            );
+
+            return $app->redirect($app['url_generator']->generate('login'));
+        } catch(UserAlreadyExistsException $e) {
+            $form->addError(new FormError('Email is already registered by another user'));
+        } catch(\Exception $e) {
+            $form->addError(new FormError('There was an error, please get in touch with us'));
+        }
+    }
+
+    return $app['twig']->render('signin.html.twig', array(
+        'form' => $form->createView()
+    ));
 })->bind('signin');
-
-$app->post('/signin', function (Request $request) use ($app) {
-    $app['sign_in_user_application_service']->execute(
-        new SignInUserRequest(
-            $request->get('email'),
-            $request->get('password')
-        )
-    );
-
-    return $app->redirect('/login');
-});
 
 // Login
 $app->get('/login', function () use ($app) {
