@@ -2,7 +2,7 @@
     "name": "carlosbuenosvinos/last-wishes",
     "require": {
         "beberlei/assert": "@stable",
-        "carlosbuenosvinos/ddd": "dev-master",
+        "carlosbuenosvinos/ddd": "1.*",
         "doctrine/orm": "~2.4",
         "jms/serializer": "~0.16.0",
         "predis/predis": "~0.8.5",
@@ -34,8 +34,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "Lw": "src",
-            "Ddd": "src"
+            "Lw": "src"
         }
     },
     "config": {
