@@ -22,13 +22,13 @@
 
     <testsuites>
         <testsuite name="Test Suite">
-            <directory>./src/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./src/</directory>
+            <directory>./tests/</directory>
         </whitelist>
     </filter>
 </phpunit>
