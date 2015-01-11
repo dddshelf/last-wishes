@@ -1,6 +1,7 @@
 {
     "name": "carlosbuenosvinos/last-wishes",
     "require": {
+        "php": ">=5.4.0",
         "beberlei/assert": "@stable",
         "carlosbuenosvinos/ddd": "1.*",
         "doctrine/orm": "~2.4",
