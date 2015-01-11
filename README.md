@@ -1,5 +1,7 @@
 # Last Wishes - DDD Sample Application
 
+[![Build Status](https://secure.travis-ci.org/dddinphp/last-wishes.svg?branch=master)](http://travis-ci.org/dddinphp/last-wishes)
+
 ## Install assets
     bower install
 
