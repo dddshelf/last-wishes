@@ -1,7 +1,7 @@
-Lw\Infrastructure\Application\PublishedMessage:
+Ddd\Domain\Event\PublishedMessage:
   type: entity
-  table: lw_event_published_message_tracker
-  repositoryClass: Lw\Infrastructure\Application\DoctrinePublishedMessageRepository
+  table: event_published_message_tracker
+  repositoryClass: Ddd\Infrastructure\Application\Notification\DoctrinePublishedMessageTracker
   id:
     trackerId:
       column: tracker_id

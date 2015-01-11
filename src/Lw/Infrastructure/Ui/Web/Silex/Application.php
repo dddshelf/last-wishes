@@ -3,6 +3,7 @@
 namespace Lw\Infrastructure\Ui\Web\Silex;
 
 use Ddd\Application\Service\TransactionalApplicationService;
+use Ddd\Infrastructure\Application\Notification\RabbitMqMessageProducer;
 use Ddd\Infrastructure\Application\Service\DoctrineSession;
 use Lw\Application\Service\User\SignInUserService;
 use Lw\Application\Service\User\ViewWishesService;
@@ -13,6 +14,7 @@ use Lw\Application\Service\Wish\ViewWishService;
 use Lw\Domain\Model\User\User;
 use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
+use PhpAmqpLib\Connection\AMQPConnection;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 
 class Application
@@ -27,6 +29,8 @@ class Application
             return (new EntityManagerFactory())->build();
         });
 
+        $app['exchange_name'] = 'last-will';
+
         $app['em_session'] = $app->share(function($app) {
             return new DoctrineSession($app['em']);
         });
@@ -39,8 +43,18 @@ class Application
             return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail');
         });
 
-        $app['event_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Domain\Model\Event\StoredEvent');
+        $app['event_store'] = $app->share(function($app) {
+            return $app['em']->getRepository('Ddd\Domain\Event\StoredEvent');
+        });
+
+        $app['message_tracker'] = $app->share(function($app) {
+            return $app['em']->getRepository('Ddd\Domain\Event\PublishedMessage');
+        });
+
+        $app['message_producer'] = $app->share(function() {
+            return new RabbitMqMessageProducer(
+                new AMQPConnection('localhost', 5672, 'guest', 'guest')
+            );
         });
 
         $app['user_factory'] = $app->share(function() {
@@ -113,9 +127,11 @@ class Application
 
         $app['sign_in_form'] = $app->share(function($app) {
             return $app['form.factory']
-                ->createBuilder('form')
-                ->add('email', 'email', ['max_length' => User::MAX_LENGTH_EMAIL, 'attr' => ['class' => 'form-control'], 'label' => 'Email'])
-                ->add('password', 'password', ['max_length' => User::MAX_LENGTH_PASSWORD, 'attr' => ['class' => 'form-control'], 'label' => 'Password'])
+                ->createBuilder('form', null, [
+                    'attr' => ['autocomplete' => 'off']
+                ])
+                ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
+                ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
                 ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Sign in'])
                 ->getForm();
         });

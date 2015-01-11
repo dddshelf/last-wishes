@@ -2,7 +2,6 @@
 
 namespace Lw\Infrastructure\Persistence\Doctrine;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 

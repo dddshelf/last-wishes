@@ -1,7 +1,7 @@
-Lw\Domain\Model\Event\StoredEvent:
+Ddd\Domain\Event\StoredEvent:
   type: entity
-  table: lw_event
-  repositoryClass: Lw\Infrastructure\Application\DoctrineEventStore
+  table: event
+  repositoryClass: Ddd\Infrastructure\Application\Notification\DoctrineEventStore
   id:
     eventId:
       type: integer

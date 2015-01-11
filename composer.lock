@@ -61,16 +61,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carlosbuenosvinos/ddd.git",
-                "reference": "df8476a9f45cac42ec8f82d52005183dbf89d275"
+                "reference": "f2461fd61b961a727e02453c428b9389078a1c7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carlosbuenosvinos/ddd/zipball/df8476a9f45cac42ec8f82d52005183dbf89d275",
-                "reference": "df8476a9f45cac42ec8f82d52005183dbf89d275",
+                "url": "https://api.github.com/repos/carlosbuenosvinos/ddd/zipball/f2461fd61b961a727e02453c428b9389078a1c7f",
+                "reference": "f2461fd61b961a727e02453c428b9389078a1c7f",
                 "shasum": ""
+            },
+            "require": {
+                "jms/serializer": "0.*"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.2.*"
+            },
+            "suggest": {
+                "doctrine/orm": "It allows Transactional Application Services and/or Domain Events persisted using Doctrine",
+                "videlalvaro/php-amqplib": "It allows Domain Events notification using RabbitMQ"
             },
             "type": "library",
             "autoload": {
@@ -91,7 +98,7 @@
             ],
             "description": "Domain-Driven Design PHP Helper classes",
             "homepage": "https://leanpub.com/ddd-in-php",
-            "time": "2014-11-17 10:54:14"
+            "time": "2015-01-11 03:17:33"
         },
         {
             "name": "doctrine/annotations",

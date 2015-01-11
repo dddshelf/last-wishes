@@ -7,13 +7,13 @@
         {{ form_errors(form) }}
 
         <div class="form-group{{ form.email.vars.valid ? '' : ' has-error' }}">
-            {{ form_label(form.email) }}
+            {{ form_label(form.email, null, { 'label_attr' : { 'class' : 'control-label'}}) }}
             {{ form_widget(form.email) }}
             {{ form_errors(form.email) }}
         </div>
 
         <div class="form-group{{ form.password.vars.valid ? '' : ' has-error' }}">
-            {{ form_label(form.password) }}
+            {{ form_label(form.password, null, { 'label_attr' : { 'class' : 'control-label'}}) }}
             {{ form_widget(form.password) }}
             {{ form_errors(form.password) }}
         </div>
