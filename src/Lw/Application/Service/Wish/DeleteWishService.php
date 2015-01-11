@@ -10,10 +10,11 @@ use Lw\Domain\Model\Wish\WishId;
 class DeleteWishService extends WishService
 {
     /**
-     * @param DeleteWishService $request
+     * @param DeleteWishRequest $request
      * @return void
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
+     * @throws \InvalidArgumentException
      */
     public function execute($request = null)
     {
