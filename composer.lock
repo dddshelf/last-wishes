@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "66c24bb3c041e863cd9132e6c2841da2",
+    "hash": "7c25f41381d0496b1c5dd4c928a62b2d",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -61,12 +61,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/carlosbuenosvinos/ddd.git",
-                "reference": "f2461fd61b961a727e02453c428b9389078a1c7f"
+                "reference": "9956b4ed2739208c80d86ce26f5d2bcac28c0b8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carlosbuenosvinos/ddd/zipball/f2461fd61b961a727e02453c428b9389078a1c7f",
-                "reference": "f2461fd61b961a727e02453c428b9389078a1c7f",
+                "url": "https://api.github.com/repos/carlosbuenosvinos/ddd/zipball/9956b4ed2739208c80d86ce26f5d2bcac28c0b8c",
+                "reference": "9956b4ed2739208c80d86ce26f5d2bcac28c0b8c",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
             ],
             "description": "Domain-Driven Design PHP Helper classes",
             "homepage": "https://leanpub.com/ddd-in-php",
-            "time": "2015-01-11 03:17:33"
+            "time": "2015-01-13 16:14:30"
         },
         {
             "name": "doctrine/annotations",
@@ -4244,6 +4244,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=5.4.0"
+    },
     "platform-dev": []
 }

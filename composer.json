@@ -3,7 +3,7 @@
     "require": {
         "php": ">=5.4.0",
         "beberlei/assert": "@stable",
-        "carlosbuenosvinos/ddd": "1.*",
+        "carlosbuenosvinos/ddd": "@dev",
         "doctrine/orm": "~2.4",
         "jms/serializer": "~0.16.0",
         "predis/predis": "~0.8.5",
