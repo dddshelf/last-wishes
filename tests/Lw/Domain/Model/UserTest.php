@@ -2,6 +2,9 @@
 
 namespace Lw\Domain\Model\User;
 
+use Ddd\Domain\DomainEventPublisher;
+use Ddd\Domain\DomainEventSubscriber;
+
 class UserTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -54,5 +57,38 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function emptyPasswordShouldThrowException()
     {
         return new User(new UserId(), 'valid@email.com', '');
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldPublishUserRegisteredEvent()
+    {
+        $id = DomainEventPublisher::instance()->subscribe($subscriber = new SpySubscriber());
+        new User($userId = new UserId(), 'valid@email.com', 'password');
+        DomainEventPublisher::instance()->unsubscribe($id);
+
+        $this->assertUserRegisteredEventPublished($subscriber, $userId);
+    }
+
+    private function assertUserRegisteredEventPublished($subscriber, $userId)
+    {
+        $this->assertInstanceOf('Lw\Domain\Model\User\UserRegistered', $subscriber->domainEvent);
+        $this->assertEquals($userId, $subscriber->domainEvent->userId());
+    }
+}
+
+class SpySubscriber implements DomainEventSubscriber
+{
+    public $domainEvent;
+
+    public function handle($aDomainEvent)
+    {
+        $this->domainEvent = $aDomainEvent;
+    }
+
+    public function isSubscribedTo($aDomainEvent)
+    {
+        return true;
     }
 }
