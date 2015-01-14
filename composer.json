@@ -24,8 +24,7 @@
         "behat/behat": "3.0.*",
         "behat/mink": "1.5.*",
         "behat/mink-goutte-driver": "*",
-        "phpunit/phpunit": "~4.2",
-        "mockery/mockery": "dev-master@dev"
+        "phpunit/phpunit": "~4.2"
     },
     "authors": [
         {
