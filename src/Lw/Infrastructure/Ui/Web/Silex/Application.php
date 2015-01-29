@@ -15,7 +15,6 @@ use Lw\Domain\Model\User\User;
 use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
 use PhpAmqpLib\Connection\AMQPConnection;
-use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 
 class Application
 {
@@ -31,7 +30,7 @@ class Application
 
         $app['exchange_name'] = 'last-will';
 
-        $app['em_session'] = $app->share(function($app) {
+        $app['tx_session'] = $app->share(function($app) {
             return new DoctrineSession($app['em']);
         });
 
@@ -80,7 +79,7 @@ class Application
                     $app['user_repository'],
                     $app['wish_repository']
                 ),
-                $app['em_session']
+                $app['tx_session']
             );
         });
 
@@ -90,7 +89,7 @@ class Application
                     $app['user_repository'],
                     $app['wish_repository']
                 ),
-                $app['em_session']
+                $app['tx_session']
             );
         });
 
@@ -100,7 +99,7 @@ class Application
                     $app['user_repository'],
                     $app['wish_repository']
                 ),
-                $app['em_session']
+                $app['tx_session']
             );
         });
 
@@ -110,7 +109,7 @@ class Application
                     $app['user_repository'],
                     $app['user_factory']
                 ),
-                $app['em_session']
+                $app['tx_session']
             );
         });
 
