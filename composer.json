@@ -6,7 +6,7 @@
         "carlosbuenosvinos/ddd": "@dev",
         "doctrine/orm": "~2.4",
         "jms/serializer": "~0.16.0",
-        "predis/predis": "~0.8.5",
+        "predis/predis": "~1.0.0",
         "rhumsaa/uuid": "~2.7.1",
         "silex/silex": "1.2.*",
         "silex/web-profiler": "1.0.*",
