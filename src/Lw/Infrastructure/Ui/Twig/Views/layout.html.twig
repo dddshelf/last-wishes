@@ -60,6 +60,12 @@
             </div><!-- /.navbar-collapse -->
         </nav><!-- /navbar -->
 
+        {% if messages is defined %}
+            {% for message in messages %}
+                {{ message.info }}
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         <div class="row">
             <div class="col-xs-12">
