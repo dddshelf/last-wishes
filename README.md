@@ -20,3 +20,15 @@
 
 ## Notify all domain events via messaging to another new BC deployed
     php bin/console domain:events:spread <exchange-name>
+
+## Exercises
+
+For the DDD learners, I propose you some exercises to practice your skills.
+
+### UserRepository running with Redis
+
+The default project uses Doctrine and SQLite to persist users, however, we would like to easily change the persistence storage to use Redis. The PRedis dependency is already specified in the composer.json file.
+
+### UserRepository running with MongoDB
+
+The default project uses Doctrine and SQLite to persist users, however, we would like to easily change the persistence storage to use MongoDB.
