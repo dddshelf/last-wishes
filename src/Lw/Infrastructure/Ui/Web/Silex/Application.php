@@ -5,6 +5,7 @@ namespace Lw\Infrastructure\Ui\Web\Silex;
 use Ddd\Application\Service\TransactionalApplicationService;
 use Ddd\Infrastructure\Application\Notification\RabbitMqMessageProducer;
 use Ddd\Infrastructure\Application\Service\DoctrineSession;
+use Ddd\Infrastructure\Application\Service\DummySession;
 use Lw\Application\Service\User\SignInUserService;
 use Lw\Application\Service\User\ViewWishesService;
 use Lw\Application\Service\Wish\AddWishService;
@@ -14,7 +15,9 @@ use Lw\Application\Service\Wish\ViewWishService;
 use Lw\Domain\Model\User\User;
 use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
+use Lw\Infrastructure\Persistence\Redis\User\RedisUserRepository;
 use PhpAmqpLib\Connection\AMQPConnection;
+use Predis\Client;
 
 class Application
 {
@@ -28,14 +31,20 @@ class Application
             return (new EntityManagerFactory())->build();
         });
 
+        $app['redis'] = $app->share(function() {
+            return new Client();
+        });
+
         $app['exchange_name'] = 'last-will';
 
         $app['tx_session'] = $app->share(function($app) {
-            return new DoctrineSession($app['em']);
+            return new DummySession();
+            // return new DoctrineSession($app['em']);
         });
 
         $app['user_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\User\DoctrineUser');
+            return new RedisUserRepository($app['redis']);
+            // return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\User\DoctrineUser');
         });
 
         $app['wish_repository'] = $app->share(function($app) {
