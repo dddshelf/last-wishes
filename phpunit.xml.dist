@@ -17,8 +17,8 @@
     </testsuites>
 
     <filter>
-        <whitelist>
+        <blacklist>
             <directory>./tests/</directory>
-        </whitelist>
+        </blacklist>
     </filter>
 </phpunit>
