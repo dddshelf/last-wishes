@@ -2,7 +2,7 @@
 
 ## Deployment with Ansistrano
 
-Last Wishes uses as an deployment example Ansistrano. For more info, please check: https://github.com/ansistrano
+Last Wishes uses as an deployment example [Ansistrano](https://github.com/ansistrano). 
 
 Current configuration is a deployment:
 
@@ -12,5 +12,6 @@ Current configuration is a deployment:
 
 ## Try it on your server
 
-`ansible-playbook -i hosts deploy-with-ansistrano.yml`
+`ansible-playbook -i hosts deploy.yml`
 
+`ansible-playbook -i hosts rollback.yml`
