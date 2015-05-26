@@ -20,7 +20,7 @@ class WishId
      */
     public function __construct($id = null)
     {
-        $this->id = null === $id ? Uuid::uuid4()->toString() : $id;
+        $this->id = $id ?: Uuid::uuid4()->toString();
     }
 
     /**
