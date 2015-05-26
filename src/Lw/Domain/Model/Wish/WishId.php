@@ -32,12 +32,12 @@ class WishId
     }
 
     /**
-     * @param WishId $userId
+     * @param WishId $wishId
      * @return boolean
      */
-    public function equals(WishId $userId)
+    public function equals(WishId $wishId)
     {
-        return $this->id() === $userId->id();
+        return $this->id() === $wishId->id();
     }
 
     /**
