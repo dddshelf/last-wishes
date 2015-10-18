@@ -32,3 +32,7 @@ The default project uses Doctrine and SQLite to persist users, however, we would
 ### UserRepository running with MongoDB
 
 The default project uses Doctrine and SQLite to persist users, however, we would like to easily change the persistence storage to use MongoDB.
+
+### Log Domain Events into File and Elastic
+
+The default project, does not log anything. We're interested in logging all DomainEvents into a file, using ad-hoc solutions or Monolog. Create a new Domain Events fired when a user tries to log in. Log also to ElasticSearch.
