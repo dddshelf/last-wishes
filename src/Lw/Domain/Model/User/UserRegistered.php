@@ -3,8 +3,9 @@
 namespace Lw\Domain\Model\User;
 
 use Ddd\Domain\DomainEvent;
+use Ddd\Domain\Event\PublishableDomainEvent;
 
-class UserRegistered implements DomainEvent
+class UserRegistered implements DomainEvent, PublishableDomainEvent
 {
     /**
      * @var UserId
