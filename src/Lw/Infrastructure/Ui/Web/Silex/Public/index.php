@@ -7,6 +7,7 @@ use Lw\Application\Service\User\ViewBadgesRequest;
 use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesRequest;
 use Lw\Application\Service\Wish\UpdateWishRequest;
+use Lw\Domain\Event\LoggerDomainEventSubscriber;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
@@ -183,7 +184,6 @@ $app->get('/wish/{wishId}', function ($wishId) use ($app) {
 
     $userId = $userSecurityToken->id()->id();
 
-    // \Lw\Application\Service\Wish\ViewWishService
     $response = $app['view_wish_application_service']
         ->execute(
             new \Lw\Application\Service\Wish\ViewWishRequest(
@@ -201,105 +201,10 @@ $app->before(function (Symfony\Component\HttpFoundation\Request $request) use ($
             $app['event_store']
         )
     );
+
+    DomainEventPublisher::instance()->subscribe(
+        new LoggerDomainEventSubscriber()
+    );
 });
 
-// RESTful
-/*
-$app->post('/wish/{wishId}', function ($wishId, Request $request) use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->redirect('/login');
-    }
-
-    $userId = $userSecurityToken->id();
-
-    // \Lw\Application\Service\Wish\AddWishService
-    $response = $app['update_wish_application_service']
-        ->execute(
-            $userId,
-            $wishId,
-            $request->get('email'),
-            $request->get('content')
-        );
-
-    return $app->redirect('/dashboard');
-});
-
-$app->delete('/wish/{wishId}', function ($wishId) use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->json(['message' => 'Not logged'], 403);
-    }
-
-    $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\Wish\ViewWishService($app['wish_repository']);
-    try {
-        $usecase->execute($userId->id(), $wishId);
-        return $app->json(['message' => 'ok']);
-    } catch(\Exception $e) {
-        return $app->json(['message' => $e->getMessage()], 500);
-    }
-});
-
-$app->put('/wish/{wishId}', function (Request $request, $wishId) use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->json(['message' => 'Not logged'], 403);
-    }
-
-    $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\Wish\UpdateWishService($app['wish_repository']);
-    try {
-        $usecase->execute($userId->id(), $wishId, $request->get('email'), '');
-        return $app->json(['message' => 'ok']);
-    } catch(\Exception $e) {
-        return $app->json(['message' => $e->getMessage()], 500);
-    }
-});
-
-$app->post('/users', function (Request $request) use ($app) {
-    $request = json_decode($request->getContent());
-
-    $response = ['result' => false];
-    try {
-        $app['sign_in_user_application_service']->execute(
-            isset($request->email) ? $request->email : null,
-            isset($request->password) ? $request->password : null
-        );
-
-        $response = ['result' => true];
-    } catch(UserAlreadyExistsException $e) {
-        $response['email'] = 'Email already taken';
-    } catch(\InvalidArgumentException $e) {
-        $response[$e->getMessage()] = 'Parameter mandatory';
-    } catch(\Exception $e) {
-        $response['_form'] = 'General error';
-    }
-
-    return $app->json($response, $response['result'] ? 200 : 500);
-});
-
-// Dashboard
-$app->get('/wish/list', function () use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->redirect('/login');
-    }
-
-    $userId = $userSecurityToken->id();
-    $usecase = new \Lw\Application\Service\User\ViewWishesService($app['wish_repository']);
-    $response = $usecase->execute($userId);
-
-    $wishes = array_map(function($wish) {
-        return [
-            'id' => $wish->id()->id(),
-            'email' => $wish->email(),
-            'content' => $wish->content()
-        ];
-    }, $response);
-
-    return $app->json($wishes);
-});
-
-*/
 $app->run();

@@ -1,9 +1,9 @@
 {
-    "name": "carlosbuenosvinos/last-wishes",
+    "name": "dddinphp/last-wishes",
     "require": {
         "php": ">=5.4.0",
         "beberlei/assert": "@stable",
-        "carlosbuenosvinos/ddd": "@dev",
+        "carlosbuenosvinos/ddd": "1.*",
         "doctrine/orm": "~2.4",
         "jms/serializer": "~0.16.0",
         "predis/predis": "~1.0.0",
@@ -18,7 +18,9 @@
         "symfony/translation": "~2.5",
         "symfony/twig-bridge": "~2.5",
         "twig/twig": ">=1.8,<2.0-dev",
-        "videlalvaro/php-amqplib": "2.4.0"
+        "videlalvaro/php-amqplib": "2.4.0",
+        "monolog/monolog": "~1.17",
+        "ruflin/elastica": "~2.3"
     },
     "require-dev": {
         "behat/behat": "3.0.*",
@@ -29,7 +31,13 @@
     "authors": [
         {
             "name": "Carlos Buenosvinos",
-            "email": "carlos.buenosvinos@gmail.com"
+            "email": "carlos.buenosvinos@gmail.com",
+            "homepage": "http://carlosbuenosvinos.com"
+        },
+        {
+            "name": "Domain-Driven Design Book Authors",
+            "email": "hey@dddinphp.info",
+            "homepage": "https://leanpub.com/ddd-in-php"
         }
     ],
     "autoload": {
