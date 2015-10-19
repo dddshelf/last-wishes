@@ -2,6 +2,5 @@ vendor
 bin
 !/bin/console
 .idea
-app/lw/silex/components
 db.sqlite
 composer.lock
