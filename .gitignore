@@ -3,3 +3,4 @@ bin
 !/bin/console
 .idea
 db.sqlite
+composer.lock
