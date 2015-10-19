@@ -2,6 +2,8 @@
 
 namespace Lw\Domain\Model;
 
+use Ddd\Domain\DomainEventPublisher;
+use Lw\Domain\Model\User\LogInAttempted;
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserRepository;
 
@@ -22,6 +24,8 @@ abstract class Authentifier
 
     public function authenticate($email, $password)
     {
+        DomainEventPublisher::instance()->publish(new LogInAttempted($email));
+
         if ($this->isAlreadyAuthenticated()) {
             return true;
         }
