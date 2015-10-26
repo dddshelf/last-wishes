@@ -1,7 +1,7 @@
 {% if wish is defined %}
 <form method="post" action="{{ route }}">
     <input type="hidden" class="form-control" name="id" value="{{ wish.id }}" /><br/>
-    To: <input class="form-control" placeholder="my-son@gmail.com" name="email" type="text" maxlength="255" value="{{ wish.email }}"/><br/>
+    To: <input class="form-control" placeholder="my-son@gmail.com" name="email" type="text" maxlength="255" value="{{ wish.address }}"/><br/>
     Message:<br/><textarea class="form-control" placeholder="If you are reading this..." name="content" type="text">{{ wish.content }}</textarea> <br/>
     <button type="submit" class="btn btn-default">Update my wish</button>
 </form>
@@ -12,12 +12,3 @@
     <button type="submit" class="btn btn-default">Make a wish</button>
 </form>
 {% endif %}
-<!--
-<div ng-controller="MakeWishController">
-    <form method="post">
-        To: <input ng-model="wish.email" class="form-control" placeholder="my-son@gmail.com" name="email" type="text" maxlength="255" /><br/>
-        Message:<br/><textarea ng-model="wish.content" class="form-control" placeholder="If you are reading this..." name="content" type="text"></textarea><br/>
-        <button ng-click="makeWish(wish)" class="btn btn-default">New wish</button>
-    </form>
-</div>
--->

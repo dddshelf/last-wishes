@@ -35,6 +35,6 @@ class UpdateWishService extends WishService
         }
 
         $wish->changeContent($content);
-        $wish->changeEmail($email);
+        $wish->changeAddress($email);
     }
 }

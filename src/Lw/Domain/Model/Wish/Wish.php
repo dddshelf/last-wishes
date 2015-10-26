@@ -116,6 +116,13 @@ class Wish
         return $this;
     }
 
+    public function changeAddress($address)
+    {
+        $this->setAddress($address);
+
+        return $this;
+    }
+
     public function content()
     {
         return $this->content;

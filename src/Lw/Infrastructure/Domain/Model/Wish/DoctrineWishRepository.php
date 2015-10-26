@@ -16,7 +16,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
      */
     public function ofId(WishId $wishId)
     {
-        return $this->find($wishId->id());
+        return $this->find($wishId);
     }
 
     /**
