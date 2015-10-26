@@ -2,7 +2,6 @@
 
 namespace Lw\Application\Service\User;
 
-use Lw\Infrastructure\Domain\Model\User\UserFactory;
 use Lw\Infrastructure\Persistence\InMemory\User\InMemoryUserRepository;
 
 class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
@@ -20,10 +19,7 @@ class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->userRepository = new InMemoryUserRepository();
-        $this->signInUserService = new SignInUserService(
-            $this->userRepository,
-            new UserFactory()
-        );
+        $this->signInUserService = new SignInUserService($this->userRepository);
     }
 
     /**

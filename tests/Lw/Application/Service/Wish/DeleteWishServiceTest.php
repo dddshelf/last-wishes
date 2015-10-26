@@ -3,6 +3,7 @@
 namespace Lw\Application\Service\Wish;
 
 use Lw\Domain\Model\User\User;
+use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Infrastructure\Persistence\InMemory\User\InMemoryUserRepository;
 use Lw\Infrastructure\Persistence\InMemory\Wish\InMemoryWishRepository;
@@ -76,7 +77,7 @@ class DeleteWishServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function removeWishFromAUserThatDoesNotOwnItShouldThrowException()
     {
-        $wish = new WishEmail(
+        $wish = new Wish(
             $this->wishRepository->nextIdentity(),
             $this->userRepository->nextIdentity(),
             'irrelevant@email.com',
