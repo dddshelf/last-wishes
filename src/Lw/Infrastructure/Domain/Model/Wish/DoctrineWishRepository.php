@@ -1,6 +1,6 @@
 <?php
 
-namespace Lw\Infrastructure\Persistence\Doctrine\Wish;
+namespace Lw\Infrastructure\Domain\Model\Wish;
 
 use Doctrine\ORM\EntityRepository;
 use Lw\Domain\Model\User\UserId;
@@ -8,7 +8,7 @@ use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishId;
 use Lw\Domain\Model\Wish\WishRepository;
 
-class DoctrineWishEmailRepository extends EntityRepository implements WishRepository
+class DoctrineWishRepository extends EntityRepository implements WishRepository
 {
     /**
      * @param WishId $wishId
@@ -25,7 +25,7 @@ class DoctrineWishEmailRepository extends EntityRepository implements WishReposi
      */
     public function wishesOfUserId(UserId $userId)
     {
-        return $this->findBy(['surrogateUserId' => $userId->id()]);
+        return $this->findBy(['userId' => $userId]);
     }
 
     /**

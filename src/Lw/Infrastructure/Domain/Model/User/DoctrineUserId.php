@@ -2,24 +2,17 @@
 
 namespace Lw\Infrastructure\Domain\Model\User;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\GuidType;
-use Lw\Domain\Model\User\UserId;
+use Lw\Infrastructure\Domain\Model\DoctrineEntityId;
 
-class DoctrineUserId extends GuidType
+class DoctrineUserId extends DoctrineEntityId
 {
     public function getName()
     {
         return 'UserId';
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    protected function getNamespace()
     {
-        return $value->id();
-    }
-
-    public function convertToPHPValue($value, AbstractPlatform $platform)
-    {
-        return new UserId($value);
+        return 'Lw\Domain\Model\User';
     }
 }

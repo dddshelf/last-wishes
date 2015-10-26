@@ -39,7 +39,7 @@ class Application
         });
 
         $app['wish_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail');
+            return $app['em']->getRepository('Lw\Domain\Model\Wish\Wish');
         });
 
         $app['event_store'] = $app->share(function($app) {

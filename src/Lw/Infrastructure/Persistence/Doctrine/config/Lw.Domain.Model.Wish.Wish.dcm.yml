@@ -1,7 +1,7 @@
 Lw\Domain\Model\Wish\Wish:
   type: entity
   table: lw_wish
-  repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Wish\DoctrineWishEmailRepository
+  repositoryClass: Lw\Infrastructure\Domain\Model\Wish\DoctrineWishRepository
   id:
     wishId:
       column: id

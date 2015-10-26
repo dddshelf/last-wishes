@@ -45,6 +45,7 @@ class Wish
     /**
      * @param WishId $wishId
      * @param UserId $userId
+     * @param string $address
      * @param string $content
      */
     public function __construct(WishId $wishId, UserId $userId, $address, $content)
