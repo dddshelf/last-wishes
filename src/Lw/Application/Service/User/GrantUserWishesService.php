@@ -25,7 +25,7 @@ class GrantUserWishesService
      */
     public function execute($userId)
     {
-        $user = $this->userRepository->userOfId(new UserId($userId));
+        $user = $this->userRepository->ofId(new UserId($userId));
         if (null === $user) {
             throw new UserDoesNotExistException();
         }

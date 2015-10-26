@@ -1,18 +1,18 @@
-Lw\Infrastructure\Domain\Model\Wish\DoctrineWishEmail:
+Lw\Domain\Model\Wish\Wish:
   type: entity
   table: lw_wish
   repositoryClass: Lw\Infrastructure\Persistence\Doctrine\Wish\DoctrineWishEmailRepository
   id:
-    surrogateWishId:
+    wishId:
       column: id
-      type: string
+      type: WishId
       generator:
         strategy: NONE
   fields:
-    email:
+    address:
       type: string
     content:
       type: text
-    surrogateUserId:
-      type: string
+    userId:
+      type: UserId
       column: user_id

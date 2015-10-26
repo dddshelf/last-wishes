@@ -12,7 +12,7 @@ class EmptyUserRepository implements UserRepository
      * @param UserId $userId
      * @return User
      */
-    public function userOfId(UserId $userId)
+    public function ofId(UserId $userId)
     {
         return null;
     }
@@ -21,7 +21,7 @@ class EmptyUserRepository implements UserRepository
      * @param $email
      * @return User
      */
-    public function userOfEmail($email)
+    public function ofEmail($email)
     {
         return null;
     }
@@ -29,7 +29,7 @@ class EmptyUserRepository implements UserRepository
     /**
      * @param User $user
      */
-    public function persist(User $user)
+    public function add(User $user)
     {
     }
 

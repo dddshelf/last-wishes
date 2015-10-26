@@ -61,20 +61,42 @@ $app->match('/signin', function (Request $request) use ($app) {
 })->bind('signin');
 
 // Login
-$app->get('/login', function () use ($app) {
-    return $app['twig']->render('login.html.twig');
+$app->match('/login', function (Request $request) use ($app) {
+    /**
+     * @var Form $form
+     */
+    $form = $app['log_in_form'];
+    $form->handleRequest($request);
+
+    if ($form->isValid()) {
+        $data = $form->getData();
+
+        try {
+            $userRepository = $app['user_repository'];
+            $session = $app['session'];
+
+            $service = new \Lw\Application\Service\User\LogInUserService(
+                new \Lw\Infrastructure\Domain\SessionAuthentifier(
+                    $userRepository,
+                    $session
+                )
+            );
+
+            $result = $service->execute($data['email'], $data['password']);
+            if ($result) {
+                return $app->redirect('/dashboard');
+            }
+        } catch(UserAlreadyExistsException $e) {
+            $form->get('email')->addError(new FormError('Email is already registered by another user'));
+        } catch(\Exception $e) {
+            $form->addError(new FormError('There was an error, please get in touch with us'));
+        }
+    }
+
+    return $app['twig']->render('login.html.twig', [
+        'form' => $form->createView()
+    ]);
 })->bind('login');
-
-$app->post('/login', function (Request $request) use ($app) {
-    $userRepository = $app['user_repository'];
-    $session = $app['session'];
-
-    $authentifier = new \Lw\Infrastructure\Domain\SessionAuthentifier($userRepository, $session);
-    $service = new \Lw\Application\Service\User\LogInUserService($authentifier);
-    $result = $service->execute($request->get('email'), $request->get('password'));
-
-    return $result ? $app->redirect('/dashboard') : $app->redirect('/login');
-});
 
 // Logout
 $app->get('/logout', function () use ($app) {

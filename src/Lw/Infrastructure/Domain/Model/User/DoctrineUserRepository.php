@@ -1,6 +1,6 @@
 <?php
 
-namespace Lw\Infrastructure\Persistence\Doctrine\User;
+namespace Lw\Infrastructure\Domain\Model\User;
 
 use Doctrine\ORM\EntityRepository;
 use Lw\Domain\Model\User\User;
@@ -13,16 +13,16 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
      * @param UserId $userId
      * @return User
      */
-    public function userOfId(UserId $userId)
+    public function ofId(UserId $userId)
     {
-        return $this->find($userId->id());
+        return $this->find($userId);
     }
 
     /**
      * @param string $email
      * @return User
      */
-    public function userOfEmail($email)
+    public function ofEmail($email)
     {
         return $this->findOneBy(['email' => $email]);
     }
@@ -30,7 +30,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
     /**
      * @param User $user
      */
-    public function persist(User $user)
+    public function add(User $user)
     {
         $this->getEntityManager()->persist($user);
     }

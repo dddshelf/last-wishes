@@ -4,6 +4,7 @@ namespace Lw\Domain\Model\User;
 
 use Assert\Assertion;
 use Ddd\Domain\DomainEventPublisher;
+use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Domain\Model\Wish\WishId;
 
@@ -106,7 +107,7 @@ class User
      */
     public function makeWish(WishId $wishId, $email, $content)
     {
-        return new WishEmail(
+        return new Wish(
             $wishId,
             $this->id(),
             $email,

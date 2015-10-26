@@ -3,13 +3,14 @@
 namespace Lw\Domain\Model\Wish;
 
 use Assert\Assertion;
+use Ddd\Domain\DomainEventPublisher;
 use Lw\Domain\Model\User\UserId;
 
 /**
  * Class Wish
  * @package Lw\Domain\Model\Wish
  */
-abstract class Wish
+class Wish
 {
     /**
      * @var WishId
@@ -27,6 +28,11 @@ abstract class Wish
     protected $content;
 
     /**
+     * @var string
+     */
+    protected $address;
+
+    /**
      * @var \DateTime
      */
     protected $createdOn;
@@ -41,15 +47,41 @@ abstract class Wish
      * @param UserId $userId
      * @param string $content
      */
-    public function __construct(WishId $wishId, UserId $userId, $content)
+    public function __construct(WishId $wishId, UserId $userId, $address, $content)
     {
         $this->wishId = $wishId;
         $this->userId = $userId;
 
         $this->setContent($content);
+        $this->setAddress($address);
 
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
+    }
+
+    /**
+     * @param $content
+     */
+    protected function setContent($content)
+    {
+        $content = trim($content);
+        if (!$content) {
+            throw new \InvalidArgumentException('Message cannot be empty');
+        }
+
+        Assertion::notEmpty($content);
+        $this->content = $content;
+    }
+
+    private function setAddress($address)
+    {
+        $address = trim($address);
+        if (!$address) {
+            throw new \InvalidArgumentException('Address cannot be empty');
+        }
+
+        Assertion::notEmpty($address);
+        $this->address = $address;
     }
 
     /**
@@ -80,19 +112,11 @@ abstract class Wish
         return $this->content;
     }
 
-    /**
-     * @param $content
-     */
-    protected function setContent($content)
-    {
-        $content = trim($content);
-        if (!$content) {
-            throw new \InvalidArgumentException('Message cannot be empty');
-        }
-
-        Assertion::notEmpty($content);
-        $this->content = $content;
+    public function grant() {
+        DomainEventPublisher::instance()->publish(
+            new WishGranted(
+                $this->wishId
+            )
+        );
     }
-
-    abstract public function grant();
 }

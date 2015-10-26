@@ -30,7 +30,7 @@ abstract class Authentifier
             return true;
         }
 
-        $user = $this->repository->userOfEmail($email);
+        $user = $this->repository->ofEmail($email);
         if (!$user) {
             return false;
         }

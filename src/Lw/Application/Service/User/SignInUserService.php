@@ -6,7 +6,6 @@ use Ddd\Application\Service\ApplicationService;
 use Lw\Application\Service;
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
-use Lw\Domain\Model\User\UserFactory;
 use Lw\Domain\Model\User\UserRepository;
 
 /**
@@ -21,18 +20,11 @@ class SignInUserService implements ApplicationService
     private $userRepository;
 
     /**
-     * @var UserFactory
-     */
-    private $userFactory;
-
-    /**
      * @param UserRepository $userRepository
-     * @param UserFactory $userFactory
      */
-    public function __construct(UserRepository $userRepository, UserFactory $userFactory)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->userFactory = $userFactory;
     }
 
     /**
@@ -45,18 +37,18 @@ class SignInUserService implements ApplicationService
         $email = $request->email();
         $password = $request->password();
 
-        $user = $this->userRepository->userOfEmail($email);
+        $user = $this->userRepository->ofEmail($email);
         if (null !== $user) {
             throw new UserAlreadyExistsException();
         }
 
-        $user = $this->userFactory->build(
+        $user = new User(
             $this->userRepository->nextIdentity(),
             $email,
             $password
         );
 
-        $this->userRepository->persist($user);
+        $this->userRepository->add($user);
 
         return $user;
     }

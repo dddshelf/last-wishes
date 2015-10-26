@@ -1,0 +1,13 @@
+Lw\Domain\Model\User\User:
+  type: entity
+  id:
+    userId:
+      column: id
+      type: UserId
+  table: lw_user
+  repositoryClass: Lw\Infrastructure\Domain\Model\User\DoctrineUserRepository
+  fields:
+    email:
+      type: string
+    password:
+      type: string

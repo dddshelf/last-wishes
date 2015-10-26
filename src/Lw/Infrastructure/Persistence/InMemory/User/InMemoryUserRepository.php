@@ -16,7 +16,7 @@ class InMemoryUserRepository implements UserRepository
     /**
      * {@inheritdoc}
      */
-    public function userOfId(UserId $userId)
+    public function ofId(UserId $userId)
     {
         if (!isset($this->users[$userId->id()])) {
             return null;
@@ -28,7 +28,7 @@ class InMemoryUserRepository implements UserRepository
     /**
      * {@inheritdoc}
      */
-    public function userOfEmail($email)
+    public function ofEmail($email)
     {
         foreach ($this->users as $user) {
             if ($user->email() === $email) {
@@ -42,7 +42,7 @@ class InMemoryUserRepository implements UserRepository
     /**
      * {@inheritdoc}
      */
-    public function persist(User $user)
+    public function add(User $user)
     {
         $this->users[$user->id()->id()] = $user;
     }

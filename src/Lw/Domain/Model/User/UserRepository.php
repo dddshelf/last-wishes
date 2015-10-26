@@ -12,18 +12,18 @@ interface UserRepository
      * @param UserId $userId
      * @return User
      */
-    public function userOfId(UserId $userId);
+    public function ofId(UserId $userId);
 
     /**
      * @param string $email
      * @return User
      */
-    public function userOfEmail($email);
+    public function ofEmail($email);
 
     /**
      * @param User $user
      */
-    public function persist(User $user);
+    public function add(User $user);
 
     /**
      * @return UserId

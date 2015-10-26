@@ -49,7 +49,7 @@ class DeleteWishServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->userRepository = new InMemoryUserRepository();
         $this->dummyUser = new User($this->userRepository->nextIdentity(), 'irrelevant@email.com', 'irrelevant');
-        $this->userRepository->persist($this->dummyUser);
+        $this->userRepository->add($this->dummyUser);
     }
 
     private function setupWishRepository()

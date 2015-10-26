@@ -52,7 +52,7 @@ class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             $user,
-            $this->userRepository->userOfId($user->id())
+            $this->userRepository->ofId($user->id())
         );
     }
 }

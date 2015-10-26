@@ -20,7 +20,7 @@ class UpdateWishService extends WishService
         $wishId = $request->wishId();
         $email = $request->email();
         $content = $request->content();
-        $user = $this->userRepository->userOfId(new UserId($userId));
+        $user = $this->userRepository->ofId(new UserId($userId));
         if (null === $user) {
             throw new UserDoesNotExistException();
         }

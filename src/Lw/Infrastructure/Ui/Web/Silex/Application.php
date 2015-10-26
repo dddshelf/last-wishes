@@ -35,7 +35,7 @@ class Application
         });
 
         $app['user_repository'] = $app->share(function($app) {
-            return $app['em']->getRepository('Lw\Infrastructure\Domain\Model\User\DoctrineUser');
+            return $app['em']->getRepository('Lw\Domain\Model\User\User');
         });
 
         $app['wish_repository'] = $app->share(function($app) {
@@ -106,8 +106,7 @@ class Application
         $app['sign_in_user_application_service'] = $app->share(function($app) {
             return new TransactionalApplicationService(
                 new SignInUserService(
-                    $app['user_repository'],
-                    $app['user_factory']
+                    $app['user_repository']
                 ),
                 $app['tx_session']
             );
@@ -132,6 +131,17 @@ class Application
                 ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
                 ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
                 ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Sign in'])
+                ->getForm();
+        });
+
+        $app['log_in_form'] = $app->share(function($app) {
+            return $app['form.factory']
+                ->createBuilder('form', null, [
+                    'attr' => ['autocomplete' => 'off']
+                ])
+                ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
+                ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
+                ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Log in'])
                 ->getForm();
         });
 
