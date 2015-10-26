@@ -25,7 +25,7 @@ class AddWishService extends WishService
             throw new UserDoesNotExistException();
         }
 
-        $this->wishRepository->persist(
+        $this->wishRepository->add(
             $user->makeWish(
                 $this->wishRepository->nextIdentity(),
                 $email,

@@ -24,7 +24,7 @@ class ViewWishService extends WishService
             throw new UserDoesNotExistException();
         }
 
-        $wish = $this->wishRepository->wishOfId(new WishId($wishId));
+        $wish = $this->wishRepository->ofId(new WishId($wishId));
         if (!$wish) {
             throw new WishDoesNotExistException();
         }

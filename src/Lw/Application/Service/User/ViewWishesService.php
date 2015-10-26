@@ -23,6 +23,6 @@ class ViewWishesService
      */
     public function execute($request = null)
     {
-        return $this->wishRepository->wishesOfUserId(new UserId($request->userId()));
+        return $this->wishRepository->ofUserId(new UserId($request->userId()));
     }
 }

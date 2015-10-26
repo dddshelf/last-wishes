@@ -14,18 +14,18 @@ interface WishRepository
      * @param WishId $wishId
      * @return Wish
      */
-    public function wishOfId(WishId $wishId);
+    public function ofId(WishId $wishId);
 
     /**
      * @param UserId $userId
      * @return Wish[]
      */
-    public function wishesOfUserId(UserId $userId);
+    public function ofUserId(UserId $userId);
 
     /**
      * @param Wish $wish
      */
-    public function persist(Wish $wish);
+    public function add(Wish $wish);
 
     /**
      * @param Wish $wish

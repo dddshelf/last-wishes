@@ -56,7 +56,7 @@ class DeleteWishServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->wishRepository = new InMemoryWishRepository();
         $this->dummyWish = $this->dummyUser->makeWish($this->wishRepository->nextIdentity(), 'irrelevant@email.com', 'content');
-        $this->wishRepository->persist($this->dummyWish);
+        $this->wishRepository->add($this->dummyWish);
     }
 
     /**
@@ -83,7 +83,7 @@ class DeleteWishServiceTest extends \PHPUnit_Framework_TestCase
             'content'
         );
 
-        $this->wishRepository->persist($wish);
+        $this->wishRepository->add($wish);
 
         $this->deleteWishService->execute(
             new DeleteWishRequest($wish->id()->id(), $this->dummyUser->id()->id())
@@ -99,6 +99,6 @@ class DeleteWishServiceTest extends \PHPUnit_Framework_TestCase
             new DeleteWishRequest($this->dummyWish->id()->id(), $this->dummyUser->id()->id())
         );
 
-        $this->assertNull($this->wishRepository->wishOfId($this->dummyWish->id()));
+        $this->assertNull($this->wishRepository->ofId($this->dummyWish->id()));
     }
 }

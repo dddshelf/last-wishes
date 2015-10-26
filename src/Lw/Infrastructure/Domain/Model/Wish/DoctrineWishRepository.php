@@ -14,7 +14,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
      * @param WishId $wishId
      * @return Wish
      */
-    public function wishOfId(WishId $wishId)
+    public function ofId(WishId $wishId)
     {
         return $this->find($wishId->id());
     }
@@ -23,7 +23,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
      * @param UserId $userId
      * @return Wish[]
      */
-    public function wishesOfUserId(UserId $userId)
+    public function ofUserId(UserId $userId)
     {
         return $this->findBy(['userId' => $userId]);
     }
@@ -32,7 +32,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
      * @param Wish $wish
      * @return mixed
      */
-    public function persist(Wish $wish)
+    public function add(Wish $wish)
     {
         $this->getEntityManager()->persist($wish);
         $this->getEntityManager()->flush($wish);

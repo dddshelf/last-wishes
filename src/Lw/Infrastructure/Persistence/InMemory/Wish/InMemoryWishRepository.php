@@ -17,7 +17,7 @@ class InMemoryWishRepository implements WishRepository
     /**
      * {@inheritdoc}
      */
-    public function wishOfId(WishId $wishId)
+    public function ofId(WishId $wishId)
     {
         if (!isset($this->wishes[$wishId->id()])) {
             return null;
@@ -29,7 +29,7 @@ class InMemoryWishRepository implements WishRepository
     /**
      * {@inheritdoc}
      */
-    public function wishesOfUserId(UserId $userId)
+    public function ofUserId(UserId $userId)
     {
         $wishes = array();
         foreach ($this->wishes as $wish) {
@@ -44,7 +44,7 @@ class InMemoryWishRepository implements WishRepository
     /**
      * {@inheritdoc}
      */
-    public function persist(Wish $wish)
+    public function add(Wish $wish)
     {
         $this->wishes[$wish->id()->id()] = $wish;
     }

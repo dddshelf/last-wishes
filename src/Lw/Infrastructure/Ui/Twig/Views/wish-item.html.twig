@@ -3,18 +3,10 @@
         <img class="wish-image" src="/components/flat-ui/images/icons/svg/mail.svg" alt="Send email to...">
     </div>
 
-    <!--
     <div class="col-xs-12 col-sm-8 col-md-9">
-        ...send an <strong>email</strong><br/>
-        to <input name="email" class="form-control flat wish-control" type="text" maxlength="255" value="{{ wish.email() }}"/><br/>
-        with message <textarea name="content" class="form-control flat wish-control">{{ wish.content() }}</textarea>
-    </div>
-    -->
-
-    <div class="col-xs-12 col-sm-8 col-md-9">
-        ...send an <strong>email</strong><br/>
-        to <strong>{{ wish.email() }}</strong><br/>
-        with a message <strong>{{ wish.content() }}</strong>
+        ...send a <strong>message</strong><br/>
+        to <strong>{{ wish.address() }}</strong><br/>
+        with the content <strong>{{ wish.content() }}</strong>
     </div>
 
     <div class="col-xs-12 col-sm-4 col-md-2">

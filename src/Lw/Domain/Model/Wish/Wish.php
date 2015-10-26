@@ -94,11 +94,19 @@ class Wish
     }
 
     /**
-     * @return userId
+     * @return UserId
      */
     public function userId()
     {
         return $this->userId;
+    }
+
+    /**
+     * @return string
+     */
+    public function address()
+    {
+        return $this->address;
     }
 
     public function changeContent($content)
