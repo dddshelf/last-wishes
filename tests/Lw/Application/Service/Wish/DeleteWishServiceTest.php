@@ -4,7 +4,6 @@ namespace Lw\Application\Service\Wish;
 
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\Wish\Wish;
-use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Infrastructure\Persistence\InMemory\User\InMemoryUserRepository;
 use Lw\Infrastructure\Persistence\InMemory\Wish\InMemoryWishRepository;
 
