@@ -11,6 +11,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
 {
     /**
      * @param UserId $userId
+     *
      * @return User
      */
     public function ofId(UserId $userId)
@@ -20,6 +21,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepository
 
     /**
      * @param string $email
+     *
      * @return User
      */
     public function ofEmail($email)

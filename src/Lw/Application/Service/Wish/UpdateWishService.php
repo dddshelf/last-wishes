@@ -11,6 +11,7 @@ class UpdateWishService extends WishService
 {
     /**
      * @param $request
+     *
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
      */

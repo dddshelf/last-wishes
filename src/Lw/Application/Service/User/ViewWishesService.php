@@ -19,6 +19,7 @@ class ViewWishesService
 
     /**
      * @param ViewWishesRequest $request
+     *
      * @return Wish[]
      */
     public function execute($request = null)

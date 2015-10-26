@@ -20,7 +20,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
+require_once __DIR__.'/../../../../../../../vendor/autoload.php';
 
 $app = \Lw\Infrastructure\Ui\Web\Silex\Application::bootstrap();
 
@@ -31,7 +31,7 @@ $app->get('/', function () use ($app) {
 
 $app->match('/signin', function (Request $request) use ($app) {
     /**
-     * @var Form $form
+     * @var Form
      */
     $form = $app['sign_in_form'];
     $form->handleRequest($request);
@@ -48,22 +48,22 @@ $app->match('/signin', function (Request $request) use ($app) {
             );
 
             return $app->redirect($app['url_generator']->generate('login'));
-        } catch(UserAlreadyExistsException $e) {
+        } catch (UserAlreadyExistsException $e) {
             $form->get('email')->addError(new FormError('Email is already registered by another user'));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $form->addError(new FormError('There was an error, please get in touch with us'));
         }
     }
 
     return $app['twig']->render('signin.html.twig', [
-        'form' => $form->createView()
+        'form' => $form->createView(),
     ]);
 })->bind('signin');
 
 // Login
 $app->match('/login', function (Request $request) use ($app) {
     /**
-     * @var Form $form
+     * @var Form
      */
     $form = $app['log_in_form'];
     $form->handleRequest($request);
@@ -86,15 +86,15 @@ $app->match('/login', function (Request $request) use ($app) {
             if ($result) {
                 return $app->redirect('/dashboard');
             }
-        } catch(UserAlreadyExistsException $e) {
+        } catch (UserAlreadyExistsException $e) {
             $form->get('email')->addError(new FormError('Email is already registered by another user'));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $form->addError(new FormError('There was an error, please get in touch with us'));
         }
     }
 
     return $app['twig']->render('login.html.twig', [
-        'form' => $form->createView()
+        'form' => $form->createView(),
     ]);
 })->bind('login');
 
@@ -146,7 +146,7 @@ $app->post('/wish/add', function (Request $request) use ($app) {
                 )
             );
         $app['session']->getFlashBag()->add('message', ['info' => 'Great!']);
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         $app['session']->getFlashBag()->add('message', ['info' => $e->getMessage()]);
     }
 
@@ -191,7 +191,7 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
         );
 
         $app['session']->getFlashBag()->add('message', ['info' => 'Deleted!']);
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         $app['session']->getFlashBag()->add('message', ['info' => 'Error!']);
     }
 

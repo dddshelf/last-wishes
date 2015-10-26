@@ -3,8 +3,7 @@
 namespace Lw\Domain\Model\User;
 
 /**
- * Class User
- * @package Lw\Domain\Model\User
+ * Class User.
  */
 class UserSecurityToken
 {
@@ -20,6 +19,7 @@ class UserSecurityToken
 
     /**
      * @param User $user
+     *
      * @return UserSecurityToken
      */
     public static function fromUser(User $user)

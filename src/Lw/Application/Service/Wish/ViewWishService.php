@@ -10,7 +10,9 @@ class ViewWishService extends WishService
 {
     /**
      * @param ViewWishRequest $request
+     *
      * @return \Lw\Domain\Model\Wish\Wish
+     *
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
      */

@@ -12,6 +12,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
 {
     /**
      * @param WishId $wishId
+     *
      * @return Wish
      */
     public function ofId(WishId $wishId)
@@ -21,6 +22,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
 
     /**
      * @param UserId $userId
+     *
      * @return Wish[]
      */
     public function ofUserId(UserId $userId)
@@ -30,6 +32,7 @@ class DoctrineWishRepository extends EntityRepository implements WishRepository
 
     /**
      * @param Wish $wish
+     *
      * @return mixed
      */
     public function add(Wish $wish)

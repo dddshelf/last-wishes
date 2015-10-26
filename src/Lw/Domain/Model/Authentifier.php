@@ -40,6 +40,7 @@ abstract class Authentifier
         }
 
         $this->persistAuthentication($user);
+
         return true;
     }
 

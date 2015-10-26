@@ -20,7 +20,9 @@ class GrantUserWishesService
 
     /**
      * @param int $userId
+     *
      * @return int
+     *
      * @throws UserDoesNotExistException
      */
     public function execute($userId)

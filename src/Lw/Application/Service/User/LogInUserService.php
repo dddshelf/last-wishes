@@ -19,6 +19,7 @@ class LogInUserService
     /**
      * @param $email
      * @param $password
+     *
      * @return bool
      */
     public function execute($email, $password)

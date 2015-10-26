@@ -5,12 +5,10 @@ namespace Lw\Domain\Model\User;
 use Assert\Assertion;
 use Ddd\Domain\DomainEventPublisher;
 use Lw\Domain\Model\Wish\Wish;
-use Lw\Domain\Model\Wish\WishEmail;
 use Lw\Domain\Model\Wish\WishId;
 
 /**
- * Class User
- * @package Lw\Domain\Model\User
+ * Class User.
  */
 class User
 {
@@ -99,18 +97,22 @@ class User
         $this->password = $password;
     }
 
-    /**
-     * @param WishId $wishId
-     * @param string $email
-     * @param string $content
-     * @return \Lw\Domain\Model\Wish\WishEmail
-     */
-    public function makeWish(WishId $wishId, $email, $content)
+    public function makeWishNotBeingAnAggregate(WishId $wishId, $address, $content)
     {
         return new Wish(
             $wishId,
             $this->id(),
-            $email,
+            $address,
+            $content
+        );
+    }
+
+    public function makeWishBeingAnAggregate(WishId $wishId, $address, $content)
+    {
+        $this->wishes[] = new Wish(
+            $wishId,
+            $this->id(),
+            $address,
             $content
         );
     }
@@ -120,7 +122,7 @@ class User
         $wishesGranted = 0;
         foreach ($this->wishes as $wish) {
             $wish->grant();
-            $wishesGranted++;
+            ++$wishesGranted;
         }
 
         return $wishesGranted;

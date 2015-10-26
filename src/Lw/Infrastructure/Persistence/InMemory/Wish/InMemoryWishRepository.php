@@ -20,7 +20,7 @@ class InMemoryWishRepository implements WishRepository
     public function ofId(WishId $wishId)
     {
         if (!isset($this->wishes[$wishId->id()])) {
-            return null;
+            return;
         }
 
         return $this->wishes[$wishId->id()];

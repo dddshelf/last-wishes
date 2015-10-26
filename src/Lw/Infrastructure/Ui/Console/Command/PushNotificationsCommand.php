@@ -3,7 +3,6 @@
 namespace Lw\Infrastructure\Ui\Console\Command;
 
 use Ddd\Application\Notification\NotificationService;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -19,7 +19,7 @@ class InMemoryUserRepository implements UserRepository
     public function ofId(UserId $userId)
     {
         if (!isset($this->users[$userId->id()])) {
-            return null;
+            return;
         }
 
         return $this->users[$userId->id()];
@@ -36,7 +36,7 @@ class InMemoryUserRepository implements UserRepository
             }
         }
 
-        return null;
+        return;
     }
 
     /**

@@ -5,8 +5,7 @@ namespace Lw\Domain\Model\Wish;
 use Rhumsaa\Uuid\Uuid;
 
 /**
- * Class WishId
- * @package Lw\Domain\Model\Wish
+ * Class WishId.
  */
 class WishId
 {
@@ -33,7 +32,8 @@ class WishId
 
     /**
      * @param WishId $wishId
-     * @return boolean
+     *
+     * @return bool
      */
     public function equals(WishId $wishId)
     {

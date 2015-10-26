@@ -3,8 +3,7 @@
 namespace Lw\Domain\Model\User;
 
 /**
- * Class UserAlreadyExistsException
- * @package Lw\Domain\Model\User
+ * Class UserAlreadyExistsException.
  */
 class UserAlreadyExistsException extends \Exception
 {

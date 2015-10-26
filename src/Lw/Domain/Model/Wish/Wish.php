@@ -7,8 +7,7 @@ use Ddd\Domain\DomainEventPublisher;
 use Lw\Domain\Model\User\UserId;
 
 /**
- * Class Wish
- * @package Lw\Domain\Model\Wish
+ * Class Wish.
  */
 class Wish
 {
@@ -128,7 +127,8 @@ class Wish
         return $this->content;
     }
 
-    public function grant() {
+    public function grant()
+    {
         DomainEventPublisher::instance()->publish(
             new WishGranted(
                 $this->wishId

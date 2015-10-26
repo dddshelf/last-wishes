@@ -24,56 +24,56 @@ class Application
 
         $app['debug'] = true;
 
-        $app['em'] = $app->share(function() {
+        $app['em'] = $app->share(function () {
             return (new EntityManagerFactory())->build();
         });
 
         $app['exchange_name'] = 'last-will';
 
-        $app['tx_session'] = $app->share(function($app) {
+        $app['tx_session'] = $app->share(function ($app) {
             return new DoctrineSession($app['em']);
         });
 
-        $app['user_repository'] = $app->share(function($app) {
+        $app['user_repository'] = $app->share(function ($app) {
             return $app['em']->getRepository('Lw\Domain\Model\User\User');
         });
 
-        $app['wish_repository'] = $app->share(function($app) {
+        $app['wish_repository'] = $app->share(function ($app) {
             return $app['em']->getRepository('Lw\Domain\Model\Wish\Wish');
         });
 
-        $app['event_store'] = $app->share(function($app) {
+        $app['event_store'] = $app->share(function ($app) {
             return $app['em']->getRepository('Ddd\Domain\Event\StoredEvent');
         });
 
-        $app['message_tracker'] = $app->share(function($app) {
+        $app['message_tracker'] = $app->share(function ($app) {
             return $app['em']->getRepository('Ddd\Domain\Event\PublishedMessage');
         });
 
-        $app['message_producer'] = $app->share(function() {
+        $app['message_producer'] = $app->share(function () {
             return new RabbitMqMessageProducer(
                 new AMQPConnection('localhost', 5672, 'guest', 'guest')
             );
         });
 
-        $app['user_factory'] = $app->share(function() {
+        $app['user_factory'] = $app->share(function () {
             return new DoctrineUserFactory();
         });
 
-        $app['view_wishes_application_service'] = $app->share(function($app) {
+        $app['view_wishes_application_service'] = $app->share(function ($app) {
             return new ViewWishesService(
                 $app['wish_repository']
             );
         });
 
-        $app['view_wish_application_service'] = $app->share(function($app) {
+        $app['view_wish_application_service'] = $app->share(function ($app) {
             return new ViewWishService(
                 $app['user_repository'],
                 $app['wish_repository']
             );
         });
 
-        $app['add_wish_application_service'] = $app->share(function($app) {
+        $app['add_wish_application_service'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
                 new AddWishService(
                     $app['user_repository'],
@@ -83,7 +83,7 @@ class Application
             );
         });
 
-        $app['update_wish_application_service'] = $app->share(function($app) {
+        $app['update_wish_application_service'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
                 new UpdateWishService(
                     $app['user_repository'],
@@ -93,7 +93,7 @@ class Application
             );
         });
 
-        $app['delete_wish_application_service'] = $app->share(function($app) {
+        $app['delete_wish_application_service'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
                 new DeleteWishService(
                     $app['user_repository'],
@@ -103,7 +103,7 @@ class Application
             );
         });
 
-        $app['sign_in_user_application_service'] = $app->share(function($app) {
+        $app['sign_in_user_application_service'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
                 new SignInUserService(
                     $app['user_repository']
@@ -123,10 +123,10 @@ class Application
             )
         );
 
-        $app['sign_in_form'] = $app->share(function($app) {
+        $app['sign_in_form'] = $app->share(function ($app) {
             return $app['form.factory']
                 ->createBuilder('form', null, [
-                    'attr' => ['autocomplete' => 'off']
+                    'attr' => ['autocomplete' => 'off'],
                 ])
                 ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
                 ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
@@ -134,10 +134,10 @@ class Application
                 ->getForm();
         });
 
-        $app['log_in_form'] = $app->share(function($app) {
+        $app['log_in_form'] = $app->share(function ($app) {
             return $app['form.factory']
                 ->createBuilder('form', null, [
-                    'attr' => ['autocomplete' => 'off']
+                    'attr' => ['autocomplete' => 'off'],
                 ])
                 ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
                 ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])

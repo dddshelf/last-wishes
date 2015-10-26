@@ -11,6 +11,7 @@ interface WishFactory
      * @param UserId $userId
      * @param $email
      * @param $content
+     *
      * @return Wish
      */
     public function makeEmailWish(WishId $wishId, UserId $userId, $email, $content);

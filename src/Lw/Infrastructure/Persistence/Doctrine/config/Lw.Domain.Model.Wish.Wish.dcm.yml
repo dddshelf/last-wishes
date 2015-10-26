@@ -6,8 +6,6 @@ Lw\Domain\Model\Wish\Wish:
     wishId:
       column: id
       type: WishId
-      generator:
-        strategy: NONE
   fields:
     address:
       type: string

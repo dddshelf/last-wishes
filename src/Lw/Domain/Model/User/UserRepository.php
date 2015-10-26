@@ -3,19 +3,20 @@
 namespace Lw\Domain\Model\User;
 
 /**
- * Interface UserRepository
- * @package Lw\Domain\Model\User
+ * Interface UserRepository.
  */
 interface UserRepository
 {
     /**
      * @param UserId $userId
+     *
      * @return User
      */
     public function ofId(UserId $userId);
 
     /**
      * @param string $email
+     *
      * @return User
      */
     public function ofEmail($email);

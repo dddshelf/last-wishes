@@ -5,8 +5,7 @@ namespace Lw\Domain\Model\User;
 use Rhumsaa\Uuid\Uuid;
 
 /**
- * Class UserId
- * @package Lw\Domain\Model\User
+ * Class UserId.
  */
 class UserId
 {
@@ -33,7 +32,8 @@ class UserId
 
     /**
      * @param UserId $userId
-     * @return boolean
+     *
+     * @return bool
      */
     public function equals(UserId $userId)
     {

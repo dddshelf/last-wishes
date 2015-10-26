@@ -10,20 +10,22 @@ class EmptyUserRepository implements UserRepository
 {
     /**
      * @param UserId $userId
+     *
      * @return User
      */
     public function ofId(UserId $userId)
     {
-        return null;
+        return;
     }
 
     /**
      * @param $email
+     *
      * @return User
      */
     public function ofEmail($email)
     {
-        return null;
+        return;
     }
 
     /**

@@ -3,14 +3,12 @@
 namespace Lw\Application\Service\User;
 
 use Ddd\Application\Service\ApplicationService;
-use Lw\Application\Service;
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
 use Lw\Domain\Model\User\UserRepository;
 
 /**
- * Class SignInUserService
- * @package Lw\Application\Service\User
+ * Class SignInUserService.
  */
 class SignInUserService implements ApplicationService
 {
@@ -29,7 +27,9 @@ class SignInUserService implements ApplicationService
 
     /**
      * @param SignInUserRequest $request
+     *
      * @return User
+     *
      * @throws UserAlreadyExistsException
      */
     public function execute($request = null)

@@ -5,7 +5,7 @@ namespace Lw\Application\Service\Wish;
 use Lw\Domain\Model\User\UserDoesNotExistException;
 use Lw\Domain\Model\User\UserId;
 
-class AddWishService extends WishService
+class AddWishServiceAggregateVersion extends WishService
 {
     /**
      * @param AddWishRequest $request

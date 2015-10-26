@@ -11,7 +11,7 @@ class DeleteWishService extends WishService
 {
     /**
      * @param DeleteWishRequest $request
-     * @return void
+     *
      * @throws UserDoesNotExistException
      * @throws WishDoesNotExistException
      * @throws \InvalidArgumentException

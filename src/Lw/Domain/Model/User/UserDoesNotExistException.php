@@ -3,8 +3,7 @@
 namespace Lw\Domain\Model\User;
 
 /**
- * Class UserDoesNotExistException
- * @package Lw\Domain\Model\User
+ * Class UserDoesNotExistException.
  */
 class UserDoesNotExistException extends \Exception
 {
