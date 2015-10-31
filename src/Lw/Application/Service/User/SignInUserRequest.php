@@ -4,6 +4,9 @@ namespace Lw\Application\Service\User;
 
 class SignInUserRequest
 {
+    private $email;
+    private $password;
+
     public function __construct($email, $password)
     {
         $this->email = $email;
