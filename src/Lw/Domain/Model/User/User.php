@@ -6,6 +6,7 @@ use Assert\Assertion;
 use Ddd\Domain\DomainEventPublisher;
 use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishId;
+use Lw\Domain\Model\Wish\WishWasMade;
 
 /**
  * Class User.
@@ -99,12 +100,23 @@ class User
 
     public function makeWishNotBeingAnAggregate(WishId $wishId, $address, $content)
     {
-        return new Wish(
+        $newWish = new Wish(
             $wishId,
             $this->id(),
             $address,
             $content
         );
+
+        DomainEventPublisher::instance()->publish(
+            new WishWasMade(
+                $newWish->id(),
+                $newWish->userId(),
+                $newWish->address(),
+                $newWish->content()
+            )
+        );
+
+        return $newWish;
     }
 
     public function makeWishBeingAnAggregate(WishId $wishId, $address, $content)
