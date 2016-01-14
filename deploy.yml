@@ -2,7 +2,6 @@
 - name: Deploy last wishes app to my server
   hosts: all
   vars:
-    ansistrano_deploy_from: "./"
     ansistrano_deploy_to: "/var/www/lastwishes"
     ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/config/deploy/tasks/after-symlink.yml"
   roles:
