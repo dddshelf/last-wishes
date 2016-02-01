@@ -5,7 +5,9 @@ namespace Lw\Infrastructure\Ui\Web\Silex;
 use Ddd\Application\Service\TransactionalApplicationService;
 use Ddd\Infrastructure\Application\Notification\RabbitMqMessageProducer;
 use Ddd\Infrastructure\Application\Service\DoctrineSession;
+use GuzzleHttp\Client;
 use Lw\Application\Service\User\SignInUserService;
+use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesService;
 use Lw\Application\Service\Wish\AddWishService;
 use Lw\Application\Service\Wish\DeleteWishService;
@@ -14,7 +16,10 @@ use Lw\Application\Service\Wish\ViewWishService;
 use Lw\Domain\Model\User\User;
 use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
+use Lw\Infrastructure\Service\HttpUserAdapter;
+use Lw\Infrastructure\Service\TranslatingUserService;
 use PhpAmqpLib\Connection\AMQPConnection;
+use Silex\Provider\MonologServiceProvider;
 
 class Application
 {
@@ -23,6 +28,8 @@ class Application
         $app = new \Silex\Application();
 
         $app['debug'] = true;
+        $app['gamify_host'] = '127.0.0.1';
+        $app['gamify_port'] = '8000';
 
         $app['em'] = $app->share(function () {
             return (new EntityManagerFactory())->build();
@@ -112,10 +119,36 @@ class Application
             );
         });
 
+        $app['gamify_guzzle_client'] = $app->share(function ($app) {
+            return new Client([
+                'base_uri' => sprintf('http://%s:%d/api/', $app['gamify_host'], $app['gamify_port'])
+            ]);
+        });
+
+        $app['http_user_adapter'] = $app->share(function ($app) {
+            return new HttpUserAdapter($app['gamify_guzzle_client']);
+        });
+
+        $app['user_adapter'] = $app->share(function ($app) {
+            return $app['http_user_adapter'];
+        });
+
+        $app['translating_user_service'] = $app->share(function ($app) {
+            return new TranslatingUserService($app['user_adapter']);
+        });
+
+        $app['view_badges_application_service'] = $app->share(function ($app) {
+            return new ViewBadgesService($app['translating_user_service']);
+        });
+
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Silex\Provider\TranslationServiceProvider());
+        $app->register(new MonologServiceProvider(), [
+            'monolog.logfile' => __DIR__ . '/var/logs/silex_' . (($app['debug']) ? 'dev' : 'prod') . '.log',
+            'monolog.name' => 'last_whises'
+        ]);
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
             array(

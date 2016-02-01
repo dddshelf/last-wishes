@@ -123,7 +123,13 @@ $app->get('/dashboard', function () use ($app) {
         new ViewWishesRequest($userSecurityToken->id())
     );
 
-    $badges = (new ViewBadgesService())->execute(new ViewBadgesRequest($userSecurityToken->id()->id()));
+    try {
+        $badges = $app['view_badges_application_service']->execute(
+            new ViewBadgesRequest($userSecurityToken->id()->id())
+        );
+    } catch (Exception $e) {
+        $badges = [];
+    }
 
     return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges, 'messages' => $messages]);
 })->bind('dashboard');

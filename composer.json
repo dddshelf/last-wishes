@@ -20,7 +20,8 @@
         "twig/twig": ">=1.8,<2.0-dev",
         "videlalvaro/php-amqplib": "2.4.0",
         "monolog/monolog": "~1.17",
-        "ruflin/elastica": "~2.3"
+        "ruflin/elastica": "~2.3",
+        "guzzlehttp/guzzle": "^6.1"
     },
     "require-dev": {
         "behat/behat": "3.0.*",

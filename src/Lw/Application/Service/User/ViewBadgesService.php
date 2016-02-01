@@ -2,15 +2,22 @@
 
 namespace Lw\Application\Service\User;
 
+use Lw\Domain\Model\User\UserService;
+
 class ViewBadgesService
 {
+    /**
+     * @var UserService
+     */
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function execute($request = null)
     {
-        $content = @file_get_contents('http://localhost:8081/user/'.$request->userId());
-        if (!$content) {
-            return [];
-        }
-
-        return json_decode($content);
+        return $this->userService->badgesFrom($request->userId());
     }
 }
