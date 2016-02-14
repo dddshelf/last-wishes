@@ -2,12 +2,14 @@
 
 namespace Lw\Application\Service\User;
 
+use Lw\Domain\Model\User\UserId;
+
 class ViewBadgesRequest
 {
     private $userId;
 
     /**
-     * @param string $userId
+     * @param UserId $userId
      */
     public function __construct($userId)
     {
@@ -15,7 +17,7 @@ class ViewBadgesRequest
     }
 
     /**
-     * @return string
+     * @return UserId
      */
     public function userId()
     {

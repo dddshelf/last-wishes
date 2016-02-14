@@ -125,7 +125,7 @@ $app->get('/dashboard', function () use ($app) {
 
     try {
         $badges = $app['view_badges_application_service']->execute(
-            new ViewBadgesRequest($userSecurityToken->id()->id())
+            new ViewBadgesRequest($userSecurityToken->id())
         );
     } catch (Exception $e) {
         $badges = [];
