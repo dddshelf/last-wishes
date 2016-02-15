@@ -4,13 +4,13 @@
         "php": ">=5.4.0",
         "beberlei/assert": "@stable",
         "carlosbuenosvinos/ddd": "1.*",
-        "doctrine/orm": "~2.4",
+        "doctrine/orm": "2.*",
         "jms/serializer": "~0.16.0",
-        "predis/predis": "~1.0.0",
+        "predis/predis": "1.*",
         "rhumsaa/uuid": "~2.7.1",
-        "silex/silex": "1.2.*",
-        "silex/web-profiler": "1.0.*",
-        "swiftmailer/swiftmailer": "5.2.1",
+        "silex/silex": "1.*",
+        "silex/web-profiler": "1.*",
+        "swiftmailer/swiftmailer": "5.*",
         "symfony/config": "~2.5",
         "symfony/console": "~2.5",
         "symfony/form": "~2.5",
@@ -18,7 +18,7 @@
         "symfony/translation": "~2.5",
         "symfony/twig-bridge": "~2.5",
         "twig/twig": ">=1.8,<2.0-dev",
-        "videlalvaro/php-amqplib": "2.4.0",
+        "php-amqplib/php-amqplib": "2.*",
         "monolog/monolog": "~1.17",
         "ruflin/elastica": "~2.3",
         "guzzlehttp/guzzle": "^6.1"
@@ -27,7 +27,7 @@
         "behat/behat": "3.0.*",
         "behat/mink": "1.5.*",
         "behat/mink-goutte-driver": "*",
-        "phpunit/phpunit": "~4.2"
+        "phpunit/phpunit": "5.*"
     },
     "authors": [
         {
