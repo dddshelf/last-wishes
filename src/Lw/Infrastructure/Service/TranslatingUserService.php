@@ -17,8 +17,12 @@ class TranslatingUserService implements UserService
         $this->userAdapter = $userAdapter;
     }
 
-    public function badgesFrom(UserId $id)
+    /**
+     * @param UserId $userId
+     * @return mixed
+     */
+    public function badgesFrom(UserId $userId)
     {
-        return $this->userAdapter->toBadges($id);
+        return $this->userAdapter->toBadges($userId->id());
     }
 }

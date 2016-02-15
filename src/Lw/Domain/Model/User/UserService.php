@@ -4,5 +4,5 @@ namespace Lw\Domain\Model\User;
 
 interface UserService
 {
-    public function badgesFrom(UserId $id);
+    public function badgesFrom(UserId $userId);
 }
