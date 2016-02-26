@@ -15,6 +15,7 @@ class User
 {
     const MAX_LENGTH_EMAIL = 255;
     const MAX_LENGTH_PASSWORD = 255;
+    const MAX_WISHES = 3;
 
     /**
      * @var UserId
@@ -119,8 +120,12 @@ class User
         return $newWish;
     }
 
-    public function makeWishBeingAnAggregate(WishId $wishId, $address, $content)
+    public function makeWish(WishId $wishId, $address, $content)
     {
+        if (count($this->wishes) >= self::MAX_WISHES) {
+            throw new NoMoreWishesAllowedException();
+        }
+
         $this->wishes[] = new Wish(
             $wishId,
             $this->id(),

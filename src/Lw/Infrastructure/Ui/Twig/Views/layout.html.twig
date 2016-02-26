@@ -44,17 +44,17 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
                 {% if app.session.has('user') %}
                     <p class="navbar-text navbar-right">
-                        <a href="{{ path('logout') }}">Bye!</a>
+                        <a href="{{ path('signout') }}">Bye!</a>
                     </p>
                     <p class="navbar-text navbar-right">
                         <a href="{{ path('dashboard') }}">Dashboard</a>
                     </p>
                 {% else %}
                     <p class="navbar-text navbar-right">
-                        <a href="{{ path('login') }}">Log in</a>
+                        <a href="{{ path('signin') }}">Sign in</a>
                     </p>
                     <p class="navbar-text navbar-right">
-                        <a href="{{ path('signin') }}">Sign in</a>
+                        <a href="{{ path('signup') }}">Sign up</a>
                     </p>
                 {% endif %}
             </div><!-- /.navbar-collapse -->
@@ -62,7 +62,11 @@
 
         {% if messages is defined %}
             {% for message in messages %}
-                {{ message.info }}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    {{ message.info }}
+                </div>
             {% endfor %}
         {% endif %}
 
@@ -86,7 +90,7 @@
             <div class="col-xs-12 col-sm-3">
                 <div class="tile">
                     <img src="/components/flat-ui/images/icons/svg/pencils.svg" alt="Sign up" class="tile-image big-illustration">
-                    <h3 class="tile-title">1. Sign In</h3>
+                    <h3 class="tile-title">1. Sign Up</h3>
                     <p>So you would start to make wishes in case something happen to you.</p>
                 </div>
             </div>

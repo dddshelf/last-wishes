@@ -6,7 +6,8 @@ use Ddd\Application\Service\TransactionalApplicationService;
 use Ddd\Infrastructure\Application\Notification\RabbitMqMessageProducer;
 use Ddd\Infrastructure\Application\Service\DoctrineSession;
 use GuzzleHttp\Client;
-use Lw\Application\Service\User\SignInUserService;
+use Lw\Application\DataTransformer\User\UserDtoDataTransformer;
+use Lw\Application\Service\User\SignUpUserService;
 use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesService;
 use Lw\Application\Service\Wish\AddWishService;
@@ -18,8 +19,11 @@ use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
 use Lw\Infrastructure\Service\HttpUserAdapter;
 use Lw\Infrastructure\Service\TranslatingUserService;
-use PhpAmqpLib\Connection\AMQPConnection;
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Silex\Provider\TwigServiceProvider;
 
 class Application
 {
@@ -31,9 +35,16 @@ class Application
         $app['gamify_host'] = '127.0.0.1';
         $app['gamify_port'] = '8000';
 
-        $app['em'] = $app->share(function () {
-            return (new EntityManagerFactory())->build();
+        $app['em'] = $app->share(function ($app) {
+            return (new EntityManagerFactory())->build($app['db']);
         });
+
+        $app->register(new DoctrineServiceProvider(), array(
+            'db.options' => array(
+                'driver' => 'pdo_sqlite',
+                'path' => __DIR__.'/../../../../../../db.sqlite',
+            )
+        ));
 
         $app['exchange_name'] = 'last-will';
 
@@ -59,7 +70,7 @@ class Application
 
         $app['message_producer'] = $app->share(function () {
             return new RabbitMqMessageProducer(
-                new AMQPConnection('localhost', 5672, 'guest', 'guest')
+                new AMQPStreamConnection('localhost', 5672, 'guest', 'guest')
             );
         });
 
@@ -112,8 +123,9 @@ class Application
 
         $app['sign_in_user_application_service'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
-                new SignInUserService(
-                    $app['user_repository']
+                new SignUpUserService(
+                    $app['user_repository'],
+                    new UserDtoDataTransformer()
                 ),
                 $app['tx_session']
             );
@@ -141,6 +153,7 @@ class Application
             return new ViewBadgesService($app['translating_user_service']);
         });
 
+
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $app->register(new \Silex\Provider\FormServiceProvider());
@@ -149,12 +162,34 @@ class Application
             'monolog.logfile' => __DIR__ . '/var/logs/silex_' . (($app['debug']) ? 'dev' : 'prod') . '.log',
             'monolog.name' => 'last_whises'
         ]);
+
         $app->register(
-            new \Silex\Provider\TwigServiceProvider(),
+            new TwigServiceProvider(),
             array(
                 'twig.path' => __DIR__.'/../../Twig/Views',
             )
         );
+
+        $app->register(new Provider\HttpFragmentServiceProvider());
+        $app->register(new Provider\ServiceControllerServiceProvider());
+
+        $app->register(new Provider\WebProfilerServiceProvider(), array(
+            'profiler.cache_dir' => __DIR__.'/../cache/profiler',
+            'profiler.mount_prefix' => '/_profiler', // this is the default
+        ));
+
+        $app->register(new \Sorien\Provider\DoctrineProfilerServiceProvider());
+
+        $app['sign_up_form'] = $app->share(function ($app) {
+            return $app['form.factory']
+                ->createBuilder('form', null, [
+                    'attr' => ['autocomplete' => 'off'],
+                ])
+                ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
+                ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
+                ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Sign up'])
+                ->getForm();
+        });
 
         $app['sign_in_form'] = $app->share(function ($app) {
             return $app['form.factory']
@@ -164,17 +199,6 @@ class Application
                 ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
                 ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
                 ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Sign in'])
-                ->getForm();
-        });
-
-        $app['log_in_form'] = $app->share(function ($app) {
-            return $app['form.factory']
-                ->createBuilder('form', null, [
-                    'attr' => ['autocomplete' => 'off'],
-                ])
-                ->add('email', 'email', ['attr' => ['maxlength' => User::MAX_LENGTH_EMAIL, 'class' => 'form-control'], 'label' => 'Email'])
-                ->add('password', 'password', ['attr' => ['maxlength' => User::MAX_LENGTH_PASSWORD, 'class' => 'form-control'], 'label' => 'Password'])
-                ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-lg btn-block'], 'label' => 'Log in'])
                 ->getForm();
         });
 

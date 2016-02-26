@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b984bf04f2762463424514db2b26658",
-    "content-hash": "45077e6755294d9f21dd36460ca5d8f3",
+    "hash": "20130ff6f2f78644367048b92fc56e38",
+    "content-hash": "a107047f06b273ea699df996e046ac9b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -819,16 +819,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "f5d04bdd2881ac89abde1fb78cc234bce24327bb"
+                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5d04bdd2881ac89abde1fb78cc234bce24327bb",
-                "reference": "f5d04bdd2881ac89abde1fb78cc234bce24327bb",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/2e89629ff057ebb49492ba08e6995d3a6a80021b",
+                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b",
                 "shasum": ""
             },
             "require": {
@@ -873,7 +873,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-01-23 01:23:02"
+            "time": "2016-02-18 21:54:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -1797,6 +1797,54 @@
             "description": "A WebProfiler for Silex",
             "homepage": "http://silex.sensiolabs.org/",
             "time": "2016-01-10 11:39:13"
+        },
+        {
+            "name": "sorien/silex-dbal-profiler",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sorien/silex-dbal-profiler.git",
+                "reference": "4d3f642144e96685270f7ffb1648a081d0c5eb7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sorien/silex-dbal-profiler/zipball/4d3f642144e96685270f7ffb1648a081d0c5eb7e",
+                "reference": "4d3f642144e96685270f7ffb1648a081d0c5eb7e",
+                "shasum": ""
+            },
+            "require": {
+                "silex/silex": "~1.0",
+                "silex/web-profiler": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Sorien": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stanislav Turza",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Doctrine DBAL Profiler for Silex",
+            "keywords": [
+                "dbal",
+                "doctrine",
+                "profiler",
+                "silex"
+            ],
+            "time": "2015-03-12 09:26:42"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4034,23 +4082,23 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "85f5db2d0a0da79ad6a256eb54148ba383059ad9"
+                "reference": "a58f95ae76fe201b571fad3e8370a50c4368678c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/85f5db2d0a0da79ad6a256eb54148ba383059ad9",
-                "reference": "85f5db2d0a0da79ad6a256eb54148ba383059ad9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a58f95ae76fe201b571fad3e8370a50c4368678c",
+                "reference": "a58f95ae76fe201b571fad3e8370a50c4368678c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6",
+                "php": "^5.6 || ^7.0",
                 "phpunit/php-file-iterator": "~1.3",
                 "phpunit/php-text-template": "~1.2",
-                "phpunit/php-token-stream": "~1.3",
+                "phpunit/php-token-stream": "^1.4.2",
                 "sebastian/code-unit-reverse-lookup": "~1.0",
                 "sebastian/environment": "^1.3.2",
                 "sebastian/version": "~1.0|~2.0"
@@ -4093,7 +4141,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-13 06:47:56"
+            "time": "2016-02-18 07:31:12"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -4275,16 +4323,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.2.5",
+            "version": "5.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "db79855b229d4bbcdc055ad74c5dc20ad3f5c5fe"
+                "reference": "b12b9c37e382c096b93c3f26e7395775f59a5eea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/db79855b229d4bbcdc055ad74c5dc20ad3f5c5fe",
-                "reference": "db79855b229d4bbcdc055ad74c5dc20ad3f5c5fe",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b12b9c37e382c096b93c3f26e7395775f59a5eea",
+                "reference": "b12b9c37e382c096b93c3f26e7395775f59a5eea",
                 "shasum": ""
             },
             "require": {
@@ -4294,9 +4342,9 @@
                 "ext-reflection": "*",
                 "ext-spl": "*",
                 "myclabs/deep-copy": "~1.3",
-                "php": ">=5.6",
+                "php": "^5.6 || ^7.0",
                 "phpspec/prophecy": "^1.3.1",
-                "phpunit/php-code-coverage": "~3.2",
+                "phpunit/php-code-coverage": "^3.2.1",
                 "phpunit/php-file-iterator": "~1.4",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-timer": ">=1.0.6",
@@ -4345,7 +4393,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-13 06:58:29"
+            "time": "2016-02-19 11:43:07"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

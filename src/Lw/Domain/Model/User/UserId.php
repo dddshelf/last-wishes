@@ -4,9 +4,6 @@ namespace Lw\Domain\Model\User;
 
 use Rhumsaa\Uuid\Uuid;
 
-/**
- * Class UserId.
- */
 class UserId
 {
     /**

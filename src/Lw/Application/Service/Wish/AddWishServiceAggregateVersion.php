@@ -25,12 +25,10 @@ class AddWishServiceAggregateVersion extends WishService
             throw new UserDoesNotExistException();
         }
 
-        $this->wishRepository->add(
-            $user->makeWishNotBeingAnAggregate(
-                $this->wishRepository->nextIdentity(),
-                $address,
-                $content
-            )
+        $user->makeWishBeingAnAggregate(
+            $this->wishRepository->nextIdentity(),
+            $address,
+            $content
         );
     }
 }

@@ -37,13 +37,18 @@ class LoggerDomainEventSubscriber implements DomainEventSubscriber
     public function handle($aDomainEvent)
     {
         $domainEventInArray = json_decode($this->serializer->serialize($aDomainEvent, 'json'), true);
-        $this->logger->addInfo(
-            get_class($aDomainEvent),
-            $domainEventInArray + [
-                'name' => get_class($aDomainEvent),
-                'occured_on' => $aDomainEvent->occurredOn(),
-            ]
-        );
+
+        try {
+            $this->logger->addInfo(
+                get_class($aDomainEvent),
+                $domainEventInArray + [
+                    'name' => get_class($aDomainEvent),
+                    'occured_on' => $aDomainEvent->occurredOn(),
+                ]
+            );
+        } catch(\Exception $e) {
+
+        }
     }
 
     public function isSubscribedTo($aDomainEvent)

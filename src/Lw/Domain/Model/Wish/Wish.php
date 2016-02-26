@@ -57,6 +57,15 @@ class Wish
 
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
+
+        DomainEventPublisher::instance()->publish(
+            new WishWasMade(
+                $this->id(),
+                $this->userId(),
+                $this->address(),
+                $this->content()
+            )
+        );
     }
 
     /**

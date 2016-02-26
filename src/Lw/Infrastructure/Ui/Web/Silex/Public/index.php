@@ -9,6 +9,7 @@ use Lw\Application\Service\User\ViewWishesRequest;
 use Lw\Application\Service\Wish\UpdateWishRequest;
 use Lw\Domain\Event\LoggerDomainEventSubscriber;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,8 @@ error_reporting(E_ALL);
 
 require_once __DIR__.'/../../../../../../../vendor/autoload.php';
 
+Debug::enable();
+
 $app = \Lw\Infrastructure\Ui\Web\Silex\Application::bootstrap();
 
 // Home
@@ -29,11 +32,8 @@ $app->get('/', function () use ($app) {
     return $app['twig']->render('layout.html.twig');
 })->bind('home');
 
-$app->match('/signin', function (Request $request) use ($app) {
-    /**
-     * @var Form
-     */
-    $form = $app['sign_in_form'];
+$app->match('/signup', function (Request $request) use ($app) {
+    $form = $app['sign_up_form'];
     $form->handleRequest($request);
 
     if ($form->isValid()) {
@@ -51,6 +51,7 @@ $app->match('/signin', function (Request $request) use ($app) {
         } catch (UserAlreadyExistsException $e) {
             $form->get('email')->addError(new FormError('Email is already registered by another user'));
         } catch (\Exception $e) {
+            throw $e;
             $form->addError(new FormError('There was an error, please get in touch with us'));
         }
     }
@@ -58,14 +59,14 @@ $app->match('/signin', function (Request $request) use ($app) {
     return $app['twig']->render('signin.html.twig', [
         'form' => $form->createView(),
     ]);
-})->bind('signin');
+})->bind('signup');
 
 // Login
-$app->match('/login', function (Request $request) use ($app) {
+$app->match('/signin', function (Request $request) use ($app) {
     /**
      * @var Form
      */
-    $form = $app['log_in_form'];
+    $form = $app['sign_in_form'];
     $form->handleRequest($request);
 
     if ($form->isValid()) {
@@ -96,10 +97,10 @@ $app->match('/login', function (Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', [
         'form' => $form->createView(),
     ]);
-})->bind('login');
+})->bind('signin');
 
 // Logout
-$app->get('/logout', function () use ($app) {
+$app->get('/signout', function () use ($app) {
     $userRepository = $app['user_repository'];
     $session = $app['session'];
 
@@ -107,20 +108,20 @@ $app->get('/logout', function () use ($app) {
     $service = new \Lw\Application\Service\User\LogOutUserService($authentifier);
     $service->execute();
 
-    return $app->redirect('/login');
-})->bind('logout');
+    return $app->redirect('/signin');
+})->bind('signout');
 
 $app->get('/dashboard', function () use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
-        return $app->redirect('/login');
+        return $app->redirect('/signin');
     }
 
     $flasbag = $app['session']->getFlashBag();
     $messages = $flasbag->get('message');
 
     $response = $app['view_wishes_application_service']->execute(
-        new ViewWishesRequest($userSecurityToken->id())
+        new ViewWishesRequest($userSecurityToken->id()->id())
     );
 
     try {
@@ -138,7 +139,7 @@ $app->get('/dashboard', function () use ($app) {
 $app->post('/wish/add', function (Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
-        return $app->redirect('/login');
+        return $app->redirect('/signin');
     }
 
     $userId = $userSecurityToken->id()->id();
@@ -163,7 +164,7 @@ $app->post('/wish/add', function (Request $request) use ($app) {
 $app->post('/wish/update', function (Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
-        return $app->redirect('/login');
+        return $app->redirect('/signin');
     }
 
     $userId = $userSecurityToken->id()->id();
@@ -186,7 +187,7 @@ $app->post('/wish/update', function (Request $request) use ($app) {
 $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
-        return $app->redirect('/login');
+        return $app->redirect('/signin');
     }
 
     $userId = $userSecurityToken->id()->id();
@@ -207,7 +208,7 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
 $app->get('/wish/{wishId}', function ($wishId) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
-        return $app->redirect('/login');
+        return $app->redirect('/signin');
     }
 
     $userId = $userSecurityToken->id()->id();

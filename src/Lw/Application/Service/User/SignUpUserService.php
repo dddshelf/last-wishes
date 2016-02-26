@@ -3,26 +3,23 @@
 namespace Lw\Application\Service\User;
 
 use Ddd\Application\Service\ApplicationService;
+use Lw\Application\DataTransformer\User\UserDataTransformer;
 use Lw\Domain\Model\User\User;
 use Lw\Domain\Model\User\UserAlreadyExistsException;
 use Lw\Domain\Model\User\UserRepository;
 
-/**
- * Class SignInUserService.
- */
-class SignInUserService implements ApplicationService
+class SignUpUserService implements ApplicationService
 {
-    /**
-     * @var UserRepository
-     */
     private $userRepository;
+    private $userDataTransformer;
 
-    /**
-     * @param UserRepository $userRepository
-     */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(
+        UserRepository $userRepository,
+        UserDataTransformer $userDataTransformer
+    )
     {
         $this->userRepository = $userRepository;
+        $this->userDataTransformer = $userDataTransformer;
     }
 
     /**
@@ -49,7 +46,8 @@ class SignInUserService implements ApplicationService
         );
 
         $this->userRepository->add($user);
+        $this->userDataTransformer->write($user);
 
-        return $user;
+        return $this->userDataTransformer->read();
     }
 }

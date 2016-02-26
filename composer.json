@@ -21,7 +21,8 @@
         "php-amqplib/php-amqplib": "2.*",
         "monolog/monolog": "~1.17",
         "ruflin/elastica": "~2.3",
-        "guzzlehttp/guzzle": "^6.1"
+        "guzzlehttp/guzzle": "^6.1",
+        "sorien/silex-dbal-profiler": "^1.1"
     },
     "require-dev": {
         "behat/behat": "3.0.*",
@@ -48,5 +49,8 @@
     },
     "config": {
         "bin-dir": "bin"
+    },
+    "scripts": {
+        "test": "bin/phpunit"
     }
 }

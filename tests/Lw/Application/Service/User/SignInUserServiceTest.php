@@ -12,14 +12,14 @@ class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
     private $userRepository;
 
     /**
-     * @var SignInUserService
+     * @var SignUpUserService
      */
     private $signInUserService;
 
     public function setUp()
     {
         $this->userRepository = new InMemoryUserRepository();
-        $this->signInUserService = new SignInUserService($this->userRepository);
+        $this->signInUserService = new SignUpUserService($this->userRepository);
     }
 
     /**
