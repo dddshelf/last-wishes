@@ -2,7 +2,7 @@
 
 use Ddd\Domain\DomainEventPublisher;
 use Ddd\Domain\PersistDomainEventSubscriber;
-use Lw\Application\Service\User\SignInUserRequest;
+use Lw\Application\Service\User\SignUpUserRequest;
 use Lw\Application\Service\User\ViewBadgesRequest;
 use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesRequest;
@@ -41,7 +41,7 @@ $app->match('/signup', function (Request $request) use ($app) {
 
         try {
             $app['sign_in_user_application_service']->execute(
-                new SignInUserRequest(
+                new SignUpUserRequest(
                     $data['email'],
                     $data['password']
                 )

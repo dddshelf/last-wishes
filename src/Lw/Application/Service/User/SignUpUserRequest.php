@@ -2,7 +2,7 @@
 
 namespace Lw\Application\Service\User;
 
-class SignInUserRequest
+class SignUpUserRequest
 {
     private $email;
     private $password;

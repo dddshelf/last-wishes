@@ -2,9 +2,10 @@
 
 namespace Lw\Application\Service\User;
 
+use Lw\Application\DataTransformer\User\UserDtoDataTransformer;
 use Lw\Infrastructure\Persistence\InMemory\User\InMemoryUserRepository;
 
-class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
+class SignUpUserServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Lw\Domain\Model\User\UserRepository
@@ -19,7 +20,10 @@ class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->userRepository = new InMemoryUserRepository();
-        $this->signInUserService = new SignUpUserService($this->userRepository);
+        $this->signInUserService = new SignUpUserService(
+            $this->userRepository,
+            new UserDtoDataTransformer()
+        );
     }
 
     /**
@@ -34,7 +38,7 @@ class SignInUserServiceTest extends \PHPUnit_Framework_TestCase
 
     private function executeSignIn()
     {
-        $request = new SignInUserRequest('carlos.buenosvinos@gmail.com', 'foo');
+        $request = new SignUpUserRequest('carlos.buenosvinos@gmail.com', 'foo');
 
         return $this->signInUserService->execute($request);
     }

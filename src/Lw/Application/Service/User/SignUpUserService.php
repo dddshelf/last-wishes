@@ -23,7 +23,7 @@ class SignUpUserService implements ApplicationService
     }
 
     /**
-     * @param SignInUserRequest $request
+     * @param SignUpUserRequest $request
      *
      * @return User
      *
