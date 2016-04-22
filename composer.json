@@ -40,8 +40,13 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Lw": "src"
+        "psr-4": {
+            "Lw\\": "src/Lw/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lw\\": "tests/Lw/"
         }
     },
     "config": {
