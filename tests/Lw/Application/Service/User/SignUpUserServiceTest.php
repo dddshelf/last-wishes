@@ -3,6 +3,7 @@
 namespace Lw\Application\Service\User;
 
 use Lw\Application\DataTransformer\User\UserDtoDataTransformer;
+use Lw\Domain\Model\User\UserId;
 use Lw\Infrastructure\Persistence\InMemory\User\InMemoryUserRepository;
 
 class SignUpUserServiceTest extends \PHPUnit_Framework_TestCase
@@ -50,9 +51,8 @@ class SignUpUserServiceTest extends \PHPUnit_Framework_TestCase
     {
         $user = $this->executeSignIn();
 
-        $this->assertSame(
-            $user,
-            $this->userRepository->ofId($user->id())
+        $this->assertNotNull(
+            $this->userRepository->ofId(new UserId($user['id']))
         );
     }
 }
