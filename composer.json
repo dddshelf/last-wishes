@@ -47,6 +47,7 @@
     "config": {
         "bin-dir": "bin"
     },
+    "prefer-stable": true,
     "scripts": {
         "test": "bin/phpunit"
     }
