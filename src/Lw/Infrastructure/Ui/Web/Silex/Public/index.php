@@ -47,7 +47,7 @@ $app->match('/signup', function (Request $request) use ($app) {
                 )
             );
 
-            return $app->redirect($app['url_generator']->generate('login'));
+            return $app->redirect($app['url_generator']->generate('signin'));
         } catch (UserAlreadyExistsException $e) {
             $form->get('email')->addError(new FormError('Email is already registered by another user'));
         } catch (\Exception $e) {
