@@ -2,7 +2,7 @@
 
 namespace Lw\Domain\Model\Wish;
 
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class WishId.

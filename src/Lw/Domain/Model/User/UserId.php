@@ -2,7 +2,7 @@
 
 namespace Lw\Domain\Model\User;
 
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 class UserId
 {
