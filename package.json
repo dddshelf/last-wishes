@@ -1,0 +1,27 @@
+{
+  "name": "last-wishes",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://secure.travis-ci.org/dddinphp/last-wishes.svg?branch=master)](http://travis-ci.org/dddinphp/last-wishes)",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "dependencies": {
+    "bower": "^1.7.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dddinphp/last-wishes.git"
+  },
+  "author": "Carlos Buenosvinos (@buenosvinos)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dddinphp/last-wishes/issues"
+  },
+  "homepage": "https://github.com/dddinphp/last-wishes#readme"
+}
