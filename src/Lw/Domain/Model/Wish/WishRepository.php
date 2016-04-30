@@ -4,9 +4,6 @@ namespace Lw\Domain\Model\Wish;
 
 use Lw\Domain\Model\User\UserId;
 
-/**
- * Interface WishRepository.
- */
 interface WishRepository
 {
     /**
