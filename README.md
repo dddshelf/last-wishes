@@ -2,8 +2,16 @@
 
 [![Build Status](https://secure.travis-ci.org/dddinphp/last-wishes.svg?branch=master)](http://travis-ci.org/dddinphp/last-wishes)
 
-## Install assets
-    bower install
+## Mandatory requirements
+
+* PHP
+* npm
+
+## Optional requirements
+
+* RabbitMQ for Messaging exercises
+* Elastic for Elastic exercises
+* Redis optional for Redis exercises
 
 ## Set up the project
     curl -sS https://getcomposer.org/installer | php
