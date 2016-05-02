@@ -44,7 +44,7 @@ class Application
             'db.options' => array(
                 'driver' => 'pdo_sqlite',
                 'path' => __DIR__.'/../../../../../../db.sqlite',
-            )
+            ),
         ));
 
         $app['exchange_name'] = 'last-will';
@@ -144,7 +144,7 @@ class Application
 
         $app['gamify_guzzle_client'] = $app->share(function ($app) {
             return new Client([
-                'base_uri' => sprintf('http://%s:%d/api/', $app['gamify_host'], $app['gamify_port'])
+                'base_uri' => sprintf('http://%s:%d/api/', $app['gamify_host'], $app['gamify_port']),
             ]);
         });
 
@@ -169,8 +169,8 @@ class Application
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Silex\Provider\TranslationServiceProvider());
         $app->register(new MonologServiceProvider(), [
-            'monolog.logfile' => __DIR__ . '/var/logs/silex_' . (($app['debug']) ? 'dev' : 'prod') . '.log',
-            'monolog.name' => 'last_whises'
+            'monolog.logfile' => __DIR__.'/var/logs/silex_'.(($app['debug']) ? 'dev' : 'prod').'.log',
+            'monolog.name' => 'last_whises',
         ]);
 
         $app->register(

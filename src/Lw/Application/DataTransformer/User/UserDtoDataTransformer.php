@@ -19,7 +19,7 @@ class UserDtoDataTransformer implements UserDataTransformer
     {
         return [
             'id' => $this->user->id()->id(),
-            'num_wishes' => 0
+            'num_wishes' => 0,
         ];
     }
 }

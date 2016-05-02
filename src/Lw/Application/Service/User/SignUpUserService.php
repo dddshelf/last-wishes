@@ -16,8 +16,7 @@ class SignUpUserService implements ApplicationService
     public function __construct(
         UserRepository $userRepository,
         UserDataTransformer $userDataTransformer
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->userDataTransformer = $userDataTransformer;
     }

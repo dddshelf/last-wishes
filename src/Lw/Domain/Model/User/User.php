@@ -54,15 +54,42 @@ class User
         $this->userId = $userId;
         $this->setEmail($email);
         $this->changePassword($password);
-        $this->wishes = new ArrayCollection();
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
+        $this->wishes = new ArrayCollection();
 
         DomainEventPublisher::instance()->publish(
             new UserRegistered(
                 $this->userId
             )
         );
+    }
+
+    /**
+     * @param $email
+     */
+    protected function setEmail($email)
+    {
+        $email = trim($email);
+        if (!$email) {
+            throw new \InvalidArgumentException('email');
+        }
+
+        Assertion::email($email);
+        $this->email = strtolower($email);
+    }
+
+    /**
+     * @param string $password
+     */
+    public function changePassword($password)
+    {
+        $password = trim($password);
+        if (!$password) {
+            throw new \InvalidArgumentException('password');
+        }
+
+        $this->password = $password;
     }
 
     /**
@@ -89,20 +116,7 @@ class User
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
-    public function changePassword($password)
-    {
-        $password = trim($password);
-        if (!$password) {
-            throw new \InvalidArgumentException('password');
-        }
-
-        $this->password = $password;
-    }
-
-    public function makeWishNotBeingAnAggregate(WishId $wishId, $address, $content)
+    public function makeWishNoAggregateVersion(WishId $wishId, $address, $content)
     {
         return new Wish(
             $wishId,
@@ -112,14 +126,14 @@ class User
         );
     }
 
-    public function makeWish(WishId $wishId, $address, $content)
+    public function makeWishAggregateVersion($address, $content)
     {
         if (count($this->wishes) >= self::MAX_WISHES) {
             throw new NoMoreWishesAllowedException();
         }
 
         $this->wishes->add(new Wish(
-            $wishId,
+            new WishId(),
             $this->id(),
             $address,
             $content
@@ -135,19 +149,5 @@ class User
         }
 
         return $wishesGranted;
-    }
-
-    /**
-     * @param $email
-     */
-    protected function setEmail($email)
-    {
-        $email = trim($email);
-        if (!$email) {
-            throw new \InvalidArgumentException('email');
-        }
-
-        Assertion::email($email);
-        $this->email = strtolower($email);
     }
 }

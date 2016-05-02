@@ -19,6 +19,7 @@ class TranslatingUserService implements UserService
 
     /**
      * @param UserId $userId
+     *
      * @return mixed
      */
     public function badgesFrom(UserId $userId)

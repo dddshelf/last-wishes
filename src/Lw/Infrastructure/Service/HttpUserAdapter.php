@@ -21,8 +21,8 @@ class HttpUserAdapter implements UserAdapter
         $response = $this->client->get(sprintf('/users/%s', $id), [
             'allow_redirects' => true,
             'headers' => [
-                'Accept' => 'application/hal+json'
-            ]
+                'Accept' => 'application/hal+json',
+            ],
         ]);
 
         $badges = [];

@@ -4,7 +4,6 @@ use Ddd\Domain\DomainEventPublisher;
 use Ddd\Domain\PersistDomainEventSubscriber;
 use Lw\Application\Service\User\SignUpUserRequest;
 use Lw\Application\Service\User\ViewBadgesRequest;
-use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesRequest;
 use Lw\Application\Service\Wish\UpdateWishRequest;
 use Lw\Domain\Event\LoggerDomainEventSubscriber;
@@ -63,7 +62,7 @@ $app->match('/signup', function (Request $request) use ($app) {
 
 // Login
 $app->match('/signin', function (Request $request) use ($app) {
-    /**
+    /*
      * @var Form
      */
     $form = $app['sign_in_form'];
@@ -99,14 +98,12 @@ $app->match('/signin', function (Request $request) use ($app) {
     ]);
 })->bind('signin');
 
-// Logout
 $app->get('/signout', function () use ($app) {
-    $userRepository = $app['user_repository'];
-    $session = $app['session'];
-
-    $authentifier = new \Lw\Infrastructure\Domain\SessionAuthentifier($userRepository, $session);
-    $service = new \Lw\Application\Service\User\LogOutUserService($authentifier);
-    $service->execute();
+    (new \Lw\Application\Service\User\LogOutUserService(
+        new \Lw\Infrastructure\Domain\SessionAuthentifier(
+            $app['user_repository'],
+            $app['session'])
+    ))->execute();
 
     return $app->redirect('/signin');
 })->bind('signout');
@@ -117,8 +114,8 @@ $app->get('/dashboard', function () use ($app) {
         return $app->redirect('/signin');
     }
 
-    $flasbag = $app['session']->getFlashBag();
-    $messages = $flasbag->get('message');
+    $flashBag = $app['session']->getFlashBag();
+    $messages = $flashBag->get('message');
 
     $response = $app['view_wishes_application_service']->execute(
         new ViewWishesRequest($userSecurityToken->id()->id())
@@ -135,32 +132,6 @@ $app->get('/dashboard', function () use ($app) {
     return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges, 'messages' => $messages]);
 })->bind('dashboard');
 
-// Make a wish (Aggregate version)
-$app->post('/user/make-wish', function (Request $request) use ($app) {
-    $userSecurityToken = $app['session']->get('user');
-    if (!$userSecurityToken) {
-        return $app->redirect('/signin');
-    }
-
-    $userId = $userSecurityToken->id()->id();
-    try {
-        $app['add_wish_application_service_aggregate_version']
-            ->execute(
-                new \Lw\Application\Service\Wish\AddWishRequest(
-                    $userId,
-                    $request->get('email'),
-                    $request->get('content')
-                )
-            );
-        $app['session']->getFlashBag()->add('message', ['info' => 'Great!']);
-    } catch (\Exception $e) {
-        $app['session']->getFlashBag()->add('message', ['info' => $e->getMessage()]);
-    }
-
-    return $app->redirect('/dashboard');
-})->bind('make-wish-aggregate-version');
-
-// Add wish
 $app->post('/wish/add', function (Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
@@ -169,7 +140,7 @@ $app->post('/wish/add', function (Request $request) use ($app) {
 
     $userId = $userSecurityToken->id()->id();
     try {
-        $app['add_wish_application_service']
+        $app[$request->get('aggregate') ? 'add_wish_application_service_aggregate_version' : 'add_wish_application_service']
             ->execute(
                 new \Lw\Application\Service\Wish\AddWishRequest(
                     $userId,

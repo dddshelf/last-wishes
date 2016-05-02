@@ -46,8 +46,7 @@ class LoggerDomainEventSubscriber implements DomainEventSubscriber
                     'occured_on' => $aDomainEvent->occurredOn(),
                 ]
             );
-        } catch(\Exception $e) {
-
+        } catch (\Exception $e) {
         }
     }
 

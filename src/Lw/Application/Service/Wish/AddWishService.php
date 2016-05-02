@@ -26,7 +26,7 @@ class AddWishService extends WishService
         }
 
         $this->wishRepository->add(
-            $user->makeWishNotBeingAnAggregate(
+            $user->makeWishNoAggregateVersion(
                 $this->wishRepository->nextIdentity(),
                 $address,
                 $content

@@ -16,7 +16,7 @@ Lw\Domain\Model\User\User:
       cascade: ["persist"]
       targetEntity: Lw\Domain\Model\Wish\Wish
       joinTable:
-        name: lw_user_wishes
+        name: lw_aggregate_user_wishes
         joinColumns:
           user_id:
             referencedColumnName: id

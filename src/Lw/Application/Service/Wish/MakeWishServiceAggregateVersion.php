@@ -25,8 +25,7 @@ class MakeWishServiceAggregateVersion extends WishService
             throw new UserDoesNotExistException();
         }
 
-        $user->makeWish(
-            $this->wishRepository->nextIdentity(),
+        $user->makeWishAggregateVersion(
             $address,
             $content
         );
