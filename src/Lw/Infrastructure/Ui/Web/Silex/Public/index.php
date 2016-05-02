@@ -135,6 +135,31 @@ $app->get('/dashboard', function () use ($app) {
     return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges, 'messages' => $messages]);
 })->bind('dashboard');
 
+// Make a wish (Aggregate version)
+$app->post('/user/make-wish', function (Request $request) use ($app) {
+    $userSecurityToken = $app['session']->get('user');
+    if (!$userSecurityToken) {
+        return $app->redirect('/signin');
+    }
+
+    $userId = $userSecurityToken->id()->id();
+    try {
+        $app['add_wish_application_service_aggregate_version']
+            ->execute(
+                new \Lw\Application\Service\Wish\AddWishRequest(
+                    $userId,
+                    $request->get('email'),
+                    $request->get('content')
+                )
+            );
+        $app['session']->getFlashBag()->add('message', ['info' => 'Great!']);
+    } catch (\Exception $e) {
+        $app['session']->getFlashBag()->add('message', ['info' => $e->getMessage()]);
+    }
+
+    return $app->redirect('/dashboard');
+})->bind('make-wish-aggregate-version');
+
 // Add wish
 $app->post('/wish/add', function (Request $request) use ($app) {
     $userSecurityToken = $app['session']->get('user');

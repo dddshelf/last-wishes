@@ -6,9 +6,6 @@ use Assert\Assertion;
 use Ddd\Domain\DomainEventPublisher;
 use Lw\Domain\Model\User\UserId;
 
-/**
- * Class Wish.
- */
 class Wish
 {
     /**

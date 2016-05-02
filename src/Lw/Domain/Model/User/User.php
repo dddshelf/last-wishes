@@ -4,6 +4,7 @@ namespace Lw\Domain\Model\User;
 
 use Assert\Assertion;
 use Ddd\Domain\DomainEventPublisher;
+use Doctrine\Common\Collections\ArrayCollection;
 use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishId;
 
@@ -39,6 +40,11 @@ class User
     protected $updatedOn;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $wishes;
+
+    /**
      * @param UserId $userId
      * @param string $email
      * @param string $password
@@ -48,6 +54,7 @@ class User
         $this->userId = $userId;
         $this->setEmail($email);
         $this->changePassword($password);
+        $this->wishes = new ArrayCollection();
         $this->createdOn = new \DateTime();
         $this->updatedOn = new \DateTime();
 
@@ -111,12 +118,12 @@ class User
             throw new NoMoreWishesAllowedException();
         }
 
-        $this->wishes[] = new Wish(
+        $this->wishes->add(new Wish(
             $wishId,
             $this->id(),
             $address,
             $content
-        );
+        ));
     }
 
     public function grantWishes()

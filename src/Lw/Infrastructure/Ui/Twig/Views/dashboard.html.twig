@@ -2,30 +2,7 @@
 
 {% block content %}
 
-    <!--<h1 class="cover-heading">Dashboard</h1>-->
     <p class="lead">If something would happen to me...</p>
-
-    <!--
-    <p class="lead">...with AngularJS...</p>
-    <div ng-controller="StoryController">
-        <div class="row wish-row" ng-repeat="wish in wishes">
-            <div class="col-xs-1">
-                <img class="wish-image" src="components/flat-ui/images/icons/svg/mail.svg" alt="Send email to...">
-            </div>
-
-            <div class="col-xs-9">
-                ...send an <strong>email</strong><br/>
-                to <input ng-model="wish.email" ng-blur="updateWish(wish)" class="form-control wish-control" type="text" maxlength="255" value="{[{ wish.email }]}"/><br/>
-                with message
-                <textarea ng-model="wish.content" class="form-control wish-control">{[{ wish.content }]}</textarea>
-            </div>
-            <div class="col-xs-2 right">
-                <button ng-click="deleteWish(wish)" class="btn btn-primary btn-block btn-danger"><span class="fui-trash">Delete</span></button>
-            </div>
-        </div>
-        <button ng-click="addWish()" class="btn btn-primary btn-block">New wish</button>
-    </div>
-    -->
 
     {% for wish in wishes %}
         {% include 'wish-item.html.twig' with {wish: wish, showOptions: true} %}
@@ -39,9 +16,18 @@
 
     <br/>
     <p class="lead">You have N more wishes, so add a new one...</p>
+
+    <p class="lead">Use this form for adding wishes using non aggregate version</p>
     <div class="row">
         <div class="col-xs-12">
             {% include "wish-form.html.twig" with {route: path('add-wish')} %}
+        </div>
+    </div>
+
+    <p class="lead">Use this form for adding wishes using <strong>aggregate</strong> version</p>
+    <div class="row">
+        <div class="col-xs-12">
+            {% include "wish-form.html.twig" with {route: path('make-wish-aggregate-version')} %}
         </div>
     </div>
 

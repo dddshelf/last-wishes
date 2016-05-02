@@ -14,3 +14,7 @@ Lw\Domain\Model\Wish\Wish:
     userId:
       type: UserId
       column: user_id
+  #manyToOne:
+  #  user:
+  #    targetEntity: Lw\Domain\Model\User\User
+  #    inversedBy: wishes

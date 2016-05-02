@@ -5,7 +5,7 @@ namespace Lw\Application\Service\Wish;
 use Lw\Domain\Model\User\UserDoesNotExistException;
 use Lw\Domain\Model\User\UserId;
 
-class AddWishServiceAggregateVersion extends WishService
+class MakeWishServiceAggregateVersion extends WishService
 {
     /**
      * @param AddWishRequest $request
@@ -25,7 +25,7 @@ class AddWishServiceAggregateVersion extends WishService
             throw new UserDoesNotExistException();
         }
 
-        $user->makeWishBeingAnAggregate(
+        $user->makeWish(
             $this->wishRepository->nextIdentity(),
             $address,
             $content
