@@ -62,9 +62,7 @@
 
         {% if messages is defined %}
             {% for message in messages %}
-                <div class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
+                <div class="alert alert-{{ message.type | default('success') }}" role="alert">
                     {{ message.info }}
                 </div>
             {% endfor %}
@@ -128,12 +126,5 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="/components/flat-ui/js/bootstrap.min.js"></script>
-
-    <!--
-    <script src="/components/angular/angular.min.js"></script>
-    <script src="/components/angular-resource/angular-resource.min.js"></script>
-    <script src="/components/ngprogress/build/ngProgress.min.js"></script>
-    <script src="/assets/js/app.js"></script>
-    -->
 </body>
 </html>

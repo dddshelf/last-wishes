@@ -150,7 +150,7 @@ $app->post('/wish/add', function (Request $request) use ($app) {
             );
         $app['session']->getFlashBag()->add('message', ['info' => 'Great!']);
     } catch (\Exception $e) {
-        $app['session']->getFlashBag()->add('message', ['info' => $e->getMessage()]);
+        $app['session']->getFlashBag()->add('message', ['type' => 'danger', 'info' => $e->getMessage()]);
     }
 
     return $app->redirect('/dashboard');
