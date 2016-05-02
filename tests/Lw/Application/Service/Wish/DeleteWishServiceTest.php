@@ -55,7 +55,7 @@ class DeleteWishServiceTest extends \PHPUnit_Framework_TestCase
     private function setupWishRepository()
     {
         $this->wishRepository = new InMemoryWishRepository();
-        $this->dummyWish = $this->dummyUser->makeWishNotBeingAnAggregate($this->wishRepository->nextIdentity(), 'irrelevant@email.com', 'content');
+        $this->dummyWish = $this->dummyUser->makeWishNoAggregateVersion($this->wishRepository->nextIdentity(), 'irrelevant@email.com', 'content');
         $this->wishRepository->add($this->dummyWish);
     }
 
