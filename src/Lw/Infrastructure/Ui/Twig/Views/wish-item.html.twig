@@ -12,7 +12,8 @@
     <div class="col-xs-12 col-sm-4 col-md-2">
         {% if showOptions is defined and showOptions %}
             <a class="btn btn-primary btn-block" href="{{ path('view-wish', {wishId: wish.id}) }}"><span class="fui-trash">Edit</span></a>
-            <a class="btn btn-primary btn-block btn-danger" href="{{ path('delete-wish', {wishId: wish.id}) }}"><span class="fui-trash">Delete</span></a>
+            <a class="btn btn-primary btn-block btn-danger" href="{{ path('delete-wish', {wishId: wish.id, aggregate: 0}) }}"><span class="fui-trash">Delete (Not Aggregate Version)</span></a>
+            <a class="btn btn-primary btn-block btn-danger" href="{{ path('delete-wish', {wishId: wish.id, aggregate: 1}) }}"><span class="fui-trash">Delete (Aggregate Version)</span></a>
         {% endif %}
     </div>
 </div>

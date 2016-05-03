@@ -5,6 +5,7 @@ namespace Lw\Domain\Model\User;
 use Assert\Assertion;
 use Ddd\Domain\DomainEventPublisher;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Lw\Domain\Model\Wish\Wish;
 use Lw\Domain\Model\Wish\WishId;
 
@@ -132,12 +133,16 @@ class User
             throw new NoMoreWishesAllowedException();
         }
 
-        $this->wishes->add(new Wish(
-            new WishId(),
-            $this->id(),
-            $address,
-            $content
-        ));
+        $wishId = new WishId();
+        $this->wishes->set(
+            $wishId->id(),
+            new Wish(
+                $wishId,
+                $this->id(),
+                $address,
+                $content
+            )
+        );
     }
 
     public function grantWishes()
@@ -149,5 +154,31 @@ class User
         }
 
         return $wishesGranted;
+    }
+
+    public function updateWish(WishId $wishId, $address, $content)
+    {
+        foreach ($this->wishes as $k => $wish) {
+            if ($wish->id()->equals($wishId)) {
+                $wish->changeContent($content);
+                $wish->changeAddress($address);
+                break;
+            }
+        }
+    }
+
+    public function deleteWish(WishId $wishId)
+    {
+        // $wishes = $this->wishes->matching(Criteria::create()->where(Criteria::expr()->eq('id', $wishId)));
+        // foreach ($wishes as $wish) {
+        //    $this->wishes->removeElement($wish);
+        // }
+
+        foreach ($this->wishes as $k => $wish) {
+            if ($wish->id()->equals($wishId)) {
+                $this->wishes->remove($k);
+                break;
+            }
+        }
     }
 }

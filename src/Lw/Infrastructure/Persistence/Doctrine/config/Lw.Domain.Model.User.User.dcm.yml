@@ -13,7 +13,8 @@ Lw\Domain\Model\User\User:
       type: string
   manyToMany:
     wishes:
-      cascade: ["persist"]
+      orphanRemoval: true
+      cascade: ["all"]
       targetEntity: Lw\Domain\Model\Wish\Wish
       joinTable:
         name: lw_aggregate_user_wishes

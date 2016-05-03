@@ -180,7 +180,7 @@ $app->post('/wish/update', function (Request $request) use ($app) {
 })->bind('update-wish');
 
 // Delete wish
-$app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
+$app->get('/wish/delete/{wishId}/{aggregate}', function ($wishId, $aggregate) use ($app) {
     $userSecurityToken = $app['session']->get('user');
     if (!$userSecurityToken) {
         return $app->redirect('/signin');
@@ -189,7 +189,7 @@ $app->get('/wish/delete/{wishId}', function ($wishId) use ($app) {
     $userId = $userSecurityToken->id()->id();
 
     try {
-        $app['delete_wish_application_service']->execute(
+        $app['delete_wish_application_service'.($aggregate ? '_aggregate_version' : '')]->execute(
             new \Lw\Application\Service\Wish\DeleteWishRequest($wishId, $userId)
         );
 

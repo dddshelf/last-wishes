@@ -1,19 +1,12 @@
 <?php
 
-namespace Lw\Application\Service\Wish;
+namespace Lw\Application\Service\Wish\AggregateVersion;
 
 use Lw\Domain\Model\User\UserDoesNotExistException;
 use Lw\Domain\Model\User\UserId;
 
-class MakeWishServiceAggregateVersion extends WishService
+class AddWishService extends WishService
 {
-    /**
-     * @param AddWishRequest $request
-     *
-     * @return mixed|void
-     *
-     * @throws UserDoesNotExistException
-     */
     public function execute($request = null)
     {
         $userId = $request->userId();

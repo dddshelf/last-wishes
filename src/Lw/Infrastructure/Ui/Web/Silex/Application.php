@@ -12,7 +12,8 @@ use Lw\Application\Service\User\ViewBadgesService;
 use Lw\Application\Service\User\ViewWishesService;
 use Lw\Application\Service\Wish\AddWishService;
 use Lw\Application\Service\Wish\DeleteWishService;
-use Lw\Application\Service\Wish\MakeWishServiceAggregateVersion;
+use Lw\Application\Service\Wish\AggregateVersion\DeleteWishService as DeleterWishServiceAggregateVersion;
+use Lw\Application\Service\Wish\AggregateVersion\AddWishService as AddWishServiceAggregateVersion;
 use Lw\Application\Service\Wish\UpdateWishService;
 use Lw\Application\Service\Wish\ViewWishService;
 use Lw\Domain\Model\User\User;
@@ -104,9 +105,8 @@ class Application
 
         $app['add_wish_application_service_aggregate_version'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
-                new MakeWishServiceAggregateVersion(
-                    $app['user_repository'],
-                    $app['wish_repository']
+                new AddWishServiceAggregateVersion(
+                    $app['user_repository']
                 ),
                 $app['tx_session']
             );
@@ -122,11 +122,29 @@ class Application
             );
         });
 
+        $app['update_wish_application_service_aggregate_version'] = $app->share(function ($app) {
+            return new TransactionalApplicationService(
+                new UpdateWishServiceAggregateVersion(
+                    $app['user_repository']
+                ),
+                $app['tx_session']
+            );
+        });
+
         $app['delete_wish_application_service'] = $app->share(function ($app) {
             return new TransactionalApplicationService(
                 new DeleteWishService(
                     $app['user_repository'],
                     $app['wish_repository']
+                ),
+                $app['tx_session']
+            );
+        });
+
+        $app['delete_wish_application_service_aggregate_version'] = $app->share(function ($app) {
+            return new TransactionalApplicationService(
+                new DeleterWishServiceAggregateVersion(
+                    $app['user_repository']
                 ),
                 $app['tx_session']
             );
