@@ -133,15 +133,11 @@ class User
             throw new NoMoreWishesAllowedException();
         }
 
-        $wishId = new WishId();
-        $this->wishes->set(
-            $wishId->id(),
-            new Wish(
-                $wishId,
-                $this->id(),
-                $address,
-                $content
-            )
+        $this->wishes[] = new Wish(
+            new WishId(),
+            $this->id(),
+            $address,
+            $content
         );
     }
 
@@ -176,7 +172,7 @@ class User
 
         foreach ($this->wishes as $k => $wish) {
             if ($wish->id()->equals($wishId)) {
-                $this->wishes->remove($k);
+                unset($this->wishes[$k]);
                 break;
             }
         }

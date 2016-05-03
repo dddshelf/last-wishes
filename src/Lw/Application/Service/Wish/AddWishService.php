@@ -3,34 +3,30 @@
 namespace Lw\Application\Service\Wish;
 
 use Lw\Domain\Model\User\UserDoesNotExistException;
-use Lw\Domain\Model\User\UserId;
 
 class AddWishService extends WishService
 {
     /**
      * @param AddWishRequest $request
      *
-     * @return mixed|void
+     * @return void
      *
      * @throws UserDoesNotExistException
      */
     public function execute($request = null)
     {
         $userId = $request->userId();
-        $address = $request->email();
+        $address = $request->address();
         $content = $request->content();
 
-        $user = $this->userRepository->ofId(new UserId($userId));
-        if (null === $user) {
-            throw new UserDoesNotExistException();
-        }
+        $user = $this->findUserOrFail($userId);
 
-        $this->wishRepository->add(
-            $user->makeWishNoAggregateVersion(
-                $this->wishRepository->nextIdentity(),
-                $address,
-                $content
-            )
+        $wish = $user->makeWish(
+            $this->wishRepository->nextIdentity(),
+            $address,
+            $content
         );
+
+        $this->wishRepository->add($wish);
     }
 }

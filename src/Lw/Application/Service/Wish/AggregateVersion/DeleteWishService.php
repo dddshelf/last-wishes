@@ -13,11 +13,8 @@ class DeleteWishService extends WishService
         $userId = $request->userId();
         $wishId = $request->wishId();
 
-        $user = $this->userRepository->ofId(new UserId($userId));
-        if (null === $user) {
-            throw new UserDoesNotExistException();
-        }
-
-        $user->deleteWish(new WishId($wishId));
+        $this
+            ->getUser($userId)
+            ->deleteWish(new WishId($wishId));
     }
 }

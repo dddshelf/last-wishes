@@ -1,15 +1,14 @@
 <?php
 
-namespace Lw\Application\Service\User;
+namespace Lw\Application\Service\User\AggregateVersion;
 
 use Lw\Domain\Model\User\UserId;
 use Lw\Domain\Model\User\UserRepository;
-use Lw\Domain\Model\Wish\WishRepository;
 
 class ViewWishesService
 {
     /**
-     * @var WishRepository
+     * @var UserRepository
      */
     private $userRepository;
 
