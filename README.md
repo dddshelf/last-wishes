@@ -13,6 +13,8 @@
 * Elastic for Elastic exercises
 * Redis optional for Redis exercises
 
+You can install manually or use `docker-compose up -d` to run all these services inside Docker. The PHP application can be run locally.
+
 ## Set up the project
     curl -sS https://getcomposer.org/installer | php
     php composer.phar install
