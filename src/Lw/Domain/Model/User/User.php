@@ -141,6 +141,11 @@ class User
         );
     }
 
+    public function numberOfRemainingWishes()
+    {
+        return self::MAX_WISHES - count($this->wishes);
+    }
+
     public function grantWishes()
     {
         $wishesGranted = 0;

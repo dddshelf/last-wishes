@@ -129,7 +129,14 @@ $app->get('/dashboard', function () use ($app) {
         $badges = [];
     }
 
-    return $app['twig']->render('dashboard.html.twig', ['wishes' => $response, 'badges' => $badges, 'messages' => $messages]);
+    return $app['twig']->render(
+        'dashboard.html.twig',
+        [
+            'wishes' => $response,
+            'badges' => $badges,
+            'messages' => $messages
+        ]
+    );
 })->bind('dashboard');
 
 $app->post('/wish/add', function (Request $request) use ($app) {
