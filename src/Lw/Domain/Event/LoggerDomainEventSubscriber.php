@@ -15,6 +15,7 @@ use Monolog\Processor\WebProcessor;
 class LoggerDomainEventSubscriber implements DomainEventSubscriber
 {
     private $logger;
+    private $serializer;
 
     public function __construct()
     {

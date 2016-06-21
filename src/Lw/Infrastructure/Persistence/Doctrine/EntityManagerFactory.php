@@ -17,7 +17,7 @@ class EntityManagerFactory
 
         return EntityManager::create(
             $conn,
-            Setup::createYAMLMetadataConfiguration([__DIR__.'/config'], true)
+            Setup::createYAMLMetadataConfiguration([__DIR__ . '/Mapping'], true)
         );
     }
 }
