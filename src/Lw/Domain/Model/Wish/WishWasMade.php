@@ -30,13 +30,18 @@ class WishWasMade implements DomainEvent, PublishableDomainEvent
      */
     private $content;
 
+    /**
+     * @var \DateTimeImmutable
+     */
+    private $occurredOn;
+
     public function __construct(WishId $wishId, UserId $userId, $address, $content)
     {
         $this->wishId = $wishId;
         $this->userId = $userId;
         $this->address = $address;
         $this->content = $content;
-        $this->occurredOn = new DateTime('now', new DateTimeZone('UTC'));
+        $this->occurredOn = new \DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 
     /**

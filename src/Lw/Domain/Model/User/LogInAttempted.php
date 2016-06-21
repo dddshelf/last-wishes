@@ -7,11 +7,12 @@ use Ddd\Domain\DomainEvent;
 class LogInAttempted implements DomainEvent
 {
     private $email;
+    private $occurredOn;
 
     public function __construct($email)
     {
         $this->email = $email;
-        $this->occurredOn = new \DateTime();
+        $this->occurredOn = new \DateTimeImmutable();
     }
 
     public function email()

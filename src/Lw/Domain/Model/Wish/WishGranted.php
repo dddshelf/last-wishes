@@ -11,11 +11,12 @@ class WishGranted implements DomainEvent, PublishableDomainEvent
      * @var WishId
      */
     private $wishId;
+    private $occurredOn;
 
     public function __construct(WishId $wishId)
     {
         $this->wishId = $wishId;
-        $this->occurredOn = new \DateTime();
+        $this->occurredOn = new \DateTimeImmutable();
     }
 
     /**

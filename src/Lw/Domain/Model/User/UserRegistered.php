@@ -11,11 +11,12 @@ class UserRegistered implements DomainEvent, PublishableDomainEvent
      * @var UserId
      */
     private $userId;
+    private $occurredOn;
 
     public function __construct(UserId $userId)
     {
         $this->userId = $userId;
-        $this->occurredOn = new \DateTime();
+        $this->occurredOn = new \DateTimeImmutable();
     }
 
     public function userId()
