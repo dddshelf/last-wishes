@@ -2,16 +2,19 @@
 version: '2'
 services:
   queues:
+    container_name: lw_rabbit
     image: rabbitmq:management
     ports:
     - "5672:5672"
     - "15672:15672"
   elastic:
+    container_name: lw_elastic
     image: elasticsearch
     ports:
     - "9200:9200"
     - "9300:9300"
   kibana:
+    container_name: lw_kibana
     image: kibana
     ports:
     - "5601:5601"
@@ -20,6 +23,7 @@ services:
     environment:
     - ELASTICSEARCH_URL=http://elastic:9200
   redis:
+    container_name: lw_redis
     image: redis
     ports:
     - "6379:6379"

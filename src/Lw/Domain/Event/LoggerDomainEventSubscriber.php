@@ -44,7 +44,7 @@ class LoggerDomainEventSubscriber implements DomainEventSubscriber
                 get_class($aDomainEvent),
                 $domainEventInArray + [
                     'name' => get_class($aDomainEvent),
-                    'occured_on' => $aDomainEvent->occurredOn(),
+                    'occurred_on' => $aDomainEvent->occurredOn(),
                 ]
             );
         } catch (\Exception $e) {
