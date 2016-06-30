@@ -5,3 +5,8 @@ bin
 db.sqlite
 node_modules
 src/Lw/Infrastructure/Ui/Web/Silex/Public/components
+GPATH
+GRTAGS
+GTAGS
+src/Lw/Infrastructure/Ui/Web/Silex/var/
+src/Lw/Infrastructure/Ui/Web/cache/
