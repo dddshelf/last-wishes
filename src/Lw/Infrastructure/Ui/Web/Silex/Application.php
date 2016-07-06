@@ -24,7 +24,7 @@ use Lw\Infrastructure\Service\TranslatingUserService;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Connection\AMQPConnection;
 use Silex\Provider\TwigServiceProvider;
 
 class Application
@@ -72,7 +72,7 @@ class Application
 
         $app['message_producer'] = $app->share(function () {
             return new RabbitMqMessageProducer(
-                new AMQPStreamConnection('localhost', 5672, 'guest', 'guest')
+                new AMQPConnection('localhost', 5672, 'guest', 'guest')
             );
         });
 
