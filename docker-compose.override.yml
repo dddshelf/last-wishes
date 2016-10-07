@@ -4,7 +4,7 @@ services:
   app_php:
     ports:
       - "4010:80"
-  queues:
+  rabbitmq:
     ports:
       - "5672:5672"
       - "15672:15672"

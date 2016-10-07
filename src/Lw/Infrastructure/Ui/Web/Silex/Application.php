@@ -21,6 +21,7 @@ use Lw\Infrastructure\Domain\Model\User\DoctrineUserFactory;
 use Lw\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
 use Lw\Infrastructure\Service\HttpUserAdapter;
 use Lw\Infrastructure\Service\TranslatingUserService;
+use PhpAmqpLib\Connection\AMQPConnection;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider;
@@ -72,7 +73,7 @@ class Application
 
         $app['message_producer'] = $app->share(function () {
             return new RabbitMqMessageProducer(
-                new AMQPStreamConnection('localhost', 5672, 'guest', 'guest')
+                new AMQPConnection('rabbitmq', 5672, 'guest', 'guest')
             );
         });
 

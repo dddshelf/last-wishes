@@ -10,7 +10,16 @@ services:
       - "$PWD:/data/app"
     working_dir: "/data/app"
     command: "php -S 0.0.0.0:80 -t src/Lw/Infrastructure/Ui/Web/Silex/Public"
-  queues:
+  app_domain_events:
+    build: docker/php
+    restart: "always"
+    networks:
+      - "default"
+    volumes:
+      - "$PWD:/data/app"
+    working_dir: "/data/app"
+    command: "php bin/console domain:events:spread"
+  rabbitmq:
     image: rabbitmq:management
     container_name: lw_rabbit
     networks:
