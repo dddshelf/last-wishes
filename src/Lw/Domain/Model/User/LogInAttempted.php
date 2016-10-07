@@ -25,6 +25,6 @@ class LogInAttempted implements DomainEvent
      */
     public function occurredOn()
     {
-        return $this->occurredOn;
+        return new \DateTime($this->occurredOn->format('Y-m-d H:i:s'));
     }
 }

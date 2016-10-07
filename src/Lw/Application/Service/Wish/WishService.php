@@ -26,6 +26,12 @@ abstract class WishService implements ApplicationService
         $this->wishRepository = $wishRepository;
     }
 
+    /**
+     * @param $userId
+     *
+     * @return \Lw\Domain\Model\User\User
+     * @throws UserDoesNotExistException
+     */
     protected function findUserOrFail($userId)
     {
         $user = $this->userRepository->ofId(new UserId($userId));
