@@ -5,3 +5,5 @@ bin
 db.sqlite
 node_modules
 src/Lw/Infrastructure/Ui/Web/Silex/Public/components
+src/Lw/Infrastructure/Ui/Web/cache
+src/Lw/Infrastructure/Ui/Web/Silex/var
