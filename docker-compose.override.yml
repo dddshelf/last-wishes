@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  app_php:
+    ports:
+      - "4010:80"
+  rabbitmq:
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  elastic:
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    ports:
+      - "5601:5601"
+  redis:
+    ports:
+      - "6379:6379"
+  development_php:
+    build: "docker/development"
+    working_dir: "/data/app"
+    entrypoint: ""
+    user: "deploy"
+    volumes:
+      - "$PWD:/data/app"
+    command: "/prepare-app.sh"

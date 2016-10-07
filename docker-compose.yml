@@ -1,29 +1,49 @@
----
 version: '2'
+
 services:
-  queues:
-    container_name: lw_rabbit
+  app_php:
+    build: docker/php
+    restart: "always"
+    networks:
+      - "default"
+    volumes:
+      - "$PWD:/data/app"
+    working_dir: "/data/app"
+    command: "php -S 0.0.0.0:80 -t src/Lw/Infrastructure/Ui/Web/Silex/Public"
+  app_domain_events:
+    build: docker/php
+    restart: "always"
+    networks:
+      - "default"
+    volumes:
+      - "$PWD:/data/app"
+    working_dir: "/data/app"
+    command: "php bin/console domain:events:spread"
+  rabbitmq:
     image: rabbitmq:management
-    ports:
-    - "5672:5672"
-    - "15672:15672"
+    container_name: lw_rabbit
+    networks:
+      - "default"
   elastic:
-    container_name: lw_elastic
     image: elasticsearch
-    ports:
-    - "9200:9200"
-    - "9300:9300"
+    container_name: lw_elastic
+    networks:
+      - "default"
   kibana:
-    container_name: lw_kibana
     image: kibana
-    ports:
-    - "5601:5601"
-    links:
-    - elastic
+    container_name: lw_kibana
+    depends_on:
+      - elastic
     environment:
-    - ELASTICSEARCH_URL=http://elastic:9200
+      - ELASTICSEARCH_URL=http://elastic:9200
+    networks:
+      - "default"
   redis:
-    container_name: lw_redis
     image: redis
-    ports:
-    - "6379:6379"
+    container_name: lw_redis
+    networks:
+      - "default"
+
+networks:
+  default:
+    driver: bridge

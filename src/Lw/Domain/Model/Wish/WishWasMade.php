@@ -81,6 +81,6 @@ class WishWasMade implements DomainEvent, PublishableDomainEvent
      */
     public function occurredOn()
     {
-        return $this->occurredOn;
+        return new \DateTime($this->occurredOn->format('Y-m-d H:i:s'));
     }
 }

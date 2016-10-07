@@ -16,12 +16,12 @@ class AddWishService extends WishService
     public function execute($request = null)
     {
         $userId = $request->userId();
-        $address = $request->address();
+        $address = $request->email();
         $content = $request->content();
 
         $user = $this->findUserOrFail($userId);
 
-        $wish = $user->makeWish(
+        $wish = $user->makeWishNoAggregateVersion(
             $this->wishRepository->nextIdentity(),
             $address,
             $content

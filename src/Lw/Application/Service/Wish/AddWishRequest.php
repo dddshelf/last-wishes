@@ -4,8 +4,17 @@ namespace Lw\Application\Service\Wish;
 
 class AddWishRequest
 {
+    /**
+     * @var string
+     */
     private $userId;
+    /**
+     * @var string
+     */
     private $email;
+    /**
+     * @var string
+     */
     private $content;
 
     /**

@@ -12,7 +12,7 @@ class WishEmail extends Wish
 
     public function __construct(WishId $wishId, UserId $userId, $email, $content)
     {
-        parent::__construct($wishId, $userId, $content);
+        parent::__construct($wishId, $userId, $email, $content);
 
         $this->setEmail($email);
         $this->setContent($content);
